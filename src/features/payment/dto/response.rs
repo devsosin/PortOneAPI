@@ -21,6 +21,15 @@ pub struct PaymentDetailData {
     customer: Customer,
 }
 
+impl PaymentDetailData {
+    pub fn get_id(&self) -> &str {
+        &self.id
+    }
+    pub fn get_total_amount(&self) -> i64 {
+        self.amount.total
+    }
+}
+
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PaymentAmount {

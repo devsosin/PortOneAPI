@@ -9,3 +9,9 @@ pub struct PortOneResponse<T> {
     #[serde(flatten)]
     data: Option<T>,
 }
+
+impl<T> PortOneResponse<T> {
+    pub fn get_data(self) -> Option<T> {
+        self.data
+    }
+}
