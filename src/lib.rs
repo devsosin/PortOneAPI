@@ -9,7 +9,7 @@ pub struct PortOneAPI {
     client: Client,
 }
 
-pub struct AuthedPortOneAPI<'a> {
-    api: &'a PortOneAPI,
-    key: &'a str,
+pub struct AuthedPortOneAPI {
+    api: PortOneAPI,
+    key: String,
 }

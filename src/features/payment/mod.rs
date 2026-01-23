@@ -13,7 +13,7 @@ pub trait PortOnePaymentService: Send + Sync {
     ) -> ClientResult<PortOneResponse<PaymentDetailData>>; //
 }
 
-impl<'a> PortOnePaymentService for AuthedPortOneAPI<'a> {
+impl PortOnePaymentService for AuthedPortOneAPI {
     async fn get_payment_detail(
         &self,
         payment_id: &str,

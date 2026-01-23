@@ -29,12 +29,15 @@ impl PortOneAPI {
         }
     }
 
-    pub fn authed_api<'a>(&'a self, key: &'a str) -> AuthedPortOneAPI<'a> {
-        AuthedPortOneAPI { api: self, key }
+    pub fn authed_api(self, key: &str) -> AuthedPortOneAPI {
+        AuthedPortOneAPI {
+            api: self,
+            key: key.into(),
+        }
     }
 }
 
-impl<'a> AuthedPortOneAPI<'a> {
+impl AuthedPortOneAPI {
     pub async fn send<U: for<'de> Deserialize<'de>>(
         &self,
         uri: &str,
