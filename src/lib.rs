@@ -4,6 +4,7 @@ pub mod client;
 pub mod errors;
 pub mod features;
 pub mod types;
+pub mod webhook;
 
 pub struct PortOneAPI {
     client: Client,
@@ -12,4 +13,5 @@ pub struct PortOneAPI {
 pub struct AuthedPortOneAPI {
     api: PortOneAPI,
     key: String,
+    base_url: String,
 }
