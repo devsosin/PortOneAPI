@@ -1,8 +1,8 @@
 use serde::Deserialize;
 
-use crate::errors::ClientError;
+use crate::errors::Error;
 
-pub type ClientResult<T> = Result<T, ClientError>;
+pub type ClientResult<T> = Result<T, Error>;
 
 #[derive(Debug, Deserialize)]
 pub struct PortOneResponse<T> {

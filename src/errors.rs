@@ -1,9 +1,29 @@
+//! Crate-level error type.
+//!
+//! [`Error`] is what every public call returns. Features whose failures need more detail
+//! (`cancel`, `webhook`) define their own error enum next to the feature and convert it
+//! into [`Error`] with `From`.
+
 use reqwest::StatusCode;
 use serde::Deserialize;
 use thiserror::Error;
 
+use crate::features::{cancel::CancelError, webhook::WebhookError};
+
+/// Result alias used by every request method.
+pub type Result<T> = std::result::Result<T, Error>;
+
+/// Former name of [`Error`], kept so existing code keeps compiling.
+pub type ClientError = Error;
+
+/// Any failure of this crate.
+///
+/// Reactions: `ReqwestError` (network/timeout) may be retried only for reads or requests
+/// sent with an idempotency key; `AuthError` and `PortOneError::Unauthorized`/`Forbidden`
+/// mean the API key must be fixed; `Webhook` means the message must be rejected.
 #[derive(Error, Debug)]
-pub enum ClientError {
+#[non_exhaustive]
+pub enum Error {
     #[error("Reqwest error: {0}")]
     ReqwestError(#[from] reqwest::Error),
 
@@ -12,6 +32,12 @@ pub enum ClientError {
 
     #[error("PortOne error: {0}")]
     PortOneError(#[from] PortOneError),
+
+    #[error("Cancel error: {0}")]
+    Cancel(#[from] CancelError),
+
+    #[error("Webhook error: {0}")]
+    Webhook(#[from] WebhookError),
 
     #[error("Internal error: {0}")]
     InternalError(String),
@@ -23,7 +49,10 @@ pub enum AuthError {
     InvalidTokenInfo,
 }
 
+/// Error responses shared by every endpoint. Endpoint specific rejections are
+/// [`PortOneError::Unclassified`] until the feature turns them into its own error.
 #[derive(Debug, Error)]
+#[non_exhaustive]
 pub enum PortOneError {
     #[error("Invalid Request Body")]
     InvalidRequestError, // 400
@@ -37,36 +66,6 @@ pub enum PortOneError {
     #[error("Payment Not Found")]
     PaymentNotFoundError, // 404
 
-    #[error("Payment Not Paid")]
-    PaymentNotPaidError, // 409
-
-    #[error("Payment Already Cancelled")]
-    PaymentAlreadyCancelledError, // 409
-
-    #[error("Cancellable Amount Consistency Broken")]
-    CancellableAmountConsistencyBrokenError, // 409
-
-    #[error("Cancel Amount Exceeds Cancellable Amount")]
-    CancelAmountExceedsCancellableAmountError, // 409
-
-    #[error("Sum Of Parts Exceeds Cancel Amount")]
-    SumOfPartsExceedsCancelAmountError, // 409
-
-    #[error("Cancel Tax Free Amount Exceeds Cancellable Tax Free Amount")]
-    CancelTaxFreeAmountExceedsCancellableTaxFreeAmountError, // 409
-
-    #[error("Cancel Tax Amount Exceeds Cancellable Tax Amount")]
-    CancelTaxAmountExceedsCancellableTaxAmountError, // 409
-
-    #[error("Max Cancel Count Reached")]
-    MaxCancelCountReachedError, // 409
-
-    #[error("Negative Promotion Adjusted Cancel Amount")]
-    NegativePromotionAdjustedCancelAmountError, // 400
-
-    #[error("Promotion Discount Retain Option Should Not Be Changed")]
-    PromotionDiscountRetainOptionShouldNotBeChangedError, // 400
-
     #[error("Idempotent request is still outstanding")]
     IdempotencyOutstandingRequestError, // 409
 
@@ -76,8 +75,41 @@ pub enum PortOneError {
         message: Option<String>,
     }, // 502
 
+    /// The body named an error `type` that is not shared by all endpoints.
+    #[error("Unclassified PortOne error: {kind} (status {status})")]
+    Unclassified { status: u16, kind: String },
+
     #[error("Unknown")]
     UnknownError,
+}
+
+impl PortOneError {
+    /// 상태 코드와 오류 응답 본문(`{"type": ...}`)으로 오류를 구분한다.
+    /// 본문이 없으면 상태 코드만으로 매핑하고, 공통이 아닌 `type` 은 [`Self::Unclassified`] 로 둔다.
+    pub fn from_response(code: StatusCode, body: &str) -> Self {
+        let Some(parsed) = serde_json::from_str::<ErrorBody>(body).ok() else {
+            return code.into();
+        };
+
+        match parsed.r#type {
+            Some(kind) => match kind.as_str() {
+                "InvalidRequestError" => Self::InvalidRequestError,
+                "UnauthorizedError" => Self::UnauthorizedError,
+                "ForbiddenError" => Self::ForbiddenError,
+                "PaymentNotFoundError" => Self::PaymentNotFoundError,
+                "IDEMPOTENCY_OUTSTANDING_REQUEST" => Self::IdempotencyOutstandingRequestError,
+                "PgProviderError" => Self::PgProviderError {
+                    code: parsed.pg_code,
+                    message: parsed.pg_message,
+                },
+                _ => Self::Unclassified {
+                    status: code.as_u16(),
+                    kind,
+                },
+            },
+            None => code.into(),
+        }
+    }
 }
 
 impl From<StatusCode> for PortOneError {
@@ -103,50 +135,4 @@ struct ErrorBody {
     pg_code: Option<String>,
     #[serde(rename = "pgMessage")]
     pg_message: Option<String>,
-}
-
-impl PortOneError {
-    /// 상태 코드와 오류 응답 본문(`{"type": ...}`)으로 오류를 구분한다.
-    /// 본문이 없거나 알 수 없는 `type` 이면 상태 코드만으로 매핑한다.
-    pub fn from_response(code: StatusCode, body: &str) -> Self {
-        let parsed: Option<ErrorBody> = serde_json::from_str(body).ok();
-        let Some(parsed) = parsed else {
-            return code.into();
-        };
-
-        match parsed.r#type.as_deref() {
-            Some("InvalidRequestError") => Self::InvalidRequestError,
-            Some("UnauthorizedError") => Self::UnauthorizedError,
-            Some("ForbiddenError") => Self::ForbiddenError,
-            Some("PaymentNotFoundError") => Self::PaymentNotFoundError,
-            Some("PaymentNotPaidError") => Self::PaymentNotPaidError,
-            Some("PaymentAlreadyCancelledError") => Self::PaymentAlreadyCancelledError,
-            Some("CancellableAmountConsistencyBrokenError") => {
-                Self::CancellableAmountConsistencyBrokenError
-            }
-            Some("CancelAmountExceedsCancellableAmountError") => {
-                Self::CancelAmountExceedsCancellableAmountError
-            }
-            Some("SumOfPartsExceedsCancelAmountError") => Self::SumOfPartsExceedsCancelAmountError,
-            Some("CancelTaxFreeAmountExceedsCancellableTaxFreeAmountError") => {
-                Self::CancelTaxFreeAmountExceedsCancellableTaxFreeAmountError
-            }
-            Some("CancelTaxAmountExceedsCancellableTaxAmountError") => {
-                Self::CancelTaxAmountExceedsCancellableTaxAmountError
-            }
-            Some("MaxCancelCountReachedError") => Self::MaxCancelCountReachedError,
-            Some("NegativePromotionAdjustedCancelAmountError") => {
-                Self::NegativePromotionAdjustedCancelAmountError
-            }
-            Some("PromotionDiscountRetainOptionShouldNotBeChangedError") => {
-                Self::PromotionDiscountRetainOptionShouldNotBeChangedError
-            }
-            Some("IDEMPOTENCY_OUTSTANDING_REQUEST") => Self::IdempotencyOutstandingRequestError,
-            Some("PgProviderError") => Self::PgProviderError {
-                code: parsed.pg_code,
-                message: parsed.pg_message,
-            },
-            _ => code.into(),
-        }
-    }
 }

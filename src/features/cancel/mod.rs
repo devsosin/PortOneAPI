@@ -1,4 +1,5 @@
 pub mod dto;
+mod errors;
 
 use crate::{
     AuthedPortOneAPI,
@@ -7,17 +8,19 @@ use crate::{
     types::{ClientResult, PortOneResponse},
 };
 
+pub use errors::CancelError;
+
 pub trait PortOneCancelService: Send + Sync {
     /// 결제를 취소한다. `body` 의 `amount` 가 없으면 전액, 있으면 부분 취소이다.
     ///
     /// `idempotency_key` 를 주면 `Idempotency-Key` 헤더로 보내 재시도 시 중복 취소를 막는다.
     /// 16~256자의 ASCII 문자열이어야 하며, 같은 키로 다른 요청을 보내서는 안 된다.
-    async fn cancel_payment(
+    fn cancel_payment(
         &self,
         payment_id: &str,
         body: &CancelPaymentBody,
         idempotency_key: Option<&str>,
-    ) -> ClientResult<PortOneResponse<CancelPaymentResponse>>;
+    ) -> impl Future<Output = ClientResult<PortOneResponse<CancelPaymentResponse>>> + Send;
 }
 
 impl PortOneCancelService for AuthedPortOneAPI {
@@ -35,6 +38,7 @@ impl PortOneCancelService for AuthedPortOneAPI {
 
         self.send_post(&["payments", payment_id, "cancel"], body, idempotency_key)
             .await
+            .map_err(CancelError::refine)
     }
 }
 

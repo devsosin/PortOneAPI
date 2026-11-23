@@ -26,10 +26,7 @@ impl PaymentDetailData {
         &self.id
     }
     pub fn check_status(&self) -> bool {
-        match self.status.as_str() {
-            "PAID" => true,
-            _ => false,
-        }
+        self.status == "PAID"
     }
     pub fn get_total_amount(&self) -> i64 {
         self.amount.total
@@ -37,26 +34,44 @@ impl PaymentDetailData {
     pub fn get_order_name(&self) -> &str {
         &self.order_name
     }
-    pub fn get_customer_name(&self) -> &str {
-        &self.customer.name.as_ref().unwrap()
+    pub fn get_customer_name(&self) -> Option<&str> {
+        self.customer.name.as_deref()
     }
-    pub fn get_customer_email(&self) -> &str {
-        &self.customer.email.as_ref().unwrap()
+    pub fn get_customer_email(&self) -> Option<&str> {
+        self.customer.email.as_deref()
     }
     pub fn get_updated_at(&self) -> DateTime<Utc> {
         self.updated_at
+    }
+    pub fn get_transaction_id(&self) -> &str {
+        &self.transaction_id
+    }
+    pub fn get_merchant_id(&self) -> &str {
+        &self.merchant_id
+    }
+    pub fn get_store_id(&self) -> &str {
+        &self.store_id
+    }
+    pub fn get_requested_at(&self) -> DateTime<Utc> {
+        self.requested_at
+    }
+    pub fn get_currency(&self) -> &str {
+        &self.currency
+    }
+    pub fn get_customer_id(&self) -> Option<&str> {
+        self.customer.id.as_deref()
     }
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PaymentAmount {
-    total: i64,
-    tax_free: i64,
-    vat: i64,
-    supply: i64,
-    discount: i64,
-    paid: i64,
+    pub total: i64,
+    pub tax_free: i64,
+    pub vat: i64,
+    pub supply: i64,
+    pub discount: i64,
+    pub paid: i64,
 }
 
 #[derive(Debug, Deserialize)]

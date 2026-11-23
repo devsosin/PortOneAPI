@@ -2,7 +2,8 @@
 
 use portone::{
     PortOneAPI,
-    errors::{ClientError, PortOneError},
+    errors::{Error, PortOneError},
+    features::cancel::CancelError,
     features::cancel::{
         PortOneCancelService,
         dto::{CancelPaymentBody, CancelRefundAccount, CancelRequester, PaymentCancellationStatus},
@@ -14,6 +15,8 @@ use tokio::{
 };
 
 const KEY: &str = "0123456789abcdef0123";
+
+const SUCCESS: &str = r#"{"cancellation":{"status":"SUCCEEDED","id":"c-1","pgCancellationId":"pg-1","totalAmount":3000,"taxFreeAmount":0,"vatAmount":273,"reason":"test","cancelledAt":"2026-01-01T00:00:00Z","requestedAt":"2026-01-01T00:00:00Z","receiptUrl":"https://example.com/r","trigger":"API"}}"#;
 
 /// 요청 하나를 받아 원문을 돌려주고 지정한 응답을 보내는 서버를 띄운다.
 async fn mock_server(status: &str, body: &str) -> (String, tokio::task::JoinHandle<String>) {
@@ -59,8 +62,6 @@ async fn mock_server(status: &str, body: &str) -> (String, tokio::task::JoinHand
     (url, handle)
 }
 
-const SUCCESS: &str = r#"{"cancellation":{"status":"SUCCEEDED","id":"c-1","pgCancellationId":"pg-1","totalAmount":3000,"taxFreeAmount":0,"vatAmount":273,"reason":"test","cancelledAt":"2026-01-01T00:00:00Z","requestedAt":"2026-01-01T00:00:00Z","receiptUrl":"https://example.com/r","trigger":"API"}}"#;
-
 async fn cancel_with(
     status: &str,
     body: &str,
@@ -68,7 +69,7 @@ async fn cancel_with(
 ) -> (
     Result<
         portone::types::PortOneResponse<portone::features::cancel::dto::CancelPaymentResponse>,
-        ClientError,
+        Error,
     >,
     String,
 ) {
@@ -79,9 +80,9 @@ async fn cancel_with(
     (result, handle.await.unwrap())
 }
 
-fn port_one_error(r: Result<impl std::fmt::Debug, ClientError>) -> PortOneError {
+fn port_one_error(r: Result<impl std::fmt::Debug, Error>) -> PortOneError {
     match r.unwrap_err() {
-        ClientError::PortOneError(e) => e,
+        Error::PortOneError(e) => e,
         other => panic!("unexpected error: {other:?}"),
     }
 }
@@ -177,14 +178,23 @@ async fn maps_conflict_errors_by_type() {
     for (ty, tag) in cases {
         let body = format!(r#"{{"type":"{ty}","message":"m"}}"#);
         let (r, _) = cancel_with("409 Conflict", &body, None).await;
-        let e = port_one_error(r);
+        let e = r.unwrap_err();
         let ok = match tag {
-            "already" => matches!(e, PortOneError::PaymentAlreadyCancelledError),
-            "exceeds" => matches!(e, PortOneError::CancelAmountExceedsCancellableAmountError),
-            "consistency" => matches!(e, PortOneError::CancellableAmountConsistencyBrokenError),
-            "notpaid" => matches!(e, PortOneError::PaymentNotPaidError),
-            "maxcount" => matches!(e, PortOneError::MaxCancelCountReachedError),
-            _ => matches!(e, PortOneError::IdempotencyOutstandingRequestError),
+            "already" => matches!(e, Error::Cancel(CancelError::PaymentAlreadyCancelledError)),
+            "exceeds" => matches!(
+                e,
+                Error::Cancel(CancelError::CancelAmountExceedsCancellableAmountError)
+            ),
+            "consistency" => matches!(
+                e,
+                Error::Cancel(CancelError::CancellableAmountConsistencyBrokenError)
+            ),
+            "notpaid" => matches!(e, Error::Cancel(CancelError::PaymentNotPaidError)),
+            "maxcount" => matches!(e, Error::Cancel(CancelError::MaxCancelCountReachedError)),
+            _ => matches!(
+                e,
+                Error::PortOneError(PortOneError::IdempotencyOutstandingRequestError)
+            ),
         };
         assert!(ok, "{ty} -> {e:?}");
     }
@@ -223,5 +233,8 @@ async fn falls_back_to_status_when_body_is_not_typed() {
         PortOneError::PaymentNotFoundError
     ));
     let (r, _) = cancel_with("409 Conflict", r#"{"type":"Other"}"#, None).await;
-    assert!(matches!(port_one_error(r), PortOneError::UnknownError));
+    assert!(matches!(
+        port_one_error(r),
+        PortOneError::Unclassified { status: 409, .. }
+    ));
 }
