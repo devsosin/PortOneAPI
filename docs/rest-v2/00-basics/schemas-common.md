@@ -1,6 +1,6 @@
 # 공통 스키마
 
-> 둘 이상의 카테고리 문서가 참조하는 스키마. 한 문서에서만 쓰는 스키마는 그 문서 하단에 있다.
+> 둘 이상의 카테고리 폴더가 참조하는 스키마. 한 문서(또는 한 폴더)에서만 쓰는 스키마는 그쪽에 있다.
 
 ### Address
 
@@ -8,8 +8,8 @@
 
 oneOf, discriminator `type`:
 
-- `ONE_LINE` → [OneLineAddress](schemas-common.md#onelineaddress)
-- `SEPARATED` → [SeparatedAddress](schemas-common.md#separatedaddress)
+- `ONE_LINE` → [OneLineAddress](#onelineaddress)
+- `SEPARATED` → [SeparatedAddress](#separatedaddress)
 
 ### Bank
 
@@ -103,9 +103,9 @@ oneOf, discriminator `type`:
 |---|---|---|---|
 | `publisher` | string |  | 발행사 코드 |
 | `issuer` | string |  | 발급사 코드 |
-| `brand` | [CardBrand](schemas-common.md#cardbrand) |  | 카드 브랜드 |
-| `type` | [CardType](schemas-common.md#cardtype) |  | 카드 유형 |
-| `ownerType` | [CardOwnerType](schemas-common.md#cardownertype) |  | 카드 소유주 유형 |
+| `brand` | [CardBrand](#cardbrand) |  | 카드 브랜드 |
+| `type` | [CardType](#cardtype) |  | 카드 유형 |
+| `ownerType` | [CardOwnerType](#cardownertype) |  | 카드 소유주 유형 |
 | `bin` | string |  | 카드 번호 앞 6자리 또는 8자리의 BIN (Bank Identification Number) |
 | `name` | string |  | 카드 상품명 |
 | `number` | string |  | 마스킹된 카드 번호 |
@@ -155,9 +155,9 @@ oneOf, discriminator `type`:
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `type` | [CashReceiptInputType](schemas-common.md#cashreceiptinputtype) | Y | 현금영수증 유형 |
+| `type` | [CashReceiptInputType](#cashreceiptinputtype) | Y | 현금영수증 유형 |
 | `customerIdentityNumber` | string |  | 사용자 식별 번호 — 미발행 유형 선택 시 입력하지 않습니다. |
-| `customerIdentityNumberType` | [IssueCashReceiptCustomerInputIdentityNumberType](schemas-common.md#issuecashreceiptcustomerinputidentitynumbertype) |  | 사용자 식별 번호 유형 — 사용자 식별 번호가 어떤 종류의 번호인지 명시합니다. |
+| `customerIdentityNumberType` | [IssueCashReceiptCustomerInputIdentityNumberType](#issuecashreceiptcustomerinputidentitynumbertype) |  | 사용자 식별 번호 유형 — 사용자 식별 번호가 어떤 종류의 번호인지 명시합니다. |
 
 ### CashReceiptInputType
 
@@ -183,42 +183,6 @@ oneOf, discriminator `type`:
 | `id` | string | Y | 채널 그룹 아이디 |
 | `name` | string | Y | 채널 그룹 이름 |
 | `isForTest` | boolean | Y | 테스트 채널 그룹 여부 |
-
-### CheckoutPaymentMethod
-
-결제 수단
-
-- `CARD_KR`
-- `N_PAY`
-- `KAKAO_PAY`
-- `TOSS_PAY`
-- `CARD_INTERNATIONAL`
-- `PAY_PAL`
-- `UNION_PAY`
-- `ALIPAY_CN`
-- `ALIPAY_HK`
-- `TRUE_MONEY`
-- `DANA`
-- `TOUCH_N_GO`
-- `G_CASH`
-- `WE_CHAT_PAY`
-- `KLARNA`
-- `E_CONTEXT`
-- `GRAB_PAY_MY`
-- `GRAB_PAY_SG`
-- `SHOPEE_PAY_TH`
-- `PAY_PAY`
-- `BPI`
-- `RABBIT_LINE_PAY`
-- `CONVENIENCE_STORE_JP`
-- `AMAZON_PAY`
-- `RAKUTEN_PAY`
-- `D_BARAI`
-- `AU_PAY`
-- `MERPAY`
-- `CRYPTO`
-- `APPLE_PAY`
-- `LINE_PAY`
 
 ### Country
 
@@ -671,10 +635,10 @@ oneOf, discriminator `type`:
 | `birthYear` | string |  | 출생 연도 |
 | `birthMonth` | string |  | 출생 월 |
 | `birthDay` | string |  | 출생 일자 |
-| `gender` | [Gender](schemas-common.md#gender) |  | 성별 |
+| `gender` | [Gender](#gender) |  | 성별 |
 | `email` | string |  | 이메일 |
 | `phoneNumber` | string |  | 전화번호 |
-| `address` | [Address](schemas-common.md#address) |  | 주소 |
+| `address` | [Address](#address) |  | 주소 |
 | `zipcode` | string |  | 우편번호 |
 
 ### CustomerInput
@@ -684,15 +648,15 @@ oneOf, discriminator `type`:
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `id` | string |  | 고객 아이디 — 고객사가 지정한 고객의 고유 식별자입니다. |
-| `name` | [CustomerNameInput](schemas-common.md#customernameinput) |  | 이름 |
+| `name` | [CustomerNameInput](#customernameinput) |  | 이름 |
 | `birthYear` | string |  | 출생 연도 |
 | `birthMonth` | string |  | 출생월 |
 | `birthDay` | string |  | 출생일 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 |
-| `gender` | [Gender](schemas-common.md#gender) |  | 성별 |
+| `country` | [Country](#country) |  | 국가 |
+| `gender` | [Gender](#gender) |  | 성별 |
 | `email` | string |  | 이메일 |
 | `phoneNumber` | string |  | 전화번호 |
-| `address` | [SeparatedAddressInput](schemas-common.md#separatedaddressinput) |  | 주소 |
+| `address` | [SeparatedAddressInput](#separatedaddressinput) |  | 주소 |
 | `zipcode` | string |  | 우편번호 |
 | `businessRegistrationNumber` | string |  | 사업자 등록 번호 |
 
@@ -703,7 +667,7 @@ oneOf, discriminator `type`:
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `full` | string |  | 한 줄 이름 형식 |
-| `separated` | [CustomerSeparatedName](schemas-common.md#customerseparatedname) |  | 분리형 이름 형식 |
+| `separated` | [CustomerSeparatedName](#customerseparatedname) |  | 분리형 이름 형식 |
 
 ### CustomerSeparatedName
 
@@ -1016,11 +980,11 @@ PG사 결제 모듈
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `type` | [SelectedChannelType](schemas-common.md#selectedchanneltype) | Y | 채널 타입 |
+| `type` | [SelectedChannelType](#selectedchanneltype) | Y | 채널 타입 |
 | `id` | string |  | 채널 아이디 |
 | `key` | string |  | 채널 키 |
 | `name` | string |  | 채널 명 |
-| `pgProvider` | [PgProvider](schemas-common.md#pgprovider) | Y | PG사 결제 모듈 |
+| `pgProvider` | [PgProvider](#pgprovider) | Y | PG사 결제 모듈 |
 | `pgMerchantId` | string | Y | PG사 고객사 식별 아이디 |
 
 ### SelectedChannelType
@@ -1042,7 +1006,7 @@ PG사 결제 모듈
 | `addressLine2` | string | Y | 상세 주소 2 |
 | `city` | string |  | 시/군/구 |
 | `province` | string |  | 주/도/시 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 |
+| `country` | [Country](#country) |  | 국가 |
 
 ### SeparatedAddressInput
 
@@ -1054,7 +1018,7 @@ PG사 결제 모듈
 | `addressLine2` | string | Y | 상세 주소 2 |
 | `city` | string |  | 시/군/구 |
 | `province` | string |  | 주/도/시 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 |
+| `country` | [Country](#country) |  | 국가 |
 
 ### SortOrder
 

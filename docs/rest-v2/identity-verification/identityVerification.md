@@ -1,6 +1,6 @@
 # 본인인증 관련 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -37,18 +37,18 @@
 
 - **200** 성공 응답: [ConfirmIdentityVerificationResponse](#confirmidentityverificationresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`IdentityVerificationNotFoundError`](errors.md#identityverificationnotfounderror): 요청된 본인인증 건이 존재하지 않는 경우
-  * [`IdentityVerificationNotSentError`](errors.md#identityverificationnotsenterror): 본인인증 건이 API로 요청된 상태가 아닌 경우
+  * [`IdentityVerificationNotFoundError`](../00-basics/errors.md#identityverificationnotfounderror): 요청된 본인인증 건이 존재하지 않는 경우
+  * [`IdentityVerificationNotSentError`](../00-basics/errors.md#identityverificationnotsenterror): 본인인증 건이 API로 요청된 상태가 아닌 경우
 - **409**
-  * [`IdentityVerificationAlreadyVerifiedError`](errors.md#identityverificationalreadyverifiederror): 본인인증 건이 이미 인증 완료된 상태인 경우
+  * [`IdentityVerificationAlreadyVerifiedError`](../00-basics/errors.md#identityverificationalreadyverifiederror): 본인인증 건이 이미 인증 완료된 상태인 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /identity-verifications/{identityVerificationId}/resend
 
@@ -69,18 +69,18 @@ SMS 본인인증 요청을 재전송합니다.
 
 - **200** 성공 응답: [ResendIdentityVerificationResponse](#resendidentityverificationresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`IdentityVerificationNotFoundError`](errors.md#identityverificationnotfounderror): 요청된 본인인증 건이 존재하지 않는 경우
-  * [`IdentityVerificationNotSentError`](errors.md#identityverificationnotsenterror): 본인인증 건이 API로 요청된 상태가 아닌 경우
+  * [`IdentityVerificationNotFoundError`](../00-basics/errors.md#identityverificationnotfounderror): 요청된 본인인증 건이 존재하지 않는 경우
+  * [`IdentityVerificationNotSentError`](../00-basics/errors.md#identityverificationnotsenterror): 본인인증 건이 API로 요청된 상태가 아닌 경우
 - **409**
-  * [`IdentityVerificationAlreadyVerifiedError`](errors.md#identityverificationalreadyverifiederror): 본인인증 건이 이미 인증 완료된 상태인 경우
+  * [`IdentityVerificationAlreadyVerifiedError`](../00-basics/errors.md#identityverificationalreadyverifiederror): 본인인증 건이 이미 인증 완료된 상태인 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /identity-verifications/{identityVerificationId}/send
 
@@ -114,20 +114,20 @@ SMS 또는 APP 방식을 이용하여 본인인증 요청을 전송합니다.
 
 - **200** 성공 응답: [SendIdentityVerificationResponse](#sendidentityverificationresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
-  * [`MaxTransactionCountReachedError`](errors.md#maxtransactioncountreachederror): 결제 혹은 본인인증 시도 횟수가 최대에 도달한 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`MaxTransactionCountReachedError`](../00-basics/errors.md#maxtransactioncountreachederror): 결제 혹은 본인인증 시도 횟수가 최대에 도달한 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`IdentityVerificationNotFoundError`](errors.md#identityverificationnotfounderror): 요청된 본인인증 건이 존재하지 않는 경우
-  * [`ChannelNotFoundError`](errors.md#channelnotfounderror): 요청된 채널이 존재하지 않는 경우
+  * [`IdentityVerificationNotFoundError`](../00-basics/errors.md#identityverificationnotfounderror): 요청된 본인인증 건이 존재하지 않는 경우
+  * [`ChannelNotFoundError`](../00-basics/errors.md#channelnotfounderror): 요청된 채널이 존재하지 않는 경우
 - **409**
-  * [`IdentityVerificationAlreadyVerifiedError`](errors.md#identityverificationalreadyverifiederror): 본인인증 건이 이미 인증 완료된 상태인 경우
-  * [`IdentityVerificationAlreadySentError`](errors.md#identityverificationalreadysenterror): 본인인증 건이 이미 API로 요청된 상태인 경우
+  * [`IdentityVerificationAlreadyVerifiedError`](../00-basics/errors.md#identityverificationalreadyverifiederror): 본인인증 건이 이미 인증 완료된 상태인 경우
+  * [`IdentityVerificationAlreadySentError`](../00-basics/errors.md#identityverificationalreadysenterror): 본인인증 건이 이미 API로 요청된 상태인 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## GET /identity-verifications/{identityVerificationId}
 
@@ -148,13 +148,13 @@ SMS 또는 APP 방식을 이용하여 본인인증 요청을 전송합니다.
 
 - **200** 성공 응답으로 본인 인증 객체를 반환합니다.: [IdentityVerification](#identityverification)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`IdentityVerificationNotFoundError`](errors.md#identityverificationnotfounderror): 요청된 본인인증 건이 존재하지 않는 경우
+  * [`IdentityVerificationNotFoundError`](../00-basics/errors.md#identityverificationnotfounderror): 요청된 본인인증 건이 존재하지 않는 경우
 
 ## GET /identity-verifications
 
@@ -176,7 +176,7 @@ SMS 또는 APP 방식을 이용하여 본인인증 요청을 전송합니다.
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number: 0, size: 10 으로 기본값이 적용됩니다. |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number: 0, size: 10 으로 기본값이 적용됩니다. |
 | `sort` | [IdentityVerificationSortInput](#identityverificationsortinput) |  | 정렬 조건 — 미 입력 시 sortBy: REQUESTED_AT, sortOrder: DESC 으로 기본값이 적용됩니다. |
 | `filter` | [IdentityVerificationFilterInput](#identityverificationfilterinput) |  | 조회할 본인인증 내역 조건 필터 |
 
@@ -184,11 +184,11 @@ SMS 또는 APP 방식을 이용하여 본인인증 요청을 전송합니다.
 
 - **200** 성공 응답으로 조회된 본인인증 내역 리스트와 페이지 정보가 반환됩니다.: [GetIdentityVerificationsResponse](#getidentityverificationsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ---
 
@@ -230,14 +230,14 @@ SMS 또는 APP 방식을 이용하여 본인인증 요청을 전송합니다.
 |---|---|---|---|
 | `status` | string | Y | 본인인증 상태 |
 | `id` | string | Y | 고객사 본인인증 번호 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) |  | 사용된 본인인증 채널 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) |  | 사용된 본인인증 채널 |
 | `requestedCustomer` | [IdentityVerificationRequestedCustomer](#identityverificationrequestedcustomer) | Y | 요청 시 고객 정보 |
 | `customData` | string |  | 사용자 지정 데이터 |
 | `requestedAt` | string(date-time) | Y | 본인인증 요청 시점 |
 | `updatedAt` | string(date-time) | Y | 업데이트 시점 |
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `failure` | [IdentityVerificationFailure](#identityverificationfailure) | Y | 본인인증 실패 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `pgTxId` | string |  | 본인인증 내역 PG사 아이디 |
 
 ### GetIdentityVerificationsBody
@@ -246,7 +246,7 @@ GetIdentityVerificationsBody — 본인인증 내역 다건 조회를 위한 입
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number: 0, size: 10 으로 기본값이 적용됩니다. |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number: 0, size: 10 으로 기본값이 적용됩니다. |
 | `sort` | [IdentityVerificationSortInput](#identityverificationsortinput) |  | 정렬 조건 — 미 입력 시 sortBy: REQUESTED_AT, sortOrder: DESC 으로 기본값이 적용됩니다. |
 | `filter` | [IdentityVerificationFilterInput](#identityverificationfilterinput) |  | 조회할 본인인증 내역 조건 필터 |
 
@@ -257,7 +257,7 @@ GetIdentityVerificationsBody — 본인인증 내역 다건 조회를 위한 입
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [IdentityVerification](#identityverification)[] | Y | 조회된 본인인증 내역 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 조회된 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 조회된 페이지 정보 |
 
 ### IdentityVerification
 
@@ -290,7 +290,7 @@ oneOf, discriminator `status`:
 | `birthMonth` | string |  | 출생월 |
 | `birthDay` | string |  | 출생일 |
 | `phoneNumber` | string |  | 전화번호 — 특수 문자(-) 없이 숫자로만 이루어진 번호 형식입니다. |
-| `gender` | [Gender](schemas-common.md#gender) |  | 성별 |
+| `gender` | [Gender](../00-basics/schemas-common.md#gender) |  | 성별 |
 
 ### IdentityVerificationFilterInput
 
@@ -308,10 +308,10 @@ oneOf, discriminator `status`:
 | `statuses` | [IdentityVerificationStatus](#identityverificationstatus)[] |  | 본인인증 상태 리스트 — 값을 입력하지 않으면 필터링이 적용되지 않습니다. |
 | `pgTxId` | string |  | PG사 본인인증 번호 |
 | `pgMerchantId` | string |  | PG 상점아이디 |
-| `pgProviders` | [PgProvider](schemas-common.md#pgprovider)[] |  | PG사 결제 모듈 리스트 — 값을 입력하지 않으면 PG사 결제 모듈 필터링이 적용되지 않습니다. |
-| `pgCompanies` | [PgCompany](schemas-common.md#pgcompany)[] |  | PG사 리스트 — 값을 입력하지 않으면 PG사 필터링이 적용되지 않습니다. |
+| `pgProviders` | [PgProvider](../00-basics/schemas-common.md#pgprovider)[] |  | PG사 결제 모듈 리스트 — 값을 입력하지 않으면 PG사 결제 모듈 필터링이 적용되지 않습니다. |
+| `pgCompanies` | [PgCompany](../00-basics/schemas-common.md#pgcompany)[] |  | PG사 리스트 — 값을 입력하지 않으면 PG사 필터링이 적용되지 않습니다. |
 | `carriers` | [Carrier](#carrier)[] |  | 통신사 리스트 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) |  | 포트원 버전 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) |  | 포트원 버전 |
 | `customer` | [IdentityVerificationFilterCustomerInput](#identityverificationfiltercustomerinput) |  | 고객 정보 — 인증이 완료되지 않은 본인인증 내역의 경우 요청 시 고객 정보로, 인증이 완료된 본인인증 내역의 경우 인증된 고객 정보로 필터링합니다. |
 
 ### IdentityVerificationMethod
@@ -361,7 +361,7 @@ oneOf, discriminator `status`:
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `by` | [IdentityVerificationSortBy](#identityverificationsortby) |  | 정렬 기준 필드 — 어떤 필드를 기준으로 정렬할 지 결정합니다. 비워서 보낼 경우, REQUESTED_AT이 기본값으로 설정됩니다. |
-| `order` | [SortOrder](schemas-common.md#sortorder) |  | 정렬 순서 — 어떤 순서로 정렬할 지 결정합니다. 비워서 보낼 경우, DESC(내림차순)가 기본값으로 설정됩니다. |
+| `order` | [SortOrder](../00-basics/schemas-common.md#sortorder) |  | 정렬 순서 — 어떤 순서로 정렬할 지 결정합니다. 비워서 보낼 경우, DESC(내림차순)가 기본값으로 설정됩니다. |
 
 ### IdentityVerificationStatus
 
@@ -391,7 +391,7 @@ oneOf, discriminator `status`:
 | `operator` | [IdentityVerificationOperator](#identityverificationoperator) |  | 통신사 — 다날: 별도 계약이 필요합니다.<br>KG이니시스: 제공하지 않습니다. |
 | `phoneNumber` | string |  | 전화번호 — 특수 문자(-) 없이 숫자로만 이루어진 번호 형식입니다.<br>다날: 별도 계약이 필요합니다.<br>KG이니시스: 항상 제공합니다. |
 | `birthDate` | string(date) |  | 생년월일 (yyyy-MM-dd) — 포트원 V2 본인인증 건의 경우 항상 존재합니다. |
-| `gender` | [Gender](schemas-common.md#gender) |  | 성별 — 다날: 항상 제공합니다.<br>KG이니시스: 항상 제공합니다. |
+| `gender` | [Gender](../00-basics/schemas-common.md#gender) |  | 성별 — 다날: 항상 제공합니다.<br>KG이니시스: 항상 제공합니다. |
 | `isForeigner` | boolean |  | 외국인 여부 — 다날: 별도 계약이 필요합니다.<br>KG이니시스: 항상 제공합니다. |
 | `ci` | string |  | CI (개인 고유 식별키) — 개인을 식별하기 위한 고유 정보입니다.<br>다날: 항상 제공합니다.<br>KG이니시스: 카카오를 제외한 인증사에서 제공합니다. |
 | `di` | string |  | DI (사이트별 개인 고유 식별키) — 중복 가입을 방지하기 위해 개인을 식별하는 사이트별 고유 정보입니다.<br>다날: 항상 제공합니다.<br>KG이니시스: 제공하지 않습니다. |
@@ -404,13 +404,13 @@ oneOf, discriminator `status`:
 |---|---|---|---|
 | `status` | string | Y | 본인인증 상태 |
 | `id` | string | Y | 고객사 본인인증 번호 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) |  | 사용된 본인인증 채널 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) |  | 사용된 본인인증 채널 |
 | `requestedCustomer` | [IdentityVerificationRequestedCustomer](#identityverificationrequestedcustomer) | Y | 요청 시 고객 정보 |
 | `customData` | string |  | 사용자 지정 데이터 |
 | `requestedAt` | string(date-time) | Y | 본인인증 요청 시점 |
 | `updatedAt` | string(date-time) | Y | 업데이트 시점 |
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `pgTxId` | string |  | 본인인증 내역 PG사 아이디 |
 
 ### ResendIdentityVerificationResponse
@@ -459,7 +459,7 @@ type: object
 |---|---|---|---|
 | `status` | string | Y | 본인인증 상태 |
 | `id` | string | Y | 고객사 본인인증 번호 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) |  | 사용된 본인인증 채널 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) |  | 사용된 본인인증 채널 |
 | `verifiedCustomer` | [IdentityVerificationVerifiedCustomer](#identityverificationverifiedcustomer) | Y | 인증된 고객 정보 |
 | `customData` | string |  | 사용자 지정 데이터 |
 | `requestedAt` | string(date-time) | Y | 본인인증 요청 시점 |
@@ -468,4 +468,4 @@ type: object
 | `verifiedAt` | string(date-time) | Y | 본인인증 완료 시점 |
 | `pgTxId` | string | Y | 본인인증 내역 PG사 아이디 |
 | `pgRawResponse` | string | Y | PG사 응답 데이터 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |

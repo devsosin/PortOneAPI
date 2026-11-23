@@ -1,6 +1,6 @@
 # 프로모션 관련 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -24,13 +24,13 @@
 
 - **200** 성공 응답으로 프로모션 객체를 반환합니다.: [Promotion](#promotion)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PromotionNotFoundError`](errors.md#promotionnotfounderror): 프로모션이 존재하지 않는 경우
+  * [`PromotionNotFoundError`](../00-basics/errors.md#promotionnotfounderror): 프로모션이 존재하지 않는 경우
 
 ---
 
@@ -50,7 +50,7 @@
 | `totalBudget` | integer(int64) | Y | 총 예산 |
 | `maxDiscountAmount` | integer(int64) |  | 최대 할인 금액 |
 | `spentAmount` | integer(int64) | Y | 소진 금액 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 금액 화폐 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 금액 화폐 |
 | `startAt` | string(date-time) | Y | 프로모션 시작 시각 |
 | `endAt` | string(date-time) | Y | 프로모션 종료 시각 |
 | `terminatedAt` | string(date-time) |  | 프로모션 중단 시각 |

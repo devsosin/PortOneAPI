@@ -1,6 +1,6 @@
 # 구독 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -73,18 +73,18 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `metadata` | [Map_String](#map_string) |  | 사용자 정의 데이터 — 입력한 key-value가 모두 일치하는 고객만 조회합니다. |
 
 ### 응답
 
 - **200** 성공 응답으로 고객 리스트를 반환합니다.: [GetSubscriptionCustomersResponse](#getsubscriptioncustomersresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## POST /customers
 
@@ -113,31 +113,31 @@
 
 - **200** 성공 응답으로 등록된 고객과 함께 만들어진 구독을 반환합니다.: [CreateSubscriptionCustomerResponse](#createsubscriptioncustomerresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionBillingKeyNotFoundError`](errors.md#subscriptionbillingkeynotfounderror): 구독에 사용할 수 있는 빌링키가 아닌 경우
-  * [`SubscriptionCustomerNotFoundError`](errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
-  * [`SubscriptionProductNotFoundError`](errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
-  * [`SubscriptionDiscountNotFoundError`](errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
+  * [`SubscriptionBillingKeyNotFoundError`](../00-basics/errors.md#subscriptionbillingkeynotfounderror): 구독에 사용할 수 있는 빌링키가 아닌 경우
+  * [`SubscriptionCustomerNotFoundError`](../00-basics/errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
+  * [`SubscriptionProductNotFoundError`](../00-basics/errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
+  * [`SubscriptionDiscountNotFoundError`](../00-basics/errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionBillingKeyAlreadyRegisteredError`](errors.md#subscriptionbillingkeyalreadyregisterederror): 다른 구독 고객이 이미 사용 중인 빌링키인 경우
-  * [`SubscriptionBillingKeyModeMismatchError`](errors.md#subscriptionbillingkeymodemismatcherror): 구독 고객 모드와 다른 모드의 빌링키인 경우
-  * [`SubscriptionAlreadyExistsError`](errors.md#subscriptionalreadyexistserror): 같은 아이디의 구독이 이미 존재하는 경우
-  * [`SubscriptionCustomerHasNoBillingKeyError`](errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
-  * [`SubscriptionCustomerEmailRequiredError`](errors.md#subscriptioncustomeremailrequirederror): 인보이스 메일을 보내려는데 구독 고객의 이메일이 없는 경우
-  * [`SubscriptionProductArchivedError`](errors.md#subscriptionproductarchivederror): 구독 상품이 보관되어 수정할 수 없는 경우
-  * [`SubscriptionProductBillingPausedError`](errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
-  * [`SubscriptionIntervalMismatchError`](errors.md#subscriptionintervalmismatcherror): 담긴 정기 상품들의 청구 주기가 서로 다르거나, 시작한 구독의 청구 주기와 다른 경우
-  * [`SubscriptionCurrencyMismatchError`](errors.md#subscriptioncurrencymismatcherror): 담긴 상품들의 통화가 다른 경우
-  * [`SubscriptionDiscountArchivedError`](errors.md#subscriptiondiscountarchivederror): 구독 할인이 보관된 경우
-  * [`SubscriptionDiscountRedeemByPassedError`](errors.md#subscriptiondiscountredeembypassederror): 구독 할인의 적용 마감일이 지난 경우
-  * [`SubscriptionDiscountAlreadyAppliedError`](errors.md#subscriptiondiscountalreadyappliederror): 같은 구독 할인이 이미 붙어 있는 경우
-  * [`SubscriptionDiscountProductsNotInSubscriptionError`](errors.md#subscriptiondiscountproductsnotinsubscriptionerror): 구독 할인의 적용 대상 상품이 구독에 담겨 있지 않은 경우
-  * [`SubscriptionDiscountCurrencyMismatchError`](errors.md#subscriptiondiscountcurrencymismatcherror): 구독 할인의 통화가 구독의 통화와 다른 경우
+  * [`SubscriptionBillingKeyAlreadyRegisteredError`](../00-basics/errors.md#subscriptionbillingkeyalreadyregisterederror): 다른 구독 고객이 이미 사용 중인 빌링키인 경우
+  * [`SubscriptionBillingKeyModeMismatchError`](../00-basics/errors.md#subscriptionbillingkeymodemismatcherror): 구독 고객 모드와 다른 모드의 빌링키인 경우
+  * [`SubscriptionAlreadyExistsError`](../00-basics/errors.md#subscriptionalreadyexistserror): 같은 아이디의 구독이 이미 존재하는 경우
+  * [`SubscriptionCustomerHasNoBillingKeyError`](../00-basics/errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
+  * [`SubscriptionCustomerEmailRequiredError`](../00-basics/errors.md#subscriptioncustomeremailrequirederror): 인보이스 메일을 보내려는데 구독 고객의 이메일이 없는 경우
+  * [`SubscriptionProductArchivedError`](../00-basics/errors.md#subscriptionproductarchivederror): 구독 상품이 보관되어 수정할 수 없는 경우
+  * [`SubscriptionProductBillingPausedError`](../00-basics/errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
+  * [`SubscriptionIntervalMismatchError`](../00-basics/errors.md#subscriptionintervalmismatcherror): 담긴 정기 상품들의 청구 주기가 서로 다르거나, 시작한 구독의 청구 주기와 다른 경우
+  * [`SubscriptionCurrencyMismatchError`](../00-basics/errors.md#subscriptioncurrencymismatcherror): 담긴 상품들의 통화가 다른 경우
+  * [`SubscriptionDiscountArchivedError`](../00-basics/errors.md#subscriptiondiscountarchivederror): 구독 할인이 보관된 경우
+  * [`SubscriptionDiscountRedeemByPassedError`](../00-basics/errors.md#subscriptiondiscountredeembypassederror): 구독 할인의 적용 마감일이 지난 경우
+  * [`SubscriptionDiscountAlreadyAppliedError`](../00-basics/errors.md#subscriptiondiscountalreadyappliederror): 같은 구독 할인이 이미 붙어 있는 경우
+  * [`SubscriptionDiscountProductsNotInSubscriptionError`](../00-basics/errors.md#subscriptiondiscountproductsnotinsubscriptionerror): 구독 할인의 적용 대상 상품이 구독에 담겨 있지 않은 경우
+  * [`SubscriptionDiscountCurrencyMismatchError`](../00-basics/errors.md#subscriptiondiscountcurrencymismatcherror): 구독 할인의 통화가 구독의 통화와 다른 경우
 
 ## GET /customers/{customerId}
 
@@ -156,13 +156,13 @@
 
 - **200** 성공 응답으로 고객을 반환합니다.: [GetSubscriptionCustomerResponse](#getsubscriptioncustomerresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionCustomerNotFoundError`](errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
+  * [`SubscriptionCustomerNotFoundError`](../00-basics/errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
 
 ## PATCH /customers/{customerId}
 
@@ -194,15 +194,15 @@
 
 - **200** 성공 응답으로 수정된 고객을 반환합니다.: [UpdateSubscriptionCustomerResponse](#updatesubscriptioncustomerresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionCustomerNotFoundError`](errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
+  * [`SubscriptionCustomerNotFoundError`](../00-basics/errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionCustomerEmailRequiredError`](errors.md#subscriptioncustomeremailrequirederror): 인보이스 메일을 보내려는데 구독 고객의 이메일이 없는 경우
+  * [`SubscriptionCustomerEmailRequiredError`](../00-basics/errors.md#subscriptioncustomeremailrequirederror): 인보이스 메일을 보내려는데 구독 고객의 이메일이 없는 경우
 
 ## GET /customers/{customerId}/invoices
 
@@ -224,7 +224,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `from` | string(date-time) |  | 조회 시작 일시 — 청구 일시 기준입니다. 미입력 시 90일 전입니다. |
 | `to` | string(date-time) |  | 조회 종료 일시 — 청구 일시 기준입니다. 미입력 시 현재입니다. |
 
@@ -232,13 +232,13 @@
 
 - **200** 성공 응답으로 인보이스 리스트를 반환합니다.: [GetSubscriptionCustomerInvoicesResponse](#getsubscriptioncustomerinvoicesresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionCustomerNotFoundError`](errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
+  * [`SubscriptionCustomerNotFoundError`](../00-basics/errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
 
 ## POST /customers/{customerId}/payment-method/revoke
 
@@ -265,17 +265,17 @@
 
 - **200** 성공 응답으로 반영된 고객을 반환합니다.: [RevokeSubscriptionCustomerPaymentMethodResponse](#revokesubscriptioncustomerpaymentmethodresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionCustomerNotFoundError`](errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
+  * [`SubscriptionCustomerNotFoundError`](../00-basics/errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionBillingKeyHasSchedulesError`](errors.md#subscriptionbillingkeyhasscheduleserror): 해지하려는 빌링키에 예약 결제가 걸려 있는 경우
+  * [`SubscriptionBillingKeyHasSchedulesError`](../00-basics/errors.md#subscriptionbillingkeyhasscheduleserror): 해지하려는 빌링키에 예약 결제가 걸려 있는 경우
 - **502**
-  * [`SubscriptionBillingKeyRevokeFailedError`](errors.md#subscriptionbillingkeyrevokefailederror): 빌링키 해지가 실패한 경우
+  * [`SubscriptionBillingKeyRevokeFailedError`](../00-basics/errors.md#subscriptionbillingkeyrevokefailederror): 빌링키 해지가 실패한 경우
 
 ## GET /customers/{customerId}/subscriptions
 
@@ -297,20 +297,20 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `status` | [SubscriptionStatus](#subscriptionstatus) |  | 구독 상태 |
 
 ### 응답
 
 - **200** 성공 응답으로 구독 리스트를 반환합니다.: [GetSubscriptionCustomerSubscriptionsResponse](#getsubscriptioncustomersubscriptionsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionCustomerNotFoundError`](errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
+  * [`SubscriptionCustomerNotFoundError`](../00-basics/errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
 
 ## GET /discounts
 
@@ -331,18 +331,18 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `archived` | boolean |  | 보관한 할인 포함 여부 — 미입력이거나 true면 보관한 할인도 포함해 조회하고, false면 보관하지 않은 할인만 조회합니다. |
 
 ### 응답
 
 - **200** 성공 응답으로 구독 할인 리스트를 반환합니다.: [GetSubscriptionDiscountsResponse](#getsubscriptiondiscountsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## POST /discounts
 
@@ -361,20 +361,20 @@
 | `name` | string | Y | 할인명 |
 | `type` | [SubscriptionDiscountType](#subscriptiondiscounttype) | Y | 할인 유형 |
 | `value` | integer(int64) | Y | 할인 값 — 정률은 1~100, 정액은 금액입니다. |
-| `currency` | [Currency](schemas-common.md#currency) |  | 통화 — 정액 할인에만 입력합니다. KRW, USD, JPY만 지원합니다. |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) |  | 통화 — 정액 할인에만 입력합니다. KRW, USD, JPY만 지원합니다. |
 | `redeemBy` | string(date) |  | 적용 마감일 — 날짜를 나타내는 문자열로, `yyyy-MM-dd` 형식을 따릅니다. |
 
 ### 응답
 
 - **200** 성공 응답으로 생성된 구독 할인을 반환합니다.: [CreateSubscriptionDiscountResponse](#createsubscriptiondiscountresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **409**
-  * [`SubscriptionDiscountAlreadyExistsError`](errors.md#subscriptiondiscountalreadyexistserror): 같은 아이디의 구독 할인이 이미 존재하는 경우
+  * [`SubscriptionDiscountAlreadyExistsError`](../00-basics/errors.md#subscriptiondiscountalreadyexistserror): 같은 아이디의 구독 할인이 이미 존재하는 경우
 
 ## GET /discounts/{discountId}
 
@@ -393,13 +393,13 @@
 
 - **200** 성공 응답으로 구독 할인을 반환합니다.: [GetSubscriptionDiscountResponse](#getsubscriptiondiscountresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionDiscountNotFoundError`](errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
+  * [`SubscriptionDiscountNotFoundError`](../00-basics/errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
 
 ## PATCH /discounts/{discountId}
 
@@ -426,13 +426,13 @@
 
 - **200** 성공 응답으로 수정된 구독 할인을 반환합니다.: [UpdateSubscriptionDiscountResponse](#updatesubscriptiondiscountresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionDiscountNotFoundError`](errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
+  * [`SubscriptionDiscountNotFoundError`](../00-basics/errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
 
 ## POST /discounts/{discountId}/archive
 
@@ -451,13 +451,13 @@
 
 - **200** 성공 응답으로 반영된 구독 할인을 반환합니다.: [ArchiveSubscriptionDiscountResponse](#archivesubscriptiondiscountresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionDiscountNotFoundError`](errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
+  * [`SubscriptionDiscountNotFoundError`](../00-basics/errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
 
 ## POST /discounts/{discountId}/unarchive
 
@@ -476,13 +476,13 @@
 
 - **200** 성공 응답으로 반영된 구독 할인을 반환합니다.: [UnarchiveSubscriptionDiscountResponse](#unarchivesubscriptiondiscountresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionDiscountNotFoundError`](errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
+  * [`SubscriptionDiscountNotFoundError`](../00-basics/errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
 
 ## GET /invoice-email-templates
 
@@ -503,17 +503,17 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 
 ### 응답
 
 - **200** 성공 응답으로 인보이스 메일 템플릿 리스트를 반환합니다.: [GetSubscriptionInvoiceEmailTemplatesResponse](#getsubscriptioninvoiceemailtemplatesresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## POST /invoice-email-templates
 
@@ -537,11 +537,11 @@
 
 - **200** 성공 응답으로 생성된 인보이스 메일 템플릿을 반환합니다.: [CreateSubscriptionInvoiceEmailTemplateResponse](#createsubscriptioninvoiceemailtemplateresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## GET /invoice-email-templates/{invoiceEmailTemplateId}
 
@@ -560,13 +560,13 @@
 
 - **200** 성공 응답으로 인보이스 메일 템플릿을 반환합니다.: [GetSubscriptionInvoiceEmailTemplateResponse](#getsubscriptioninvoiceemailtemplateresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionInvoiceEmailTemplateNotFoundError`](errors.md#subscriptioninvoiceemailtemplatenotfounderror): 요청된 인보이스 메일 템플릿이 존재하지 않는 경우
+  * [`SubscriptionInvoiceEmailTemplateNotFoundError`](../00-basics/errors.md#subscriptioninvoiceemailtemplatenotfounderror): 요청된 인보이스 메일 템플릿이 존재하지 않는 경우
 
 ## DELETE /invoice-email-templates/{invoiceEmailTemplateId}
 
@@ -585,15 +585,15 @@
 
 - **200** 성공 응답으로 삭제된 템플릿 아이디를 반환합니다.: [DeleteSubscriptionInvoiceEmailTemplateResponse](#deletesubscriptioninvoiceemailtemplateresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionInvoiceEmailTemplateNotFoundError`](errors.md#subscriptioninvoiceemailtemplatenotfounderror): 요청된 인보이스 메일 템플릿이 존재하지 않는 경우
+  * [`SubscriptionInvoiceEmailTemplateNotFoundError`](../00-basics/errors.md#subscriptioninvoiceemailtemplatenotfounderror): 요청된 인보이스 메일 템플릿이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionInvoiceEmailTemplateActiveError`](errors.md#subscriptioninvoiceemailtemplateactiveerror): 활성 인보이스 메일 템플릿이라 삭제할 수 없는 경우
+  * [`SubscriptionInvoiceEmailTemplateActiveError`](../00-basics/errors.md#subscriptioninvoiceemailtemplateactiveerror): 활성 인보이스 메일 템플릿이라 삭제할 수 없는 경우
 
 ## PATCH /invoice-email-templates/{invoiceEmailTemplateId}
 
@@ -623,13 +623,13 @@
 
 - **200** 성공 응답으로 수정된 인보이스 메일 템플릿을 반환합니다.: [UpdateSubscriptionInvoiceEmailTemplateResponse](#updatesubscriptioninvoiceemailtemplateresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionInvoiceEmailTemplateNotFoundError`](errors.md#subscriptioninvoiceemailtemplatenotfounderror): 요청된 인보이스 메일 템플릿이 존재하지 않는 경우
+  * [`SubscriptionInvoiceEmailTemplateNotFoundError`](../00-basics/errors.md#subscriptioninvoiceemailtemplatenotfounderror): 요청된 인보이스 메일 템플릿이 존재하지 않는 경우
 
 ## POST /invoice-email-templates/{invoiceEmailTemplateId}/activate
 
@@ -648,13 +648,13 @@
 
 - **200** 성공 응답으로 반영된 인보이스 메일 템플릿을 반환합니다.: [ActivateSubscriptionInvoiceEmailTemplateResponse](#activatesubscriptioninvoiceemailtemplateresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionInvoiceEmailTemplateNotFoundError`](errors.md#subscriptioninvoiceemailtemplatenotfounderror): 요청된 인보이스 메일 템플릿이 존재하지 않는 경우
+  * [`SubscriptionInvoiceEmailTemplateNotFoundError`](../00-basics/errors.md#subscriptioninvoiceemailtemplatenotfounderror): 요청된 인보이스 메일 템플릿이 존재하지 않는 경우
 
 ## POST /invoice-email-templates/{invoiceEmailTemplateId}/deactivate
 
@@ -673,13 +673,13 @@
 
 - **200** 성공 응답으로 반영된 인보이스 메일 템플릿을 반환합니다.: [DeactivateSubscriptionInvoiceEmailTemplateResponse](#deactivatesubscriptioninvoiceemailtemplateresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionInvoiceEmailTemplateNotFoundError`](errors.md#subscriptioninvoiceemailtemplatenotfounderror): 요청된 인보이스 메일 템플릿이 존재하지 않는 경우
+  * [`SubscriptionInvoiceEmailTemplateNotFoundError`](../00-basics/errors.md#subscriptioninvoiceemailtemplatenotfounderror): 요청된 인보이스 메일 템플릿이 존재하지 않는 경우
 
 ## GET /invoices
 
@@ -700,21 +700,21 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `statuses` | [SubscriptionInvoiceStatus](#subscriptioninvoicestatus)[] |  | 인보이스 상태 리스트 — 미입력 시 모든 상태를 조회합니다. |
 | `filter` | [SubscriptionInvoiceFilterInput](#subscriptioninvoicefilterinput) |  | 조회 조건 |
 | `sortBy` | [SubscriptionInvoiceSortBy](#subscriptioninvoicesortby) |  | 정렬 기준 — 미입력 시 조회 기준 시점입니다. |
-| `sortOrder` | [SortOrder](schemas-common.md#sortorder) |  | 정렬 방향 — 미입력 시 내림차순입니다. |
+| `sortOrder` | [SortOrder](../00-basics/schemas-common.md#sortorder) |  | 정렬 방향 — 미입력 시 내림차순입니다. |
 
 ### 응답
 
 - **200** 성공 응답으로 인보이스 리스트를 반환합니다.: [GetSubscriptionInvoicesAllResponse](#getsubscriptioninvoicesallresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## POST /invoices
 
@@ -737,18 +737,18 @@
 
 - **200** 성공 응답으로 생성된 인보이스를 반환합니다.: [CreateSubscriptionInvoiceResponse](#createsubscriptioninvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
-  * [`SubscriptionProductNotFoundError`](errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionProductNotFoundError`](../00-basics/errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionStatusNotAllowedError`](errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
-  * [`SubscriptionCustomerHasNoBillingKeyError`](errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
-  * [`SubscriptionProductBillingPausedError`](errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
+  * [`SubscriptionStatusNotAllowedError`](../00-basics/errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionCustomerHasNoBillingKeyError`](../00-basics/errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
+  * [`SubscriptionProductBillingPausedError`](../00-basics/errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
 
 ## GET /invoices-stats
 
@@ -775,11 +775,11 @@
 
 - **200** 성공 응답으로 상태별 건수와 통화별 집계를 반환합니다.: [GetSubscriptionInvoiceStatsResponse](#getsubscriptioninvoicestatsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## POST /invoices/{invoiceId}/cancel
 
@@ -798,15 +798,15 @@
 
 - **200** 성공 응답으로 반영된 인보이스를 반환합니다.: [CancelSubscriptionInvoiceResponse](#cancelsubscriptioninvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionInvoiceNotFoundError`](errors.md#subscriptioninvoicenotfounderror): 요청된 구독 인보이스가 존재하지 않는 경우
+  * [`SubscriptionInvoiceNotFoundError`](../00-basics/errors.md#subscriptioninvoicenotfounderror): 요청된 구독 인보이스가 존재하지 않는 경우
 - **409**
-  * [`SubscriptionInvoiceStatusNotAllowedError`](errors.md#subscriptioninvoicestatusnotallowederror): 현재 인보이스 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionInvoiceStatusNotAllowedError`](../00-basics/errors.md#subscriptioninvoicestatusnotallowederror): 현재 인보이스 상태에서 허용되지 않는 요청인 경우
 
 ## POST /invoices/{invoiceId}/regenerate
 
@@ -825,18 +825,18 @@
 
 - **200** 성공 응답으로 새로 만들어진 인보이스를 반환합니다.: [RegenerateSubscriptionInvoiceResponse](#regeneratesubscriptioninvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionInvoiceNotFoundError`](errors.md#subscriptioninvoicenotfounderror): 요청된 구독 인보이스가 존재하지 않는 경우
+  * [`SubscriptionInvoiceNotFoundError`](../00-basics/errors.md#subscriptioninvoicenotfounderror): 요청된 구독 인보이스가 존재하지 않는 경우
 - **409**
-  * [`SubscriptionInvoiceStatusNotAllowedError`](errors.md#subscriptioninvoicestatusnotallowederror): 현재 인보이스 상태에서 허용되지 않는 요청인 경우
-  * [`SubscriptionStatusNotAllowedError`](errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
-  * [`SubscriptionCustomerHasNoBillingKeyError`](errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
-  * [`SubscriptionInvoiceAlreadyRegeneratedError`](errors.md#subscriptioninvoicealreadyregeneratederror): 이미 재생성된 구독 인보이스인 경우
+  * [`SubscriptionInvoiceStatusNotAllowedError`](../00-basics/errors.md#subscriptioninvoicestatusnotallowederror): 현재 인보이스 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionStatusNotAllowedError`](../00-basics/errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionCustomerHasNoBillingKeyError`](../00-basics/errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
+  * [`SubscriptionInvoiceAlreadyRegeneratedError`](../00-basics/errors.md#subscriptioninvoicealreadyregeneratederror): 이미 재생성된 구독 인보이스인 경우
 
 ## POST /invoices/{invoiceId}/retry
 
@@ -855,16 +855,16 @@
 
 - **200** 성공 응답으로 반영된 인보이스를 반환합니다.: [RetrySubscriptionInvoiceResponse](#retrysubscriptioninvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionInvoiceNotFoundError`](errors.md#subscriptioninvoicenotfounderror): 요청된 구독 인보이스가 존재하지 않는 경우
+  * [`SubscriptionInvoiceNotFoundError`](../00-basics/errors.md#subscriptioninvoicenotfounderror): 요청된 구독 인보이스가 존재하지 않는 경우
 - **409**
-  * [`SubscriptionInvoiceStatusNotAllowedError`](errors.md#subscriptioninvoicestatusnotallowederror): 현재 인보이스 상태에서 허용되지 않는 요청인 경우
-  * [`SubscriptionCustomerHasNoBillingKeyError`](errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
+  * [`SubscriptionInvoiceStatusNotAllowedError`](../00-basics/errors.md#subscriptioninvoicestatusnotallowederror): 현재 인보이스 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionCustomerHasNoBillingKeyError`](../00-basics/errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
 
 ## POST /invoices/{invoiceId}/settle
 
@@ -893,15 +893,15 @@
 
 - **200** 성공 응답으로 반영된 인보이스를 반환합니다.: [SettleSubscriptionInvoiceResponse](#settlesubscriptioninvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionInvoiceNotFoundError`](errors.md#subscriptioninvoicenotfounderror): 요청된 구독 인보이스가 존재하지 않는 경우
+  * [`SubscriptionInvoiceNotFoundError`](../00-basics/errors.md#subscriptioninvoicenotfounderror): 요청된 구독 인보이스가 존재하지 않는 경우
 - **409**
-  * [`SubscriptionInvoiceStatusNotAllowedError`](errors.md#subscriptioninvoicestatusnotallowederror): 현재 인보이스 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionInvoiceStatusNotAllowedError`](../00-basics/errors.md#subscriptioninvoicestatusnotallowederror): 현재 인보이스 상태에서 허용되지 않는 요청인 경우
 
 ## GET /invoices/{invoiceId}
 
@@ -920,13 +920,13 @@
 
 - **200** 성공 응답으로 인보이스를 반환합니다.: [GetSubscriptionInvoiceResponse](#getsubscriptioninvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionInvoiceNotFoundError`](errors.md#subscriptioninvoicenotfounderror): 요청된 구독 인보이스가 존재하지 않는 경우
+  * [`SubscriptionInvoiceNotFoundError`](../00-basics/errors.md#subscriptioninvoicenotfounderror): 요청된 구독 인보이스가 존재하지 않는 경우
 
 ## GET /products
 
@@ -947,7 +947,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `archived` | boolean |  | 보관한 상품 포함 여부 — 미입력이거나 true면 보관한 상품도 포함해 조회하고, false면 보관하지 않은 상품만 조회합니다. |
 | `metadata` | [Map_String](#map_string) |  | 사용자 정의 데이터 — 입력한 key-value가 모두 일치하는 상품만 조회합니다. |
 
@@ -955,11 +955,11 @@
 
 - **200** 성공 응답으로 구독 상품 리스트를 반환합니다.: [GetSubscriptionProductsResponse](#getsubscriptionproductsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## POST /products
 
@@ -980,20 +980,20 @@
 | `pricingType` | [SubscriptionProductPricingType](#subscriptionproductpricingtype) | Y | 과금 유형 |
 | `interval` | [SubscriptionInterval](#subscriptioninterval) |  | 청구 주기 — 정기 과금 상품에만 입력합니다. |
 | `amount` | integer(int64) | Y | 상품 가격 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 — KRW, USD, JPY만 지원합니다. |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 — KRW, USD, JPY만 지원합니다. |
 | `metadata` | [Map_String](#map_string) |  | 사용자 정의 데이터 |
 
 ### 응답
 
 - **200** 성공 응답으로 생성된 구독 상품을 반환합니다.: [CreateSubscriptionProductResponse](#createsubscriptionproductresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **409**
-  * [`SubscriptionProductAlreadyExistsError`](errors.md#subscriptionproductalreadyexistserror): 같은 아이디의 구독 상품이 이미 존재하는 경우
+  * [`SubscriptionProductAlreadyExistsError`](../00-basics/errors.md#subscriptionproductalreadyexistserror): 같은 아이디의 구독 상품이 이미 존재하는 경우
 
 ## GET /products/{productId}
 
@@ -1012,13 +1012,13 @@
 
 - **200** 성공 응답으로 구독 상품을 반환합니다.: [GetSubscriptionProductResponse](#getsubscriptionproductresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionProductNotFoundError`](errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
+  * [`SubscriptionProductNotFoundError`](../00-basics/errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
 
 ## PATCH /products/{productId}
 
@@ -1048,15 +1048,15 @@
 
 - **200** 성공 응답으로 수정된 구독 상품을 반환합니다.: [UpdateSubscriptionProductResponse](#updatesubscriptionproductresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionProductNotFoundError`](errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
+  * [`SubscriptionProductNotFoundError`](../00-basics/errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionProductArchivedError`](errors.md#subscriptionproductarchivederror): 구독 상품이 보관되어 수정할 수 없는 경우
+  * [`SubscriptionProductArchivedError`](../00-basics/errors.md#subscriptionproductarchivederror): 구독 상품이 보관되어 수정할 수 없는 경우
 
 ## POST /products/{productId}/archive
 
@@ -1075,13 +1075,13 @@
 
 - **200** 성공 응답으로 반영된 구독 상품을 반환합니다.: [ArchiveSubscriptionProductResponse](#archivesubscriptionproductresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionProductNotFoundError`](errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
+  * [`SubscriptionProductNotFoundError`](../00-basics/errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
 
 ## POST /products/{productId}/pause-billing
 
@@ -1100,13 +1100,13 @@
 
 - **200** 성공 응답으로 반영된 구독 상품을 반환합니다.: [PauseSubscriptionProductBillingResponse](#pausesubscriptionproductbillingresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionProductNotFoundError`](errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
+  * [`SubscriptionProductNotFoundError`](../00-basics/errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
 
 ## POST /products/{productId}/resume-billing
 
@@ -1125,13 +1125,13 @@
 
 - **200** 성공 응답으로 반영된 구독 상품을 반환합니다.: [ResumeSubscriptionProductBillingResponse](#resumesubscriptionproductbillingresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionProductNotFoundError`](errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
+  * [`SubscriptionProductNotFoundError`](../00-basics/errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
 
 ## GET /subscriptions
 
@@ -1152,7 +1152,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `status` | [SubscriptionStatus](#subscriptionstatus) |  | 구독 상태 |
 | `customerId` | string |  | 고객 아이디 |
 | `metadata` | [Map_String](#map_string) |  | 사용자 정의 데이터 — 입력한 key-value가 모두 일치하는 구독만 조회합니다. |
@@ -1161,11 +1161,11 @@
 
 - **200** 성공 응답으로 구독 리스트를 반환합니다.: [GetSubscriptionsResponse](#getsubscriptionsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## POST /subscriptions
 
@@ -1195,28 +1195,28 @@
 
 - **200** 성공 응답으로 생성된 구독과 첫 인보이스를 반환합니다.: [CreateSubscriptionResponse](#createsubscriptionresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionCustomerNotFoundError`](errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
-  * [`SubscriptionProductNotFoundError`](errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
-  * [`SubscriptionDiscountNotFoundError`](errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
+  * [`SubscriptionCustomerNotFoundError`](../00-basics/errors.md#subscriptioncustomernotfounderror): 요청된 구독 고객이 존재하지 않는 경우
+  * [`SubscriptionProductNotFoundError`](../00-basics/errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
+  * [`SubscriptionDiscountNotFoundError`](../00-basics/errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionAlreadyExistsError`](errors.md#subscriptionalreadyexistserror): 같은 아이디의 구독이 이미 존재하는 경우
-  * [`SubscriptionCustomerHasNoBillingKeyError`](errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
-  * [`SubscriptionCustomerEmailRequiredError`](errors.md#subscriptioncustomeremailrequirederror): 인보이스 메일을 보내려는데 구독 고객의 이메일이 없는 경우
-  * [`SubscriptionProductArchivedError`](errors.md#subscriptionproductarchivederror): 구독 상품이 보관되어 수정할 수 없는 경우
-  * [`SubscriptionProductBillingPausedError`](errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
-  * [`SubscriptionIntervalMismatchError`](errors.md#subscriptionintervalmismatcherror): 담긴 정기 상품들의 청구 주기가 서로 다르거나, 시작한 구독의 청구 주기와 다른 경우
-  * [`SubscriptionCurrencyMismatchError`](errors.md#subscriptioncurrencymismatcherror): 담긴 상품들의 통화가 다른 경우
-  * [`SubscriptionDiscountArchivedError`](errors.md#subscriptiondiscountarchivederror): 구독 할인이 보관된 경우
-  * [`SubscriptionDiscountRedeemByPassedError`](errors.md#subscriptiondiscountredeembypassederror): 구독 할인의 적용 마감일이 지난 경우
-  * [`SubscriptionDiscountAlreadyAppliedError`](errors.md#subscriptiondiscountalreadyappliederror): 같은 구독 할인이 이미 붙어 있는 경우
-  * [`SubscriptionDiscountProductsNotInSubscriptionError`](errors.md#subscriptiondiscountproductsnotinsubscriptionerror): 구독 할인의 적용 대상 상품이 구독에 담겨 있지 않은 경우
-  * [`SubscriptionDiscountCurrencyMismatchError`](errors.md#subscriptiondiscountcurrencymismatcherror): 구독 할인의 통화가 구독의 통화와 다른 경우
+  * [`SubscriptionAlreadyExistsError`](../00-basics/errors.md#subscriptionalreadyexistserror): 같은 아이디의 구독이 이미 존재하는 경우
+  * [`SubscriptionCustomerHasNoBillingKeyError`](../00-basics/errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
+  * [`SubscriptionCustomerEmailRequiredError`](../00-basics/errors.md#subscriptioncustomeremailrequirederror): 인보이스 메일을 보내려는데 구독 고객의 이메일이 없는 경우
+  * [`SubscriptionProductArchivedError`](../00-basics/errors.md#subscriptionproductarchivederror): 구독 상품이 보관되어 수정할 수 없는 경우
+  * [`SubscriptionProductBillingPausedError`](../00-basics/errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
+  * [`SubscriptionIntervalMismatchError`](../00-basics/errors.md#subscriptionintervalmismatcherror): 담긴 정기 상품들의 청구 주기가 서로 다르거나, 시작한 구독의 청구 주기와 다른 경우
+  * [`SubscriptionCurrencyMismatchError`](../00-basics/errors.md#subscriptioncurrencymismatcherror): 담긴 상품들의 통화가 다른 경우
+  * [`SubscriptionDiscountArchivedError`](../00-basics/errors.md#subscriptiondiscountarchivederror): 구독 할인이 보관된 경우
+  * [`SubscriptionDiscountRedeemByPassedError`](../00-basics/errors.md#subscriptiondiscountredeembypassederror): 구독 할인의 적용 마감일이 지난 경우
+  * [`SubscriptionDiscountAlreadyAppliedError`](../00-basics/errors.md#subscriptiondiscountalreadyappliederror): 같은 구독 할인이 이미 붙어 있는 경우
+  * [`SubscriptionDiscountProductsNotInSubscriptionError`](../00-basics/errors.md#subscriptiondiscountproductsnotinsubscriptionerror): 구독 할인의 적용 대상 상품이 구독에 담겨 있지 않은 경우
+  * [`SubscriptionDiscountCurrencyMismatchError`](../00-basics/errors.md#subscriptiondiscountcurrencymismatcherror): 구독 할인의 통화가 구독의 통화와 다른 경우
 
 ## POST /subscriptions/pre-register
 
@@ -1245,26 +1245,26 @@
 
 - **200** 성공 응답으로 사전 등록된 구독과 구독 고객을 반환합니다.: [PreRegisterSubscriptionResponse](#preregistersubscriptionresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionProductNotFoundError`](errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
-  * [`SubscriptionDiscountNotFoundError`](errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
+  * [`SubscriptionProductNotFoundError`](../00-basics/errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
+  * [`SubscriptionDiscountNotFoundError`](../00-basics/errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionAlreadyExistsError`](errors.md#subscriptionalreadyexistserror): 같은 아이디의 구독이 이미 존재하는 경우
-  * [`SubscriptionCustomerEmailRequiredError`](errors.md#subscriptioncustomeremailrequirederror): 인보이스 메일을 보내려는데 구독 고객의 이메일이 없는 경우
-  * [`SubscriptionProductArchivedError`](errors.md#subscriptionproductarchivederror): 구독 상품이 보관되어 수정할 수 없는 경우
-  * [`SubscriptionProductBillingPausedError`](errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
-  * [`SubscriptionIntervalMismatchError`](errors.md#subscriptionintervalmismatcherror): 담긴 정기 상품들의 청구 주기가 서로 다르거나, 시작한 구독의 청구 주기와 다른 경우
-  * [`SubscriptionCurrencyMismatchError`](errors.md#subscriptioncurrencymismatcherror): 담긴 상품들의 통화가 다른 경우
-  * [`SubscriptionDiscountArchivedError`](errors.md#subscriptiondiscountarchivederror): 구독 할인이 보관된 경우
-  * [`SubscriptionDiscountRedeemByPassedError`](errors.md#subscriptiondiscountredeembypassederror): 구독 할인의 적용 마감일이 지난 경우
-  * [`SubscriptionDiscountAlreadyAppliedError`](errors.md#subscriptiondiscountalreadyappliederror): 같은 구독 할인이 이미 붙어 있는 경우
-  * [`SubscriptionDiscountProductsNotInSubscriptionError`](errors.md#subscriptiondiscountproductsnotinsubscriptionerror): 구독 할인의 적용 대상 상품이 구독에 담겨 있지 않은 경우
-  * [`SubscriptionDiscountCurrencyMismatchError`](errors.md#subscriptiondiscountcurrencymismatcherror): 구독 할인의 통화가 구독의 통화와 다른 경우
+  * [`SubscriptionAlreadyExistsError`](../00-basics/errors.md#subscriptionalreadyexistserror): 같은 아이디의 구독이 이미 존재하는 경우
+  * [`SubscriptionCustomerEmailRequiredError`](../00-basics/errors.md#subscriptioncustomeremailrequirederror): 인보이스 메일을 보내려는데 구독 고객의 이메일이 없는 경우
+  * [`SubscriptionProductArchivedError`](../00-basics/errors.md#subscriptionproductarchivederror): 구독 상품이 보관되어 수정할 수 없는 경우
+  * [`SubscriptionProductBillingPausedError`](../00-basics/errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
+  * [`SubscriptionIntervalMismatchError`](../00-basics/errors.md#subscriptionintervalmismatcherror): 담긴 정기 상품들의 청구 주기가 서로 다르거나, 시작한 구독의 청구 주기와 다른 경우
+  * [`SubscriptionCurrencyMismatchError`](../00-basics/errors.md#subscriptioncurrencymismatcherror): 담긴 상품들의 통화가 다른 경우
+  * [`SubscriptionDiscountArchivedError`](../00-basics/errors.md#subscriptiondiscountarchivederror): 구독 할인이 보관된 경우
+  * [`SubscriptionDiscountRedeemByPassedError`](../00-basics/errors.md#subscriptiondiscountredeembypassederror): 구독 할인의 적용 마감일이 지난 경우
+  * [`SubscriptionDiscountAlreadyAppliedError`](../00-basics/errors.md#subscriptiondiscountalreadyappliederror): 같은 구독 할인이 이미 붙어 있는 경우
+  * [`SubscriptionDiscountProductsNotInSubscriptionError`](../00-basics/errors.md#subscriptiondiscountproductsnotinsubscriptionerror): 구독 할인의 적용 대상 상품이 구독에 담겨 있지 않은 경우
+  * [`SubscriptionDiscountCurrencyMismatchError`](../00-basics/errors.md#subscriptiondiscountcurrencymismatcherror): 구독 할인의 통화가 구독의 통화와 다른 경우
 
 ## GET /subscriptions/{subscriptionId}
 
@@ -1283,13 +1283,13 @@
 
 - **200** 성공 응답으로 구독을 반환합니다.: [GetSubscriptionResponse](#getsubscriptionresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
 
 ## PATCH /subscriptions/{subscriptionId}
 
@@ -1322,21 +1322,21 @@
 
 - **200** 성공 응답으로 수정된 구독을 반환합니다.: [UpdateSubscriptionResponse](#updatesubscriptionresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
-  * [`SubscriptionProductNotFoundError`](errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionProductNotFoundError`](../00-basics/errors.md#subscriptionproductnotfounderror): 요청된 구독 상품이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionStatusNotAllowedError`](errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
-  * [`SubscriptionProductArchivedError`](errors.md#subscriptionproductarchivederror): 구독 상품이 보관되어 수정할 수 없는 경우
-  * [`SubscriptionProductBillingPausedError`](errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
-  * [`SubscriptionIntervalMismatchError`](errors.md#subscriptionintervalmismatcherror): 담긴 정기 상품들의 청구 주기가 서로 다르거나, 시작한 구독의 청구 주기와 다른 경우
-  * [`SubscriptionCustomerEmailRequiredError`](errors.md#subscriptioncustomeremailrequirederror): 인보이스 메일을 보내려는데 구독 고객의 이메일이 없는 경우
-  * [`SubscriptionCurrencyMismatchError`](errors.md#subscriptioncurrencymismatcherror): 담긴 상품들의 통화가 다른 경우
+  * [`SubscriptionStatusNotAllowedError`](../00-basics/errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionProductArchivedError`](../00-basics/errors.md#subscriptionproductarchivederror): 구독 상품이 보관되어 수정할 수 없는 경우
+  * [`SubscriptionProductBillingPausedError`](../00-basics/errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
+  * [`SubscriptionIntervalMismatchError`](../00-basics/errors.md#subscriptionintervalmismatcherror): 담긴 정기 상품들의 청구 주기가 서로 다르거나, 시작한 구독의 청구 주기와 다른 경우
+  * [`SubscriptionCustomerEmailRequiredError`](../00-basics/errors.md#subscriptioncustomeremailrequirederror): 인보이스 메일을 보내려는데 구독 고객의 이메일이 없는 경우
+  * [`SubscriptionCurrencyMismatchError`](../00-basics/errors.md#subscriptioncurrencymismatcherror): 담긴 상품들의 통화가 다른 경우
 
 ## POST /subscriptions/{subscriptionId}/cancel
 
@@ -1355,13 +1355,13 @@
 
 - **200** 성공 응답으로 반영된 구독을 반환합니다.: [CancelSubscriptionResponse](#cancelsubscriptionresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
 
 ## POST /subscriptions/{subscriptionId}/charge-test
 
@@ -1388,18 +1388,18 @@
 
 - **200** 성공 응답으로 청구 뒤의 구독과 청구한 인보이스를 반환합니다.: [ChargeTestSubscriptionResponse](#chargetestsubscriptionresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionCustomerNotInTestModeError`](errors.md#subscriptioncustomernotintestmodeerror): 구독 고객이 테스트 고객이 아닌 경우
-  * [`SubscriptionStatusNotAllowedError`](errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
-  * [`SubscriptionCustomerHasNoBillingKeyError`](errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
-  * [`SubscriptionProductBillingPausedError`](errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
+  * [`SubscriptionCustomerNotInTestModeError`](../00-basics/errors.md#subscriptioncustomernotintestmodeerror): 구독 고객이 테스트 고객이 아닌 경우
+  * [`SubscriptionStatusNotAllowedError`](../00-basics/errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionCustomerHasNoBillingKeyError`](../00-basics/errors.md#subscriptioncustomerhasnobillingkeyerror): 구독 고객에게 사용 가능한 빌링키가 없는 경우
+  * [`SubscriptionProductBillingPausedError`](../00-basics/errors.md#subscriptionproductbillingpausederror): 구독 상품의 청구가 중지된 경우
 
 ## GET /subscriptions/{subscriptionId}/discounts
 
@@ -1418,13 +1418,13 @@
 
 - **200** 성공 응답으로 붙어 있는 할인 리스트를 반환합니다.: [GetSubscriptionDiscountUsagesResponse](#getsubscriptiondiscountusagesresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
 
 ## POST /subscriptions/{subscriptionId}/discounts
 
@@ -1453,21 +1453,21 @@
 
 - **200** 성공 응답으로 반영된 구독을 반환합니다.: [AddSubscriptionDiscountResponse](#addsubscriptiondiscountresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
-  * [`SubscriptionDiscountNotFoundError`](errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionDiscountNotFoundError`](../00-basics/errors.md#subscriptiondiscountnotfounderror): 요청된 구독 할인이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionStatusNotAllowedError`](errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
-  * [`SubscriptionDiscountArchivedError`](errors.md#subscriptiondiscountarchivederror): 구독 할인이 보관된 경우
-  * [`SubscriptionDiscountRedeemByPassedError`](errors.md#subscriptiondiscountredeembypassederror): 구독 할인의 적용 마감일이 지난 경우
-  * [`SubscriptionDiscountAlreadyAppliedError`](errors.md#subscriptiondiscountalreadyappliederror): 같은 구독 할인이 이미 붙어 있는 경우
-  * [`SubscriptionDiscountProductsNotInSubscriptionError`](errors.md#subscriptiondiscountproductsnotinsubscriptionerror): 구독 할인의 적용 대상 상품이 구독에 담겨 있지 않은 경우
-  * [`SubscriptionDiscountCurrencyMismatchError`](errors.md#subscriptiondiscountcurrencymismatcherror): 구독 할인의 통화가 구독의 통화와 다른 경우
+  * [`SubscriptionStatusNotAllowedError`](../00-basics/errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionDiscountArchivedError`](../00-basics/errors.md#subscriptiondiscountarchivederror): 구독 할인이 보관된 경우
+  * [`SubscriptionDiscountRedeemByPassedError`](../00-basics/errors.md#subscriptiondiscountredeembypassederror): 구독 할인의 적용 마감일이 지난 경우
+  * [`SubscriptionDiscountAlreadyAppliedError`](../00-basics/errors.md#subscriptiondiscountalreadyappliederror): 같은 구독 할인이 이미 붙어 있는 경우
+  * [`SubscriptionDiscountProductsNotInSubscriptionError`](../00-basics/errors.md#subscriptiondiscountproductsnotinsubscriptionerror): 구독 할인의 적용 대상 상품이 구독에 담겨 있지 않은 경우
+  * [`SubscriptionDiscountCurrencyMismatchError`](../00-basics/errors.md#subscriptiondiscountcurrencymismatcherror): 구독 할인의 통화가 구독의 통화와 다른 경우
 
 ## DELETE /subscriptions/{subscriptionId}/discounts/{discountId}
 
@@ -1496,15 +1496,15 @@
 
 - **200** 성공 응답으로 반영된 구독을 반환합니다.: [RemoveSubscriptionDiscountResponse](#removesubscriptiondiscountresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionStatusNotAllowedError`](errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionStatusNotAllowedError`](../00-basics/errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
 
 ## GET /subscriptions/{subscriptionId}/invoice-preview
 
@@ -1523,15 +1523,15 @@
 
 - **200** 성공 응답으로 미리보기 결과를 반환합니다.: [PreviewSubscriptionInvoiceResponse](#previewsubscriptioninvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionStatusNotAllowedError`](errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionStatusNotAllowedError`](../00-basics/errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
 
 ## GET /subscriptions/{subscriptionId}/invoices
 
@@ -1553,7 +1553,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `from` | string(date-time) |  | 조회 시작 일시 — 청구 일시 기준입니다. 미입력 시 90일 전입니다. |
 | `to` | string(date-time) |  | 조회 종료 일시 — 청구 일시 기준입니다. 미입력 시 현재입니다. |
 
@@ -1561,13 +1561,13 @@
 
 - **200** 성공 응답으로 인보이스 리스트를 반환합니다.: [GetSubscriptionInvoicesResponse](#getsubscriptioninvoicesresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
 
 ## POST /subscriptions/{subscriptionId}/pause
 
@@ -1586,15 +1586,15 @@
 
 - **200** 성공 응답으로 반영된 구독을 반환합니다.: [PauseSubscriptionResponse](#pausesubscriptionresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionStatusNotAllowedError`](errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionStatusNotAllowedError`](../00-basics/errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
 
 ## POST /subscriptions/{subscriptionId}/resume
 
@@ -1613,15 +1613,15 @@
 
 - **200** 성공 응답으로 반영된 구독을 반환합니다.: [ResumeSubscriptionResponse](#resumesubscriptionresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SubscriptionNotFoundError`](errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
+  * [`SubscriptionNotFoundError`](../00-basics/errors.md#subscriptionnotfounderror): 요청된 구독이 존재하지 않는 경우
 - **409**
-  * [`SubscriptionStatusNotAllowedError`](errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
+  * [`SubscriptionStatusNotAllowedError`](../00-basics/errors.md#subscriptionstatusnotallowederror): 현재 구독 상태에서 허용되지 않는 요청인 경우
 
 ---
 
@@ -1759,7 +1759,7 @@
 | `name` | string | Y | 할인명 |
 | `type` | [SubscriptionDiscountType](#subscriptiondiscounttype) | Y | 할인 유형 |
 | `value` | integer(int64) | Y | 할인 값 — 정률은 1~100, 정액은 금액입니다. |
-| `currency` | [Currency](schemas-common.md#currency) |  | 통화 — 정액 할인에만 입력합니다. KRW, USD, JPY만 지원합니다. |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) |  | 통화 — 정액 할인에만 입력합니다. KRW, USD, JPY만 지원합니다. |
 | `redeemBy` | string(date) |  | 적용 마감일 — 날짜를 나타내는 문자열로, `yyyy-MM-dd` 형식을 따릅니다. |
 
 ### CreateSubscriptionDiscountResponse
@@ -1822,7 +1822,7 @@
 | `pricingType` | [SubscriptionProductPricingType](#subscriptionproductpricingtype) | Y | 과금 유형 |
 | `interval` | [SubscriptionInterval](#subscriptioninterval) |  | 청구 주기 — 정기 과금 상품에만 입력합니다. |
 | `amount` | integer(int64) | Y | 상품 가격 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 — KRW, USD, JPY만 지원합니다. |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 — KRW, USD, JPY만 지원합니다. |
 | `metadata` | [Map_String](#map_string) |  | 사용자 정의 데이터 |
 
 ### CreateSubscriptionProductResponse
@@ -1865,7 +1865,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `from` | string(date-time) |  | 조회 시작 일시 — 청구 일시 기준입니다. 미입력 시 90일 전입니다. |
 | `to` | string(date-time) |  | 조회 종료 일시 — 청구 일시 기준입니다. 미입력 시 현재입니다. |
 
@@ -1876,7 +1876,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [SubscriptionInvoice](#subscriptioninvoice)[] | Y | 조회된 인보이스 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 페이지 정보 |
 
 ### GetSubscriptionCustomerResponse
 
@@ -1893,7 +1893,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `status` | [SubscriptionStatus](#subscriptionstatus) |  | 구독 상태 |
 
 ### GetSubscriptionCustomerSubscriptionsResponse
@@ -1903,7 +1903,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [Subscription](#subscription)[] | Y | 조회된 구독 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 페이지 정보 |
 
 ### GetSubscriptionCustomersBody
 
@@ -1912,7 +1912,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `metadata` | [Map_String](#map_string) |  | 사용자 정의 데이터 — 입력한 key-value가 모두 일치하는 고객만 조회합니다. |
 
 ### GetSubscriptionCustomersResponse
@@ -1922,7 +1922,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [SubscriptionCustomer](#subscriptioncustomer)[] | Y | 조회된 고객 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 페이지 정보 |
 
 ### GetSubscriptionDiscountResponse
 
@@ -1947,7 +1947,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `archived` | boolean |  | 보관한 할인 포함 여부 — 미입력이거나 true면 보관한 할인도 포함해 조회하고, false면 보관하지 않은 할인만 조회합니다. |
 
 ### GetSubscriptionDiscountsResponse
@@ -1957,7 +1957,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [SubscriptionDiscount](#subscriptiondiscount)[] | Y | 조회된 구독 할인 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 페이지 정보 |
 
 ### GetSubscriptionInvoiceEmailTemplateResponse
 
@@ -1974,7 +1974,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 
 ### GetSubscriptionInvoiceEmailTemplatesResponse
 
@@ -1983,7 +1983,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [SubscriptionInvoiceEmailTemplate](#subscriptioninvoiceemailtemplate)[] | Y | 조회된 인보이스 메일 템플릿 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 페이지 정보 |
 
 ### GetSubscriptionInvoiceResponse
 
@@ -2011,7 +2011,7 @@
 |---|---|---|---|
 | `statusCounts` | [SubscriptionInvoiceStatusCount](#subscriptioninvoicestatuscount)[] | Y | 상태별 건수 |
 | `currencySummaries` | [SubscriptionInvoiceCurrencySummary](#subscriptioninvoicecurrencysummary)[] | Y | 통화별 집계 |
-| `availableCurrencies` | [Currency](schemas-common.md#currency)[] | Y | 상점 구독의 통화 리스트 — 통화 조건의 선택지로 씁니다. |
+| `availableCurrencies` | [Currency](../00-basics/schemas-common.md#currency)[] | Y | 상점 구독의 통화 리스트 — 통화 조건의 선택지로 씁니다. |
 
 ### GetSubscriptionInvoicesAllBody
 
@@ -2020,11 +2020,11 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `statuses` | [SubscriptionInvoiceStatus](#subscriptioninvoicestatus)[] |  | 인보이스 상태 리스트 — 미입력 시 모든 상태를 조회합니다. |
 | `filter` | [SubscriptionInvoiceFilterInput](#subscriptioninvoicefilterinput) |  | 조회 조건 |
 | `sortBy` | [SubscriptionInvoiceSortBy](#subscriptioninvoicesortby) |  | 정렬 기준 — 미입력 시 조회 기준 시점입니다. |
-| `sortOrder` | [SortOrder](schemas-common.md#sortorder) |  | 정렬 방향 — 미입력 시 내림차순입니다. |
+| `sortOrder` | [SortOrder](../00-basics/schemas-common.md#sortorder) |  | 정렬 방향 — 미입력 시 내림차순입니다. |
 
 ### GetSubscriptionInvoicesAllResponse
 
@@ -2033,7 +2033,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [SubscriptionInvoice](#subscriptioninvoice)[] | Y | 조회된 인보이스 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 페이지 정보 |
 
 ### GetSubscriptionInvoicesBody
 
@@ -2042,7 +2042,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `from` | string(date-time) |  | 조회 시작 일시 — 청구 일시 기준입니다. 미입력 시 90일 전입니다. |
 | `to` | string(date-time) |  | 조회 종료 일시 — 청구 일시 기준입니다. 미입력 시 현재입니다. |
 
@@ -2053,7 +2053,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [SubscriptionInvoice](#subscriptioninvoice)[] | Y | 조회된 인보이스 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 페이지 정보 |
 
 ### GetSubscriptionProductResponse
 
@@ -2070,7 +2070,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `archived` | boolean |  | 보관한 상품 포함 여부 — 미입력이거나 true면 보관한 상품도 포함해 조회하고, false면 보관하지 않은 상품만 조회합니다. |
 | `metadata` | [Map_String](#map_string) |  | 사용자 정의 데이터 — 입력한 key-value가 모두 일치하는 상품만 조회합니다. |
 
@@ -2081,7 +2081,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [SubscriptionProduct](#subscriptionproduct)[] | Y | 조회된 구독 상품 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 페이지 정보 |
 
 ### GetSubscriptionResponse
 
@@ -2098,7 +2098,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `status` | [SubscriptionStatus](#subscriptionstatus) |  | 구독 상태 |
 | `customerId` | string |  | 고객 아이디 |
 | `metadata` | [Map_String](#map_string) |  | 사용자 정의 데이터 — 입력한 key-value가 모두 일치하는 구독만 조회합니다. |
@@ -2110,7 +2110,7 @@
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [Subscription](#subscription)[] | Y | 조회된 구독 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 페이지 정보 |
 
 ### Map_String
 
@@ -2350,7 +2350,7 @@ type: map<string, string>
 | `name` | string | Y | 할인명 — 인보이스와 화면에 표시됩니다. |
 | `type` | [SubscriptionDiscountType](#subscriptiondiscounttype) | Y | 할인 유형 |
 | `value` | integer(int64) | Y | 할인 값 — 정률은 1~100, 정액은 금액입니다. |
-| `currency` | [Currency](schemas-common.md#currency) |  | 통화 — 정액 할인에만 존재합니다. |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) |  | 통화 — 정액 할인에만 존재합니다. |
 | `redeemBy` | string(date) |  | 적용 마감일 — 이 날이 지나면 구독에 새로 붙일 수 없습니다. |
 | `archived` | boolean | Y | 보관 여부 — 보관된 할인은 새로 붙일 수 없고, 이미 붙은 구독에서는 잔여 회차까지 적용됩니다. |
 | `createdAt` | string(date-time) | Y | 생성 시각 |
@@ -2497,7 +2497,7 @@ oneOf, discriminator `type`:
 | `billingAt` | string(date-time) | Y | 청구 일시 |
 | `items` | [SubscriptionInvoiceItem](#subscriptioninvoiceitem)[] | Y | 청구 항목 |
 | `discounts` | [SubscriptionInvoiceDiscountLine](#subscriptioninvoicediscountline)[] | Y | 적용된 할인 내역 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `supplyAmount` | integer(int64) | Y | 공급가액 |
 | `vatAmount` | integer(int64) | Y | 부가세 — KRW에서만 계산하며 다른 통화는 0입니다. |
 | `totalAmount` | integer(int64) | Y | 청구 총액 |
@@ -2518,7 +2518,7 @@ oneOf, discriminator `type`:
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `count` | integer(int64) | Y | 건수 |
 | `totalAmount` | integer(int64) | Y | 청구 총액 합 |
 | `paidAmount` | integer(int64) | Y | 결제 금액 합 — 결제 완료·수동 완납 인보이스의 금액 합입니다. |
@@ -2677,7 +2677,7 @@ oneOf, discriminator `type`:
 | `timestampType` | [SubscriptionInvoiceTimestampType](#subscriptioninvoicetimestamptype) |  | 조회 기준 시점 — 미입력 시 생성 일시 기준입니다. |
 | `from` | string(date-time) |  | 조회 시작 일시 — 미입력 시 조회 종료 일시가 속한 달의 1일(KST)입니다. |
 | `to` | string(date-time) |  | 조회 종료 일시 — 미입력 시 현재입니다. |
-| `currencies` | [Currency](schemas-common.md#currency)[] |  | 통화 리스트 |
+| `currencies` | [Currency](../00-basics/schemas-common.md#currency)[] |  | 통화 리스트 |
 | `invoiceId` | string |  | 인보이스 아이디 |
 | `customerId` | string |  | 고객 아이디 |
 | `subscriptionId` | string |  | 구독 아이디 |
@@ -2810,7 +2810,7 @@ oneOf, discriminator `type`:
 | `sequence` | integer(int32) | Y | 청구 회차 |
 | `items` | [SubscriptionInvoiceItem](#subscriptioninvoiceitem)[] | Y | 청구 항목 |
 | `discounts` | [SubscriptionInvoiceDiscountLine](#subscriptioninvoicediscountline)[] | Y | 적용될 할인 내역 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `supplyAmount` | integer(int64) | Y | 공급가액 |
 | `vatAmount` | integer(int64) | Y | 부가세 |
 | `totalAmount` | integer(int64) | Y | 청구 총액 |
@@ -2901,12 +2901,12 @@ oneOf, discriminator `type`:
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `locale` | [Locale](schemas-common.md#locale) |  | 결제 시 사용할 언어 — 엑심베이의 경우 필수 입력입니다. |
-| `productType` | [PaymentProductType](schemas-common.md#paymentproducttype) |  | 상품 유형 |
+| `locale` | [Locale](../00-basics/schemas-common.md#locale) |  | 결제 시 사용할 언어 — 엑심베이의 경우 필수 입력입니다. |
+| `productType` | [PaymentProductType](../00-basics/schemas-common.md#paymentproducttype) |  | 상품 유형 |
 | `installmentMonth` | integer(int32) |  | 할부 개월 수 |
 | `useFreeInterestFromMerchant` | boolean |  | 무이자 할부 이자를 고객사가 부담할지 여부 |
 | `useCardPoint` | boolean |  | 카드 포인트 사용 여부 |
-| `country` | [Country](schemas-common.md#country) |  | 결제 국가 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 결제 국가 |
 | `bypass` | object |  | PG사별 추가 파라미터 ("PG사별 연동 가이드" 참고) |
 | `customData` | string |  | 사용자 지정 데이터 |
 
@@ -2936,7 +2936,7 @@ oneOf, discriminator `type`:
 | `pricingType` | [SubscriptionProductPricingType](#subscriptionproductpricingtype) | Y | 과금 유형 |
 | `interval` | [SubscriptionInterval](#subscriptioninterval) |  | 청구 주기 — 정기 과금 상품에만 존재합니다. |
 | `amount` | integer(int64) | Y | 상품 가격 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `billingPaused` | boolean | Y | 청구 중지 여부 — 청구가 중지된 상품이 담긴 구독은 해당 회차를 청구하지 않습니다. |
 | `archived` | boolean | Y | 보관 여부 — 보관된 상품은 새 구독에 담을 수 없고, 기존 구독의 청구는 유지됩니다. |
 | `metadata` | [Map_String](#map_string) | Y | 사용자 정의 데이터 |
@@ -2988,12 +2988,12 @@ oneOf, discriminator `type`:
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `locale` | [Locale](schemas-common.md#locale) |  | 결제 시 사용할 언어 — 엑심베이의 경우 필수 입력입니다. |
-| `productType` | [PaymentProductType](schemas-common.md#paymentproducttype) |  | 상품 유형 |
+| `locale` | [Locale](../00-basics/schemas-common.md#locale) |  | 결제 시 사용할 언어 — 엑심베이의 경우 필수 입력입니다. |
+| `productType` | [PaymentProductType](../00-basics/schemas-common.md#paymentproducttype) |  | 상품 유형 |
 | `installmentMonth` | integer(int32) |  | 할부 개월 수 |
 | `useFreeInterestFromMerchant` | boolean |  | 무이자 할부 이자를 고객사가 부담할지 여부 |
 | `useCardPoint` | boolean |  | 카드 포인트 사용 여부 |
-| `country` | [Country](schemas-common.md#country) |  | 결제 국가 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 결제 국가 |
 | `bypass` | object |  | PG사별 추가 파라미터 ("PG사별 연동 가이드" 참고) |
 | `customData` | string |  | 사용자 지정 데이터 |
 

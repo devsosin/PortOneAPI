@@ -1,6 +1,6 @@
 # 대사 서비스 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -23,11 +23,11 @@
 
 - **200** : [GetPaymentReconciliationSettlementVatReportResponse](#getpaymentreconciliationsettlementvatreportresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## GET /payment-reconciliations/transactions/vat-report
 
@@ -45,11 +45,11 @@
 
 - **200** : [GetPaymentReconciliationTransactionVatReportResponse](#getpaymentreconciliationtransactionvatreportresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ---
 
@@ -61,7 +61,7 @@ GetPaymentReconciliationSettlementVatReportBody
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `dateRange` | [DateRange](schemas-common.md#daterange) | Y | 정산일 범위 |
+| `dateRange` | [DateRange](../00-basics/schemas-common.md#daterange) | Y | 정산일 범위 |
 | `filter` | [PaymentReconciliationSettlementSummaryFilterInput](#paymentreconciliationsettlementsummaryfilterinput) |  |  |
 
 ### GetPaymentReconciliationSettlementVatReportResponse
@@ -80,7 +80,7 @@ GetPaymentReconciliationTransactionVatReportBody
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `dateRange` | [DateRange](schemas-common.md#daterange) | Y | 거래일 범위 |
+| `dateRange` | [DateRange](../00-basics/schemas-common.md#daterange) | Y | 거래일 범위 |
 | `filter` | [PaymentReconciliationTransactionSummaryFilterInput](#paymentreconciliationtransactionsummaryfilterinput) |  |  |
 
 ### GetPaymentReconciliationTransactionVatReportResponse

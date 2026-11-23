@@ -1,6 +1,6 @@
 # 세금계산서 발행 관련 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -46,12 +46,12 @@
 
 - **200** : [B2bBulkTaxInvoice](#b2bbulktaxinvoice)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bBulkTaxInvoiceNotFoundError`: 일괄 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -81,12 +81,12 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** : [CreateB2bFileUploadUrlPayload](#createb2bfileuploadurlpayload)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
 ## GET /b2b/tax-invoices-sheet
@@ -118,9 +118,9 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 
 ## PUT /b2b/tax-invoices/draft
 
@@ -152,7 +152,7 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 성공 응답으로 세금계산서를 반환합니다.: [UpdateB2bTaxInvoiceDraftResponse](#updateb2btaxinvoicedraftresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceSupplierDocumentKeyAlreadyUsedError`: 세금계산서에 공급자 문서 번호가 이미 사용 중인 경우
   * `B2bTaxInvoiceRecipientDocumentKeyAlreadyUsedError`: 세금계산서에 공급 받는자 문서 번호가 이미 사용 중인 경우
   * `B2bCounterpartyNtsNotConnectedError`: 국세청에 연동되어 있지 않은 경우
@@ -163,10 +163,10 @@ S3 파일 업로드를 위한 URL을 생성합니다.
   * `B2bDocumentKeyCannotBeChangedError`: 문서번호 수정이 요청된 경우
   * `B2bIssuanceTypeMismatchError`: 세금계산서 발행 유형이 올바르지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bSupplierNotFoundError`: 공급자가 존재하지 않은 경우<br>* `B2bRecipientNotFoundError`: 공급받는자가 존재하지 않은 경우<br>* `B2bCounterpartyNotFoundError`: 거래처가 존재하지 않는 경우<br>* `B2bOriginalTaxInvoiceNotFoundError`: 원본 세금계산서가 존재하지 않은 경우<br>* `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **409** * `B2bIdAlreadyExistsError`: ID가 이미 사용중인 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
@@ -200,7 +200,7 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 성공 응답으로 세금계산서를 반환합니다.: [DraftB2bTaxInvoiceResponse](#draftb2btaxinvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceSupplierDocumentKeyAlreadyUsedError`: 세금계산서에 공급자 문서 번호가 이미 사용 중인 경우
   * `B2bTaxInvoiceRecipientDocumentKeyAlreadyUsedError`: 세금계산서에 공급 받는자 문서 번호가 이미 사용 중인 경우
   * `B2bCounterpartyNtsNotConnectedError`: 국세청에 연동되어 있지 않은 경우
@@ -209,10 +209,10 @@ S3 파일 업로드를 위한 URL을 생성합니다.
   * `B2BTaxInvoiceStatusNotSendingCompletedError`: 원본 세금계산서가 전송완료 상태가 아닌 경우
   * `B2bIssuanceTypeMismatchError`: 세금계산서 발행 유형이 올바르지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bSupplierNotFoundError`: 공급자가 존재하지 않은 경우<br>* `B2bRecipientNotFoundError`: 공급받는자가 존재하지 않은 경우<br>* `B2bCounterpartyNotFoundError`: 거래처가 존재하지 않는 경우<br>* `B2bOriginalTaxInvoiceNotFoundError`: 원본 세금계산서가 존재하지 않은 경우<br>* `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **409** * `B2bIdAlreadyExistsError`: ID가 이미 사용중인 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
@@ -246,7 +246,7 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 성공 응답으로 세금계산서를 반환합니다.: [IssueB2bTaxInvoiceImmediatelyResponse](#issueb2btaxinvoiceimmediatelyresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceSupplierDocumentKeyAlreadyUsedError`: 세금계산서에 공급자 문서 번호가 이미 사용 중인 경우
   * `B2bTaxInvoiceRecipientDocumentKeyAlreadyUsedError`: 세금계산서에 공급 받는자 문서 번호가 이미 사용 중인 경우
   * `B2bCounterpartyNtsNotConnectedError`: 국세청에 연동되어 있지 않은 경우
@@ -255,10 +255,10 @@ S3 파일 업로드를 위한 URL을 생성합니다.
   * `B2BTaxInvoiceStatusNotSendingCompletedError`: 원본 세금계산서가 전송완료 상태가 아닌 경우
   * `B2bIssuanceTypeMismatchError`: 세금계산서 발행 유형이 올바르지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bSupplierNotFoundError`: 공급자가 존재하지 않은 경우<br>* `B2bRecipientNotFoundError`: 공급받는자가 존재하지 않은 경우<br>* `B2bCounterpartyNotFoundError`: 거래처가 존재하지 않는 경우<br>* `B2bOriginalTaxInvoiceNotFoundError`: 원본 세금계산서가 존재하지 않은 경우<br>* `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **409** * `B2bIdAlreadyExistsError`: ID가 이미 사용중인 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
@@ -291,7 +291,7 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 성공 응답으로 세금계산서를 반환합니다.: [RequestB2bTaxInvoiceReverseIssuanceResponse](#requestb2btaxinvoicereverseissuanceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceSupplierDocumentKeyAlreadyUsedError`: 세금계산서에 공급자 문서 번호가 이미 사용 중인 경우
   * `B2bTaxInvoiceRecipientDocumentKeyAlreadyUsedError`: 세금계산서에 공급 받는자 문서 번호가 이미 사용 중인 경우
   * `B2bCounterpartyNtsNotConnectedError`: 국세청에 연동되어 있지 않은 경우
@@ -300,10 +300,10 @@ S3 파일 업로드를 위한 URL을 생성합니다.
   * `B2BTaxInvoiceStatusNotSendingCompletedError`: 원본 세금계산서가 전송완료 상태가 아닌 경우
   * `B2bIssuanceTypeMismatchError`: 세금계산서 발행 유형이 올바르지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bSupplierNotFoundError`: 공급자가 존재하지 않은 경우<br>* `B2bRecipientNotFoundError`: 공급받는자가 존재하지 않은 경우<br>* `B2bCounterpartyNotFoundError`: 거래처가 존재하지 않는 경우<br>* `B2bOriginalTaxInvoiceNotFoundError`: 원본 세금계산서가 존재하지 않은 경우<br>* `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **409** * `B2bIdAlreadyExistsError`: ID가 이미 사용중인 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
@@ -337,13 +337,13 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceNotDraftedStatusError`: 세금계산서가 임시저장 완료 상태가 아닌 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우<br>* `B2bFileNotFoundError`: 업로드한 파일을 찾을 수 없는 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -369,13 +369,13 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceNotDraftedStatusError`: 세금계산서가 임시저장 완료 상태가 아닌 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우<br>* `B2bTaxInvoiceAttachmentNotFoundError`: 세금계산서의 첨부파일을 찾을 수 없는 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -400,12 +400,12 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** : [GetB2bTaxInvoiceAttachmentsResponse](#getb2btaxinvoiceattachmentsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -438,13 +438,13 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 성공 응답으로 세금계산서를 반환합니다.: [CancelB2bTaxInvoiceIssuanceResponse](#cancelb2btaxinvoiceissuanceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceNotIssuedStatusError`: 세금계산서가 발행된(ISSUED) 상태가 아닌 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -477,14 +477,14 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 성공 응답으로 세금계산서를 반환합니다.: [CancelB2bTaxInvoiceRequestResponse](#cancelb2btaxinvoicerequestresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceNotRequestedStatusError`: 세금계산서가 역발행 대기 상태가 아닌 경우
   * `B2bTaxInvoiceNoRecipientDocumentKeyError`: 세금계산서에 공급받는자 문서 번호가 기입되지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -518,15 +518,15 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 성공 응답으로 세금계산서를 반환합니다.: [IssueB2bTaxInvoiceResponse](#issueb2btaxinvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceNotRequestedStatusError`: 세금계산서가 역발행 대기 상태가 아닌 경우
   * `B2bTaxInvoiceNotDraftedStatusError`: 세금계산서가 임시저장 완료 상태가 아닌 경우
   * `B2bTaxInvoiceNoSupplierDocumentKeyError`: 세금계산서에 공급자 문서 번호가 기입되지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -551,12 +551,12 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** : [GetB2bTaxInvoicePdfDownloadUrlResponse](#getb2btaxinvoicepdfdownloadurlresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -582,12 +582,12 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** : [GetB2bTaxInvoicePopupUrlResponse](#getb2btaxinvoicepopupurlresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -612,12 +612,12 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** : [GetB2bTaxInvoicePrintUrlResponse](#getb2btaxinvoiceprinturlresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -650,14 +650,14 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 성공 응답으로 세금계산서를 반환합니다.: [RefuseB2bTaxInvoiceRequestResponse](#refuseb2btaxinvoicerequestresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceNotRequestedStatusError`: 세금계산서가 역발행 대기 상태가 아닌 경우
   * `B2bTaxInvoiceNoSupplierDocumentKeyError`: 세금계산서에 공급자 문서 번호가 기입되지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -682,7 +682,7 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 성공 응답으로 세금계산서를 반환합니다.: [RequestB2bTaxInvoiceResponse](#requestb2btaxinvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bModificationNotProvidedError`: 세금계산서 수정 입력 정보를 찾을 수 없는 경우
   * `B2BCannotChangeTaxTypeError`: 세금계산서 과세 유형을 수정할 수 없는 경우
   * `B2BTaxInvoiceStatusNotSendingCompletedError`: 원본 세금계산서가 전송완료 상태가 아닌 경우
@@ -690,10 +690,10 @@ S3 파일 업로드를 위한 URL을 생성합니다.
   * `B2bIssuanceTypeMismatchError`: 세금계산서 발행 유형이 올바르지 않은 경우
   * `B2bTaxInvoiceNoRecipientDocumentKeyError`: 세금계산서에 공급받는자 문서 번호가 기입되지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bOriginalTaxInvoiceNotFoundError`: 원본 세금계산서가 존재하지 않은 경우<br>* `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -718,13 +718,13 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** : [SendToNtsB2bTaxInvoiceResponse](#sendtontsb2btaxinvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceNotIssuedStatusError`: 세금계산서가 발행된(ISSUED) 상태가 아닌 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -749,12 +749,12 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** 성공 응답으로 세금계산서를 반환합니다.: [B2bTaxInvoice](#b2btaxinvoice)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -779,13 +779,13 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** : [DeleteB2bTaxInvoiceResponse](#deleteb2btaxinvoiceresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bTaxInvoiceNonDeletableStatusError`: 세금계산서가 삭제 가능한 상태가 아닌 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우<br>* `B2bBulkTaxInvoiceNotFoundError`: 일괄 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -819,12 +819,12 @@ S3 파일 업로드를 위한 URL을 생성합니다.
 
 - **200** : [GetB2bTaxInvoicesResponse](#getb2btaxinvoicesresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bTaxInvoiceNotFoundError`: 세금계산서가 존재하지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -1128,7 +1128,7 @@ B2bTaxInvoiceCompany
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `by` | [B2bTaxInvoiceSortBy](#b2btaxinvoicesortby) |  | 정렬 기준 |
-| `order` | [SortOrder](schemas-common.md#sortorder) |  | 정렬 방식 |
+| `order` | [SortOrder](../00-basics/schemas-common.md#sortorder) |  | 정렬 방식 |
 
 ### B2bTaxInvoiceStatus
 
@@ -1403,7 +1403,7 @@ DownloadB2bTaxInvoicesSheetBody
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [B2bTaxInvoiceSummary](#b2btaxinvoicesummary)[] | Y | 조회된 세금계산서 목록 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 조회된 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 조회된 페이지 정보 |
 
 ### IssueB2bTaxInvoiceBody
 

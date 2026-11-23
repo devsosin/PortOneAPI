@@ -1,6 +1,6 @@
 # 특정 PG사 관련 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -27,9 +27,9 @@
 
 - **200** 성공 응답으로 카카오페이 주문 조회 응답 객체를 반환합니다.: [GetKakaopayPaymentOrderResponse](#getkakaopaypaymentorderresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 
 ## POST /paymentwall/delivery/confirm
 
@@ -57,7 +57,7 @@
 | `shippingAddressEmail` | string | Y | 고객 이메일 주소 |
 | `carrierTrackingId` | string |  | 운송장 번호 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
 | `carrierType` | string |  | 운송사 이름 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
-| `shippingAddressCountry` | [Country](schemas-common.md#country) |  | 수신자 국가 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
+| `shippingAddressCountry` | [Country](../00-basics/schemas-common.md#country) |  | 수신자 국가 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
 | `shippingAddressCity` | string |  | 수신자 도시 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
 | `shippingAddressZip` | string |  | 수신자 우편번호 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
 | `shippingAddressState` | string |  | 수신자 주 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
@@ -71,11 +71,11 @@
 
 - **200** 성공 응답: [ConfirmPaymentwallDeliveryResponse](#confirmpaymentwalldeliveryresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 
 ---
 
@@ -98,7 +98,7 @@
 | `shippingAddressEmail` | string | Y | 고객 이메일 주소 |
 | `carrierTrackingId` | string |  | 운송장 번호 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
 | `carrierType` | string |  | 운송사 이름 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
-| `shippingAddressCountry` | [Country](schemas-common.md#country) |  | 수신자 국가 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
+| `shippingAddressCountry` | [Country](../00-basics/schemas-common.md#country) |  | 수신자 국가 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
 | `shippingAddressCity` | string |  | 수신자 도시 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
 | `shippingAddressZip` | string |  | 수신자 우편번호 — 배송 유형이 PHYSICAL인 경우 필수입니다. |
 | `shippingAddressState` | string |  | 수신자 주 — 배송 유형이 PHYSICAL인 경우 필수입니다. |

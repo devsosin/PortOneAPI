@@ -1,6 +1,6 @@
 # 거래처 관련 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -32,13 +32,13 @@
 
 - **200** 성공 응답으로 URL을 반환합니다.: [GetB2bCounterpartyCertificateRegistrationUrlResponse](#getb2bcounterpartycertificateregistrationurlresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bCounterpartyNtsNotConnectedError`: 국세청에 연동되어 있지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bCounterpartyNotFoundError`: 거래처가 존재하지 않는 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -61,13 +61,13 @@
 
 - **200** 성공 응답으로 유효성 검증 결과를 반환합니다.: [ValidateB2bCounterpartyCertificateResponse](#validateb2bcounterpartycertificateresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bCounterpartyNtsNotConnectedError`: 국세청에 연동되어 있지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bCounterpartyNotFoundError`: 거래처가 존재하지 않는 경우<br>* `B2bCertificateUnregisteredError`: 인증서가 등록되어 있지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -90,13 +90,13 @@
 
 - **200** 성공 응답으로 인증서 객체를 반환합니다.: [B2bCertificate](#b2bcertificate)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bCounterpartyNtsNotConnectedError`: 국세청에 연동되어 있지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bCounterpartyNotFoundError`: 거래처가 존재하지 않는 경우<br>* `B2bCertificateUnregisteredError`: 인증서가 등록되어 있지 않은 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -119,12 +119,12 @@
 
 - **200** 성공 응답으로 거래처 객체를 반환합니다.: [B2bCounterparty](#b2bcounterparty)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404** * `B2bCounterpartyNotFoundError`: 거래처가 존재하지 않는 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
@@ -151,12 +151,12 @@
 
 - **200** 성공 응답: [DeleteB2bCounterpartyResponse](#deleteb2bcounterpartyresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
   * `B2bCounterpartyPartnerNotDeletableError`: 파트너 연동 거래처는 삭제할 수 없는 경우
 - **404** * `B2bCounterpartyNotFoundError`: 거래처가 존재하지 않는 경우
 - **409** * `B2bCounterpartyOngoingTaxInvoiceExistsError`: 진행 중인 세금계산서가 존재하여 거래처를 삭제할 수 없는 경우
@@ -190,7 +190,7 @@
 
 - **200** 성공 응답: [UpdateB2bCounterpartyResponse](#updateb2bcounterpartyresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bCounterpartyBrnModificationNotAllowedError`: 사업자등록번호 수정이 허용되지 않는 경우
   * `B2bCounterpartyTooManyAdditionalContactsError`: 추가 담당자가 너무 많은 경우
   * `B2bCounterpartyMissingRequiredFieldsError`: 필수 입력 항목이 누락된 경우
@@ -198,10 +198,10 @@
   * `B2bCounterpartyVerificationTypeMismatchError`: 검증 유형이 일치하지 않는 경우
   * `B2bCounterpartyVerificationInvalidError`: 검증 결과가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
   * `B2bCounterpartyPartnerNotUpdatableError`: 파트너 연동 거래처는 수정할 수 없는 경우
 - **404** * `B2bCounterpartyNotFoundError`: 거래처가 존재하지 않는 경우<br>* `B2bCounterpartyVerificationNotFoundError`: 검증 결과를 찾을 수 없는 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
@@ -227,19 +227,19 @@
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `filter` | [B2bCounterpartyFilter](#b2bcounterpartyfilter) |  | 검색 필터 |
 
 ### 응답
 
 - **200** : [GetB2bCounterpartiesResponse](#getb2bcounterpartiesresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **502** * `B2bExternalServiceError`: 외부 서비스에서 에러가 발생한 경우
 
 ## POST /b2b/counterparties
@@ -270,7 +270,7 @@
 
 - **200** 성공 응답: [CreateB2bCounterpartyResponse](#createb2bcounterpartyresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
   * `B2bCounterpartyBrnInvalidError`: 사업자등록번호가 유효하지 않은 경우
   * `B2bCounterpartySelfOriginBrnMismatchError`: 자사 사업자등록번호와 동일한 거래처를 생성할 수 없는 경우
   * `B2bCounterpartyTooManyAdditionalContactsError`: 추가 담당자가 너무 많은 경우
@@ -279,10 +279,10 @@
   * `B2bCounterpartyVerificationTypeMismatchError`: 검증 유형이 일치하지 않는 경우
   * `B2bCounterpartyVerificationInvalidError`: 검증 결과가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
   * `B2bNotEnabledError`: B2B 기능이 활성화되지 않은 경우
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
   * `B2bCounterpartyPartnerNotConnectableError`: 파트너 연동 거래처는 국세청 연동이 허용되지 않는 경우
 - **404** * `B2bCounterpartyVerificationNotFoundError`: 검증 결과를 찾을 수 없는 경우
 - **409** * `B2bCounterpartyIdAlreadyExistsError`: 거래처 ID가 이미 사용중인 경우<br>* `B2bCounterpartyIdAlreadyExistsByPartnerError`: 파트너 연동으로 생성된 거래처 ID가 이미 사용중인 경우
@@ -476,7 +476,7 @@ type: object
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 페이지 정보 |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 페이지 정보 |
 | `filter` | [B2bCounterpartyFilter](#b2bcounterpartyfilter) |  | 검색 필터 |
 
 ### GetB2bCounterpartiesResponse
@@ -485,7 +485,7 @@ type: object
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 페이지 정보 |
 | `items` | [B2bCounterparty](#b2bcounterparty)[] | Y | 거래처 목록 |
 
 ### GetB2bCounterpartyCertificateRegistrationUrlResponse

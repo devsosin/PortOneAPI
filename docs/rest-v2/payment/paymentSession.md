@@ -1,6 +1,6 @@
 # 결제 세션 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -25,9 +25,9 @@
 | `storeId` | string | Y | 상점 아이디 |
 | `paymentId` | string | Y | 결제 건 아이디 |
 | `profileKey` | string | Y | 프로필 키 |
-| `paymentMethod` | [CheckoutPaymentMethod](schemas-common.md#checkoutpaymentmethod) |  | 결제 수단 지정 — 지정한 경우, 정보 추가 입력이 필요하지 않은 경우에 주문서를 건너뛰고 결제로 바로 이동합니다. |
-| `country` | [Country](schemas-common.md#country) | Y | 국가 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `paymentMethod` | [CheckoutPaymentMethod](schemas.md#checkoutpaymentmethod) |  | 결제 수단 지정 — 지정한 경우, 정보 추가 입력이 필요하지 않은 경우에 주문서를 건너뛰고 결제로 바로 이동합니다. |
+| `country` | [Country](../00-basics/schemas-common.md#country) | Y | 국가 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `totalAmount` | integer(int64) | Y | 전체 결제 금액 |
 | `orderName` | string | Y | 주문명 |
 | `redirectUrl` | string |  | 결제 완료 후 리다이렉트 URL — 지정하지 않으면 기본 결과 페이지가 표시됩니다. |
@@ -45,12 +45,12 @@
 
 - **200** 성공 응답: [CreatePaymentSessionResponse](#createpaymentsessionresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
-  * [`MaxTtlExceededError`](errors.md#maxttlexceedederror): 요청된 TTL이 정책 상한을 초과한 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`MaxTtlExceededError`](../00-basics/errors.md#maxttlexceedederror): 요청된 TTL이 정책 상한을 초과한 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## GET /payment-sessions/{sessionId}
 
@@ -68,11 +68,11 @@
 
 - **200** 결제 세션 조회 성공 응답: [PaymentSession](#paymentsession)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **404**
-  * [`SessionNotFoundError`](errors.md#sessionnotfounderror): 결제 세션이 존재하지 않는 경우
+  * [`SessionNotFoundError`](../00-basics/errors.md#sessionnotfounderror): 결제 세션이 존재하지 않는 경우
 - **410**
-  * [`SessionExpiredError`](errors.md#sessionexpirederror): 결제 세션이 만료된 경우
+  * [`SessionExpiredError`](../00-basics/errors.md#sessionexpirederror): 결제 세션이 만료된 경우
 
 ## POST /payment-sessions/{sessionId}/close
 
@@ -92,13 +92,13 @@
 
 - **200** 성공 응답: [ClosePaymentSessionResponse](#closepaymentsessionresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`SessionNotFoundError`](errors.md#sessionnotfounderror): 결제 세션이 존재하지 않는 경우
+  * [`SessionNotFoundError`](../00-basics/errors.md#sessionnotfounderror): 결제 세션이 존재하지 않는 경우
 
 ---
 
@@ -121,9 +121,9 @@
 | `storeId` | string | Y | 상점 아이디 |
 | `paymentId` | string | Y | 결제 건 아이디 |
 | `profileKey` | string | Y | 프로필 키 |
-| `paymentMethod` | [CheckoutPaymentMethod](schemas-common.md#checkoutpaymentmethod) |  | 결제 수단 지정 — 지정한 경우, 정보 추가 입력이 필요하지 않은 경우에 주문서를 건너뛰고 결제로 바로 이동합니다. |
-| `country` | [Country](schemas-common.md#country) | Y | 국가 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `paymentMethod` | [CheckoutPaymentMethod](schemas.md#checkoutpaymentmethod) |  | 결제 수단 지정 — 지정한 경우, 정보 추가 입력이 필요하지 않은 경우에 주문서를 건너뛰고 결제로 바로 이동합니다. |
+| `country` | [Country](../00-basics/schemas-common.md#country) | Y | 국가 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `totalAmount` | integer(int64) | Y | 전체 결제 금액 |
 | `orderName` | string | Y | 주문명 |
 | `redirectUrl` | string |  | 결제 완료 후 리다이렉트 URL — 지정하지 않으면 기본 결과 페이지가 표시됩니다. |
@@ -157,9 +157,9 @@
 | `storeId` | string | Y | 상점 아이디 |
 | `paymentId` | string | Y | 결제 건 아이디 |
 | `profileKey` | string | Y | 프로필 키 |
-| `paymentMethod` | [CheckoutPaymentMethod](schemas-common.md#checkoutpaymentmethod) |  | 결제 수단 지정 — 지정한 경우, 정보 추가 입력이 필요하지 않은 경우에 주문서를 건너뛰고 결제로 바로 이동합니다. |
-| `country` | [Country](schemas-common.md#country) | Y | 국가 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `paymentMethod` | [CheckoutPaymentMethod](schemas.md#checkoutpaymentmethod) |  | 결제 수단 지정 — 지정한 경우, 정보 추가 입력이 필요하지 않은 경우에 주문서를 건너뛰고 결제로 바로 이동합니다. |
+| `country` | [Country](../00-basics/schemas-common.md#country) | Y | 국가 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `totalAmount` | integer(int64) | Y | 전체 결제 금액 |
 | `orderName` | string | Y | 주문명 |
 | `redirectUrl` | string |  | 결제 완료 후 리다이렉트 URL — 지정하지 않으면 기본 결과 페이지가 표시됩니다. |

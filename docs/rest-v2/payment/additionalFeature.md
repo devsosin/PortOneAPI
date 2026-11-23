@@ -1,6 +1,6 @@
 # 결제 부가기능 관련 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -27,13 +27,13 @@
 
 - **200** 성공 응답으로 카드 프로모션 목록을 반환합니다.: [GetPgCardPromotionsResponse](#getpgcardpromotionsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **404**
-  * [`ChannelNotFoundError`](errors.md#channelnotfounderror): 요청된 채널이 존재하지 않는 경우
+  * [`ChannelNotFoundError`](../00-basics/errors.md#channelnotfounderror): 요청된 채널이 존재하지 않는 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ---
 

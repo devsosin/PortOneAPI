@@ -1,6 +1,6 @@
 # 현금 영수증 관련 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -29,7 +29,7 @@
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number: 0, size: 10 으로 기본값이 적용됩니다. |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number: 0, size: 10 으로 기본값이 적용됩니다. |
 | `sort` | [CashReceiptSortInput](#cashreceiptsortinput) |  | 정렬 조건 — 미 입력 시 sortBy: ISSUED_AT, sortOrder: DESC 으로 기본값이 적용됩니다. |
 | `filter` | [CashReceiptFilterInput](#cashreceiptfilterinput) |  | 조회할 현금영수증 조건 필터 |
 
@@ -37,11 +37,11 @@
 
 - **200** 성공 응답으로 조회된 현금영수증 리스트와 페이지 정보가 반환됩니다.: [GetCashReceiptsResponse](#getcashreceiptsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## POST /cash-receipts
 
@@ -60,11 +60,11 @@
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
 | `paymentId` | string | Y | 결제 건 아이디 — 외부 결제 건에 대한 수동 발급의 경우, 아이디를 직접 채번하여 입력합니다. |
 | `channelKey` | string | Y | 채널 키 |
-| `type` | [CashReceiptType](schemas-common.md#cashreceipttype) | Y | 현금 영수증 유형 |
+| `type` | [CashReceiptType](../00-basics/schemas-common.md#cashreceipttype) | Y | 현금 영수증 유형 |
 | `orderName` | string | Y | 주문명 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `amount` | [PaymentAmountInput](schemas-common.md#paymentamountinput) | Y | 금액 세부 입력 정보 |
-| `productType` | [PaymentProductType](schemas-common.md#paymentproducttype) |  | 상품 유형 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `amount` | [PaymentAmountInput](../00-basics/schemas-common.md#paymentamountinput) | Y | 금액 세부 입력 정보 |
+| `productType` | [PaymentProductType](../00-basics/schemas-common.md#paymentproducttype) |  | 상품 유형 |
 | `customer` | [IssueCashReceiptCustomerInput](#issuecashreceiptcustomerinput) | Y | 고객 정보 |
 | `paidAt` | string(date-time) |  | 결제 일자 |
 | `businessRegistrationNumber` | string |  | 사업자등록번호 — 웰컴페이먼츠의 경우에만 입력합니다. |
@@ -74,17 +74,17 @@
 
 - **200** 성공 응답: [IssueCashReceiptResponse](#issuecashreceiptresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`ChannelNotFoundError`](errors.md#channelnotfounderror): 요청된 채널이 존재하지 않는 경우
+  * [`ChannelNotFoundError`](../00-basics/errors.md#channelnotfounderror): 요청된 채널이 존재하지 않는 경우
 - **409**
-  * [`CashReceiptAlreadyIssuedError`](errors.md#cashreceiptalreadyissuederror): 현금영수증이 이미 발급된 경우
+  * [`CashReceiptAlreadyIssuedError`](../00-basics/errors.md#cashreceiptalreadyissuederror): 현금영수증이 이미 발급된 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /payments/{paymentId}/cash-receipt/cancel
 
@@ -105,16 +105,16 @@
 
 - **200** 성공 응답: [CancelCashReceiptResponse](#cancelcashreceiptresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`CashReceiptNotIssuedError`](errors.md#cashreceiptnotissuederror): 현금영수증이 발급되지 않은 경우
-  * [`CashReceiptNotFoundError`](errors.md#cashreceiptnotfounderror): 현금영수증이 존재하지 않는 경우
+  * [`CashReceiptNotIssuedError`](../00-basics/errors.md#cashreceiptnotissuederror): 현금영수증이 발급되지 않은 경우
+  * [`CashReceiptNotFoundError`](../00-basics/errors.md#cashreceiptnotfounderror): 현금영수증이 존재하지 않는 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## GET /payments/{paymentId}/cash-receipt
 
@@ -135,13 +135,13 @@
 
 - **200** 성공 응답으로 현금 영수증 객체를 반환합니다.: [CashReceipt](#cashreceipt)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`CashReceiptNotFoundError`](errors.md#cashreceiptnotfounderror): 현금영수증이 존재하지 않는 경우
+  * [`CashReceiptNotFoundError`](../00-basics/errors.md#cashreceiptnotfounderror): 현금영수증이 존재하지 않는 경우
 
 ---
 
@@ -166,14 +166,14 @@
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `paymentId` | string | Y | 결제 건 아이디 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 현금영수증 발급에 사용된 채널 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 현금영수증 발급에 사용된 채널 |
 | `amount` | integer(int64) | Y | 결제 금액 |
 | `taxFreeAmount` | integer(int64) |  | 면세액 |
 | `vatAmount` | integer(int64) |  | 부가세액 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `orderName` | string | Y | 주문명 |
 | `isManual` | boolean | Y | 수동 발급 여부 |
-| `type` | [CashReceiptType](schemas-common.md#cashreceipttype) |  | 현금영수증 유형 |
+| `type` | [CashReceiptType](../00-basics/schemas-common.md#cashreceipttype) |  | 현금영수증 유형 |
 | `pgReceiptId` | string |  | PG사 현금영수증 아이디 |
 | `issueNumber` | string | Y | 승인번호 |
 | `url` | string |  | 현금영수증 URL |
@@ -208,10 +208,10 @@ oneOf, discriminator `status`:
 | `isManual` | boolean |  | 수동 발급 여부 |
 | `pgReceiptId` | string |  | PG사 현금영수증 발급 번호 |
 | `pgMerchantId` | string |  | PG 상점아이디 |
-| `pgProviders` | [PgProvider](schemas-common.md#pgprovider)[] |  | PG사 결제 모듈 리스트 — 값을 입력하지 않으면 PG사 결제 모듈 필터링이 적용되지 않습니다. |
-| `pgCompanies` | [PgCompany](schemas-common.md#pgcompany)[] |  | PG사 리스트 — 값을 입력하지 않으면 PG사 필터링이 적용되지 않습니다. |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) |  | 포트원 버전 |
-| `types` | [CashReceiptType](schemas-common.md#cashreceipttype)[] |  | 현금영수증 유형 리스트 — 값을 입력하지 않으면 필터링이 적용되지 않습니다. |
+| `pgProviders` | [PgProvider](../00-basics/schemas-common.md#pgprovider)[] |  | PG사 결제 모듈 리스트 — 값을 입력하지 않으면 PG사 결제 모듈 필터링이 적용되지 않습니다. |
+| `pgCompanies` | [PgCompany](../00-basics/schemas-common.md#pgcompany)[] |  | PG사 리스트 — 값을 입력하지 않으면 PG사 필터링이 적용되지 않습니다. |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) |  | 포트원 버전 |
+| `types` | [CashReceiptType](../00-basics/schemas-common.md#cashreceipttype)[] |  | 현금영수증 유형 리스트 — 값을 입력하지 않으면 필터링이 적용되지 않습니다. |
 
 ### CashReceiptSortBy
 
@@ -228,7 +228,7 @@ oneOf, discriminator `status`:
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `by` | [CashReceiptSortBy](#cashreceiptsortby) |  | 정렬 기준 필드 — 어떤 필드를 기준으로 정렬할 지 결정합니다. 비워서 보낼 경우, ISSUED_AT이 기본값으로 설정됩니다. |
-| `order` | [SortOrder](schemas-common.md#sortorder) |  | 정렬 순서 — 어떤 순서로 정렬할 지 결정합니다. 비워서 보낼 경우, DESC(내림차순)가 기본값으로 설정됩니다. |
+| `order` | [SortOrder](../00-basics/schemas-common.md#sortorder) |  | 정렬 순서 — 어떤 순서로 정렬할 지 결정합니다. 비워서 보낼 경우, DESC(내림차순)가 기본값으로 설정됩니다. |
 
 ### CashReceiptStatus
 
@@ -262,7 +262,7 @@ GetCashReceiptsBody — 현금영수증 다건 조회를 위한 입력 정보
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number: 0, size: 10 으로 기본값이 적용됩니다. |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number: 0, size: 10 으로 기본값이 적용됩니다. |
 | `sort` | [CashReceiptSortInput](#cashreceiptsortinput) |  | 정렬 조건 — 미 입력 시 sortBy: ISSUED_AT, sortOrder: DESC 으로 기본값이 적용됩니다. |
 | `filter` | [CashReceiptFilterInput](#cashreceiptfilterinput) |  | 조회할 현금영수증 조건 필터 |
 
@@ -273,7 +273,7 @@ GetCashReceiptsBody — 현금영수증 다건 조회를 위한 입력 정보
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [CashReceipt](#cashreceipt)[] | Y | 조회된 현금영수증 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 조회된 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 조회된 페이지 정보 |
 
 ### IssueCashReceiptBody
 
@@ -284,11 +284,11 @@ GetCashReceiptsBody — 현금영수증 다건 조회를 위한 입력 정보
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
 | `paymentId` | string | Y | 결제 건 아이디 — 외부 결제 건에 대한 수동 발급의 경우, 아이디를 직접 채번하여 입력합니다. |
 | `channelKey` | string | Y | 채널 키 |
-| `type` | [CashReceiptType](schemas-common.md#cashreceipttype) | Y | 현금 영수증 유형 |
+| `type` | [CashReceiptType](../00-basics/schemas-common.md#cashreceipttype) | Y | 현금 영수증 유형 |
 | `orderName` | string | Y | 주문명 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `amount` | [PaymentAmountInput](schemas-common.md#paymentamountinput) | Y | 금액 세부 입력 정보 |
-| `productType` | [PaymentProductType](schemas-common.md#paymentproducttype) |  | 상품 유형 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `amount` | [PaymentAmountInput](../00-basics/schemas-common.md#paymentamountinput) | Y | 금액 세부 입력 정보 |
+| `productType` | [PaymentProductType](../00-basics/schemas-common.md#paymentproducttype) |  | 상품 유형 |
 | `customer` | [IssueCashReceiptCustomerInput](#issuecashreceiptcustomerinput) | Y | 고객 정보 |
 | `paidAt` | string(date-time) |  | 결제 일자 |
 | `businessRegistrationNumber` | string |  | 사업자등록번호 — 웰컴페이먼츠의 경우에만 입력합니다. |
@@ -301,7 +301,7 @@ GetCashReceiptsBody — 현금영수증 다건 조회를 위한 입력 정보
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `identityNumber` | string | Y | 고객 식별값 |
-| `identityNumberType` | [IssueCashReceiptCustomerInputIdentityNumberType](schemas-common.md#issuecashreceiptcustomerinputidentitynumbertype) |  | 고객 식별값 유형 — 갤럭시아머니트리의 경우 필요합니다 |
+| `identityNumberType` | [IssueCashReceiptCustomerInputIdentityNumberType](../00-basics/schemas-common.md#issuecashreceiptcustomerinputidentitynumbertype) |  | 고객 식별값 유형 — 갤럭시아머니트리의 경우 필요합니다 |
 | `name` | string |  | 이름 |
 | `email` | string |  | 이메일 |
 | `phoneNumber` | string |  | 전화번호 |
@@ -331,7 +331,7 @@ GetCashReceiptsBody — 현금영수증 다건 조회를 위한 입력 정보
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `paymentId` | string | Y | 결제 건 아이디 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) |  | 현금영수증 발급에 사용된 채널 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) |  | 현금영수증 발급에 사용된 채널 |
 | `orderName` | string | Y | 주문명 |
 | `isManual` | boolean | Y | 수동 발급 여부 |
 | `statusUpdatedAt` | string(date-time) |  | 상태 업데이트 시점 |
@@ -346,14 +346,14 @@ GetCashReceiptsBody — 현금영수증 다건 조회를 위한 입력 정보
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `paymentId` | string | Y | 결제 건 아이디 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 현금영수증 발급에 사용된 채널 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 현금영수증 발급에 사용된 채널 |
 | `amount` | integer(int64) | Y | 결제 금액 |
 | `taxFreeAmount` | integer(int64) |  | 면세액 |
 | `vatAmount` | integer(int64) |  | 부가세액 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `orderName` | string | Y | 주문명 |
 | `isManual` | boolean | Y | 수동 발급 여부 |
-| `type` | [CashReceiptType](schemas-common.md#cashreceipttype) |  | 현금영수증 유형 |
+| `type` | [CashReceiptType](../00-basics/schemas-common.md#cashreceipttype) |  | 현금영수증 유형 |
 | `pgReceiptId` | string |  | PG사 현금영수증 아이디 |
 | `issueNumber` | string | Y | 승인 번호 |
 | `url` | string |  | 현금영수증 URL |

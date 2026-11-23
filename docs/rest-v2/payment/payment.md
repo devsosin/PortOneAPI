@@ -1,6 +1,6 @@
 # 결제 관련 API
 
-> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](errors.md). 공통 스키마: [schemas-common.md](schemas-common.md).
+> 출처: https://developers.portone.io/api/rest-v2?v=v2 (OpenAPI: https://developers.portone.io/schema/v2.openapi.json). Base URL `https://api.portone.io`. 에러 코드: [errors.md](../00-basics/errors.md). 공통 스키마: [schemas-common.md](../00-basics/schemas-common.md).
 
 ## 엔드포인트 목록
 
@@ -53,11 +53,11 @@
 
 - **200** 성공 응답으로 조회된 결제 이벤트 리스트와 커서 정보가 반환됩니다.: [GetAllPaymentEventsByCursorResponse](#getallpaymenteventsbycursorresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## GET /payments-by-cursor
 
@@ -89,11 +89,11 @@
 
 - **200** 성공 응답으로 조회된 결제 건 리스트와 커서 정보가 반환됩니다.: [GetAllPaymentsByCursorResponse](#getallpaymentsbycursorresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ## POST /payments/{paymentId}/billing-key
 
@@ -119,22 +119,22 @@
 | `billingKey` | string | Y | 빌링키 결제에 사용할 빌링키 |
 | `channelKey` | string |  | 채널 키 — 다수 채널에 대해 발급된 빌링키에 대해, 결제 채널을 특정하고 싶을 때 명시 |
 | `orderName` | string | Y | 주문명 |
-| `customer` | [CustomerInput](schemas-common.md#customerinput) |  | 고객 정보 |
+| `customer` | [CustomerInput](../00-basics/schemas-common.md#customerinput) |  | 고객 정보 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `amount` | [PaymentAmountInput](schemas-common.md#paymentamountinput) | Y | 결제 금액 세부 입력 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `amount` | [PaymentAmountInput](../00-basics/schemas-common.md#paymentamountinput) | Y | 결제 금액 세부 입력 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `installmentMonth` | integer(int32) |  | 할부 개월 수 |
 | `useFreeInterestFromMerchant` | boolean |  | 무이자 할부 이자를 고객사가 부담할지 여부 |
 | `useCardPoint` | boolean |  | 카드 포인트 사용 여부 |
-| `cashReceipt` | [CashReceiptInput](schemas-common.md#cashreceiptinput) |  | 현금영수증 정보 — 나이스페이먼츠를 통해 네이버페이 포인트 빌링결제 시, 현금영수증 발급을 위해 입력 가능 (신청 필요) |
-| `country` | [Country](schemas-common.md#country) |  | 결제 국가 |
+| `cashReceipt` | [CashReceiptInput](../00-basics/schemas-common.md#cashreceiptinput) |  | 현금영수증 정보 — 나이스페이먼츠를 통해 네이버페이 포인트 빌링결제 시, 현금영수증 발급을 위해 입력 가능 (신청 필요) |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 결제 국가 |
 | `noticeUrls` | string[] |  | 웹훅 주소 — 결제 승인/실패 시 요청을 받을 웹훅 주소입니다.<br>상점에 설정되어 있는 값보다 우선적으로 적용됩니다.<br>빈 배열은 무시됩니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 — 입력된 값이 없을 경우에는 빈 배열로 해석됩니다. |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 — 입력된 값이 없을 경우에는 빈 배열로 해석됩니다. |
 | `productCount` | integer(int32) |  | 상품 개수 |
-| `productType` | [PaymentProductType](schemas-common.md#paymentproducttype) |  | 상품 유형 |
-| `shippingAddress` | [SeparatedAddressInput](schemas-common.md#separatedaddressinput) |  | 배송지 주소 |
+| `productType` | [PaymentProductType](../00-basics/schemas-common.md#paymentproducttype) |  | 상품 유형 |
+| `shippingAddress` | [SeparatedAddressInput](../00-basics/schemas-common.md#separatedaddressinput) |  | 배송지 주소 |
 | `promotionId` | string |  | 해당 결제에 적용할 프로모션 아이디 |
-| `locale` | [Locale](schemas-common.md#locale) |  | 결제 시 사용할 언어 — 엑심베이의 경우 필수 입력입니다. |
+| `locale` | [Locale](../00-basics/schemas-common.md#locale) |  | 결제 시 사용할 언어 — 엑심베이의 경우 필수 입력입니다. |
 | `bypass` | object |  | PG사별 추가 파라미터 ("PG사별 연동 가이드" 참고) |
 | `skipWebhook` | boolean |  | 웹훅 생략 여부 — 결제가 성공했을 때 웹훅을 전송하지 않으려면 true로 설정합니다. 가상계좌 입금 완료 등 외부 이벤트로 결제가 완료되는 경우 발생하는 웹훅은 스킵되지 않습니다. |
 
@@ -142,24 +142,24 @@
 
 - **200** 성공 응답: [PayWithBillingKeyResponse](#paywithbillingkeyresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
-  * [`PromotionPayMethodDoesNotMatchError`](errors.md#promotionpaymethoddoesnotmatcherror): 결제수단이 프로모션에 지정된 것과 일치하지 않는 경우
-  * [`DiscountAmountExceedsTotalAmountError`](errors.md#discountamountexceedstotalamounterror): 프로모션 할인 금액이 결제 시도 금액 이상인 경우
-  * [`MaxTransactionCountReachedError`](errors.md#maxtransactioncountreachederror): 결제 혹은 본인인증 시도 횟수가 최대에 도달한 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`PromotionPayMethodDoesNotMatchError`](../00-basics/errors.md#promotionpaymethoddoesnotmatcherror): 결제수단이 프로모션에 지정된 것과 일치하지 않는 경우
+  * [`DiscountAmountExceedsTotalAmountError`](../00-basics/errors.md#discountamountexceedstotalamounterror): 프로모션 할인 금액이 결제 시도 금액 이상인 경우
+  * [`MaxTransactionCountReachedError`](../00-basics/errors.md#maxtransactioncountreachederror): 결제 혹은 본인인증 시도 횟수가 최대에 도달한 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`BillingKeyNotFoundError`](errors.md#billingkeynotfounderror): 빌링키가 존재하지 않는 경우
-  * [`ChannelNotFoundError`](errors.md#channelnotfounderror): 요청된 채널이 존재하지 않는 경우
+  * [`BillingKeyNotFoundError`](../00-basics/errors.md#billingkeynotfounderror): 빌링키가 존재하지 않는 경우
+  * [`ChannelNotFoundError`](../00-basics/errors.md#channelnotfounderror): 요청된 채널이 존재하지 않는 경우
 - **409**
-  * [`AlreadyPaidError`](errors.md#alreadypaiderror): 결제가 이미 완료된 경우
-  * [`SumOfPartsExceedsTotalAmountError`](errors.md#sumofpartsexceedstotalamounterror): 면세 금액 등 하위 항목들의 합이 전체 결제 금액을 초과한 경우
-  * [`BillingKeyAlreadyDeletedError`](errors.md#billingkeyalreadydeletederror): 빌링키가 이미 삭제된 경우
-  * [`PaymentScheduleAlreadyExistsError`](errors.md#paymentschedulealreadyexistserror): 결제 예약건이 이미 존재하는 경우
+  * [`AlreadyPaidError`](../00-basics/errors.md#alreadypaiderror): 결제가 이미 완료된 경우
+  * [`SumOfPartsExceedsTotalAmountError`](../00-basics/errors.md#sumofpartsexceedstotalamounterror): 면세 금액 등 하위 항목들의 합이 전체 결제 금액을 초과한 경우
+  * [`BillingKeyAlreadyDeletedError`](../00-basics/errors.md#billingkeyalreadydeletederror): 빌링키가 이미 삭제된 경우
+  * [`PaymentScheduleAlreadyExistsError`](../00-basics/errors.md#paymentschedulealreadyexistserror): 결제 예약건이 이미 존재하는 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /payments/{paymentId}/cancel
 
@@ -197,26 +197,26 @@
 
 - **200** 성공 응답: [CancelPaymentResponse](#cancelpaymentresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
-  * [`NegativePromotionAdjustedCancelAmountError`](errors.md#negativepromotionadjustedcancelamounterror): 프로모션에 의해 조정된 취소 금액이 음수인 경우
-  * [`PromotionDiscountRetainOptionShouldNotBeChangedError`](errors.md#promotiondiscountretainoptionshouldnotbechangederror): 프로모션 혜택 유지 옵션을 이전 부분 취소와 다른 것으로 입력한 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`NegativePromotionAdjustedCancelAmountError`](../00-basics/errors.md#negativepromotionadjustedcancelamounterror): 프로모션에 의해 조정된 취소 금액이 음수인 경우
+  * [`PromotionDiscountRetainOptionShouldNotBeChangedError`](../00-basics/errors.md#promotiondiscountretainoptionshouldnotbechangederror): 프로모션 혜택 유지 옵션을 이전 부분 취소와 다른 것으로 입력한 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 - **409**
-  * [`PaymentNotPaidError`](errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
-  * [`PaymentAlreadyCancelledError`](errors.md#paymentalreadycancellederror): 결제가 이미 취소된 경우
-  * [`CancellableAmountConsistencyBrokenError`](errors.md#cancellableamountconsistencybrokenerror): 취소 가능 잔액 검증에 실패한 경우
-  * [`CancelAmountExceedsCancellableAmountError`](errors.md#cancelamountexceedscancellableamounterror): 결제 취소 금액이 취소 가능 금액을 초과한 경우
-  * [`SumOfPartsExceedsCancelAmountError`](errors.md#sumofpartsexceedscancelamounterror): 면세 금액 등 하위 항목들의 합이 전체 취소 금액을 초과한 경우
-  * [`CancelTaxFreeAmountExceedsCancellableTaxFreeAmountError`](errors.md#canceltaxfreeamountexceedscancellabletaxfreeamounterror): 취소 면세 금액이 취소 가능한 면세 금액을 초과한 경우
-  * [`CancelTaxAmountExceedsCancellableTaxAmountError`](errors.md#canceltaxamountexceedscancellabletaxamounterror): 취소 과세 금액이 취소 가능한 과세 금액을 초과한 경우
-  * [`MaxCancelCountReachedError`](errors.md#maxcancelcountreachederror): 취소 시도 횟수가 초과된 경우
+  * [`PaymentNotPaidError`](../00-basics/errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
+  * [`PaymentAlreadyCancelledError`](../00-basics/errors.md#paymentalreadycancellederror): 결제가 이미 취소된 경우
+  * [`CancellableAmountConsistencyBrokenError`](../00-basics/errors.md#cancellableamountconsistencybrokenerror): 취소 가능 잔액 검증에 실패한 경우
+  * [`CancelAmountExceedsCancellableAmountError`](../00-basics/errors.md#cancelamountexceedscancellableamounterror): 결제 취소 금액이 취소 가능 금액을 초과한 경우
+  * [`SumOfPartsExceedsCancelAmountError`](../00-basics/errors.md#sumofpartsexceedscancelamounterror): 면세 금액 등 하위 항목들의 합이 전체 취소 금액을 초과한 경우
+  * [`CancelTaxFreeAmountExceedsCancellableTaxFreeAmountError`](../00-basics/errors.md#canceltaxfreeamountexceedscancellabletaxfreeamounterror): 취소 면세 금액이 취소 가능한 면세 금액을 초과한 경우
+  * [`CancelTaxAmountExceedsCancellableTaxAmountError`](../00-basics/errors.md#canceltaxamountexceedscancellabletaxamounterror): 취소 과세 금액이 취소 가능한 과세 금액을 초과한 경우
+  * [`MaxCancelCountReachedError`](../00-basics/errors.md#maxcancelcountreachederror): 취소 시도 횟수가 초과된 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /payments/{paymentId}/cancellations/{cancellationId}/stop
 
@@ -246,18 +246,18 @@ Triple-A에서만 사용됩니다.
 
 - **200** 성공 응답: [StopPaymentCancellationResponse](#stoppaymentcancellationresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentCancellationNotFoundError`](errors.md#paymentcancellationnotfounderror): 결제 취소 내역이 존재하지 않는 경우
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentCancellationNotFoundError`](../00-basics/errors.md#paymentcancellationnotfounderror): 결제 취소 내역이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 - **409**
-  * [`PaymentCancellationNotPendingError`](errors.md#paymentcancellationnotpendingerror): 결제 취소 내역이 취소 요청 상태가 아닌 경우
+  * [`PaymentCancellationNotPendingError`](../00-basics/errors.md#paymentcancellationnotpendingerror): 결제 취소 내역이 취소 요청 상태가 아닌 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /payments/{paymentId}/capture
 
@@ -285,17 +285,17 @@ Triple-A에서만 사용됩니다.
 
 - **200** 성공 응답: [CapturePaymentResponse](#capturepaymentresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 - **409**
-  * [`PaymentNotPaidError`](errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
+  * [`PaymentNotPaidError`](../00-basics/errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /payments/{paymentId}/confirm
 
@@ -320,7 +320,7 @@ Triple-A에서만 사용됩니다.
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
 | `paymentToken` | string | Y | 결제 토큰 — 인증 완료 시 발급된 토큰입니다. |
 | `txId` | string |  | 결제 시도 아이디 — 검증용 파라미터로, 결제 시도 아이디와 일치하지 않을 경우 오류가 반환됩니다. |
-| `currency` | [Currency](schemas-common.md#currency) |  | 통화 — 검증용 파라미터로, 결제 건 화폐와 일치하지 않을 경우 오류가 반환됩니다. 값 전달을 권장합니다. |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) |  | 통화 — 검증용 파라미터로, 결제 건 화폐와 일치하지 않을 경우 오류가 반환됩니다. 값 전달을 권장합니다. |
 | `totalAmount` | integer(int64) |  | 결제 금액 — 검증용 파라미터로, 결제 건 총 금액과 일치하지 않을 경우 오류가 반환됩니다. 값 전달을 권장합니다. |
 | `taxFreeAmount` | integer(int64) |  | 면세 금액 — 검증용 파라미터로, 결제 건 면세 금액과 일치하지 않을 경우 오류가 반환됩니다. |
 | `isTest` | boolean |  | 테스트 결제 여부 — 검증용 파라미터로, 결제 건 테스트 여부와 일치하지 않을 경우 오류가 반환됩니다. 값 전달을 권장합니다. |
@@ -330,19 +330,19 @@ Triple-A에서만 사용됩니다.
 
 - **200** 성공 응답으로 결제 승인 결과를 반환합니다.: [ConfirmedPaymentSummary](#confirmedpaymentsummary)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
-  * [`InvalidPaymentTokenError`](errors.md#invalidpaymenttokenerror): 유효하지 않은 결제 토큰인 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidPaymentTokenError`](../00-basics/errors.md#invalidpaymenttokenerror): 유효하지 않은 결제 토큰인 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 - **409**
-  * [`AlreadyPaidError`](errors.md#alreadypaiderror): 결제가 이미 완료된 경우
-  * [`InformationMismatchError`](errors.md#informationmismatcherror): 정보가 일치하지 않는 경우
+  * [`AlreadyPaidError`](../00-basics/errors.md#alreadypaiderror): 결제가 이미 완료된 경우
+  * [`InformationMismatchError`](../00-basics/errors.md#informationmismatcherror): 정보가 일치하지 않는 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /payments/{paymentId}/escrow/complete
 
@@ -371,17 +371,17 @@ Triple-A에서만 사용됩니다.
 
 - **200** 성공 응답: [ConfirmEscrowResponse](#confirmescrowresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 - **409**
-  * [`PaymentNotPaidError`](errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
+  * [`PaymentNotPaidError`](../00-basics/errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /payments/{paymentId}/escrow/logistics
 
@@ -408,23 +408,23 @@ Triple-A에서만 사용됩니다.
 | `receiver` | [PaymentEscrowReceiverInput](#paymentescrowreceiverinput) |  | 에스크로 수취인 정보 |
 | `logistics` | [PaymentLogistics](#paymentlogistics) | Y | 에스크로 물류 정보 |
 | `sendEmail` | boolean |  | 이메일 알림 전송 여부 — 에스크로 구매 확정 시 이메일로 알림을 보낼지 여부입니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 
 ### 응답
 
 - **200** 성공 응답: [ApplyEscrowLogisticsResponse](#applyescrowlogisticsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 - **409**
-  * [`PaymentNotPaidError`](errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
+  * [`PaymentNotPaidError`](../00-basics/errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## PATCH /payments/{paymentId}/escrow/logistics
 
@@ -451,23 +451,23 @@ Triple-A에서만 사용됩니다.
 | `receiver` | [PaymentEscrowReceiverInput](#paymentescrowreceiverinput) |  | 에스크로 수취인 정보 |
 | `logistics` | [PaymentLogistics](#paymentlogistics) | Y | 에스크로 물류 정보 |
 | `sendEmail` | boolean |  | 이메일 알림 전송 여부 — 에스크로 구매 확정 시 이메일로 알림을 보낼지 여부입니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 
 ### 응답
 
 - **200** 성공 응답: [ModifyEscrowLogisticsResponse](#modifyescrowlogisticsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 - **409**
-  * [`PaymentNotPaidError`](errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
+  * [`PaymentNotPaidError`](../00-basics/errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /payments/{paymentId}/instant
 
@@ -496,16 +496,16 @@ Triple-A에서만 사용됩니다.
 | `orderName` | string | Y | 주문명 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 — 기본값은 false 입니다. |
 | `isEscrow` | boolean |  | 에스크로 결제 여부 — 기본값은 false 입니다. |
-| `customer` | [CustomerInput](schemas-common.md#customerinput) |  | 고객 정보 |
+| `customer` | [CustomerInput](../00-basics/schemas-common.md#customerinput) |  | 고객 정보 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `amount` | [PaymentAmountInput](schemas-common.md#paymentamountinput) | Y | 결제 금액 세부 입력 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `country` | [Country](schemas-common.md#country) |  | 결제 국가 |
+| `amount` | [PaymentAmountInput](../00-basics/schemas-common.md#paymentamountinput) | Y | 결제 금액 세부 입력 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 결제 국가 |
 | `noticeUrls` | string[] |  | 웹훅 주소 — 결제 웹훅 주소입니다.<br>상점에 설정되어 있는 값보다 우선적으로 적용됩니다.<br>빈 배열은 무시됩니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 — 입력된 값이 없을 경우에는 빈 배열로 해석됩니다. |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 — 입력된 값이 없을 경우에는 빈 배열로 해석됩니다. |
 | `productCount` | integer(int32) |  | 상품 개수 |
-| `productType` | [PaymentProductType](schemas-common.md#paymentproducttype) |  | 상품 유형 |
-| `shippingAddress` | [SeparatedAddressInput](schemas-common.md#separatedaddressinput) |  | 배송지 주소 |
+| `productType` | [PaymentProductType](../00-basics/schemas-common.md#paymentproducttype) |  | 상품 유형 |
+| `shippingAddress` | [SeparatedAddressInput](../00-basics/schemas-common.md#separatedaddressinput) |  | 배송지 주소 |
 | `promotionId` | string |  | 해당 결제에 적용할 프로모션 아이디 |
 | `bypass` | object |  | PG사별 추가 파라미터 ("PG사별 연동 가이드" 참고) |
 | `skipWebhook` | boolean |  | 웹훅 생략 여부 — 결제가 성공했을 때 웹훅을 전송하지 않으려면 true로 설정합니다. 가상계좌 입금 완료 등 외부 이벤트로 결제가 완료되는 경우 발생하는 웹훅은 스킵되지 않습니다. |
@@ -514,22 +514,22 @@ Triple-A에서만 사용됩니다.
 
 - **200** 성공 응답: [PayInstantlyResponse](#payinstantlyresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
-  * [`PromotionPayMethodDoesNotMatchError`](errors.md#promotionpaymethoddoesnotmatcherror): 결제수단이 프로모션에 지정된 것과 일치하지 않는 경우
-  * [`DiscountAmountExceedsTotalAmountError`](errors.md#discountamountexceedstotalamounterror): 프로모션 할인 금액이 결제 시도 금액 이상인 경우
-  * [`MaxTransactionCountReachedError`](errors.md#maxtransactioncountreachederror): 결제 혹은 본인인증 시도 횟수가 최대에 도달한 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`PromotionPayMethodDoesNotMatchError`](../00-basics/errors.md#promotionpaymethoddoesnotmatcherror): 결제수단이 프로모션에 지정된 것과 일치하지 않는 경우
+  * [`DiscountAmountExceedsTotalAmountError`](../00-basics/errors.md#discountamountexceedstotalamounterror): 프로모션 할인 금액이 결제 시도 금액 이상인 경우
+  * [`MaxTransactionCountReachedError`](../00-basics/errors.md#maxtransactioncountreachederror): 결제 혹은 본인인증 시도 횟수가 최대에 도달한 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`ChannelNotFoundError`](errors.md#channelnotfounderror): 요청된 채널이 존재하지 않는 경우
+  * [`ChannelNotFoundError`](../00-basics/errors.md#channelnotfounderror): 요청된 채널이 존재하지 않는 경우
 - **409**
-  * [`AlreadyPaidError`](errors.md#alreadypaiderror): 결제가 이미 완료된 경우
-  * [`SumOfPartsExceedsTotalAmountError`](errors.md#sumofpartsexceedstotalamounterror): 면세 금액 등 하위 항목들의 합이 전체 결제 금액을 초과한 경우
-  * [`PaymentScheduleAlreadyExistsError`](errors.md#paymentschedulealreadyexistserror): 결제 예약건이 이미 존재하는 경우
+  * [`AlreadyPaidError`](../00-basics/errors.md#alreadypaiderror): 결제가 이미 완료된 경우
+  * [`SumOfPartsExceedsTotalAmountError`](../00-basics/errors.md#sumofpartsexceedstotalamounterror): 면세 금액 등 하위 항목들의 합이 전체 결제 금액을 초과한 경우
+  * [`PaymentScheduleAlreadyExistsError`](../00-basics/errors.md#paymentschedulealreadyexistserror): 결제 예약건이 이미 존재하는 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /payments/{paymentId}/pre-register
 
@@ -554,19 +554,19 @@ Triple-A에서만 사용됩니다.
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
 | `totalAmount` | integer(int64) |  | 결제 총 금액 |
 | `taxFreeAmount` | integer(int64) |  | 결제 면세 금액 |
-| `currency` | [Currency](schemas-common.md#currency) |  | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) |  | 통화 |
 
 ### 응답
 
 - **200** 성공 응답: [PreRegisterPaymentResponse](#preregisterpaymentresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **409**
-  * [`AlreadyPaidError`](errors.md#alreadypaiderror): 결제가 이미 완료된 경우
+  * [`AlreadyPaidError`](../00-basics/errors.md#alreadypaiderror): 결제가 이미 완료된 경우
 
 ## POST /payments/{paymentId}/register-store-receipt
 
@@ -597,17 +597,17 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 
 - **200** 성공 응답: [RegisterStoreReceiptResponse](#registerstorereceiptresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 - **409**
-  * [`PaymentNotPaidError`](errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
+  * [`PaymentNotPaidError`](../00-basics/errors.md#paymentnotpaiderror): 결제가 완료되지 않은 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## POST /payments/{paymentId}/resend-webhook
 
@@ -636,15 +636,15 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 
 - **200** 성공 응답: [ResendWebhookResponse](#resendwebhookresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
-  * [`MaxWebhookRetryCountReachedError`](errors.md#maxwebhookretrycountreachederror): 동일한 webhook id에 대한 수동 재시도 횟수가 최대에 도달한 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`MaxWebhookRetryCountReachedError`](../00-basics/errors.md#maxwebhookretrycountreachederror): 동일한 webhook id에 대한 수동 재시도 횟수가 최대에 도달한 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
-  * [`WebhookNotFoundError`](errors.md#webhooknotfounderror): 웹훅 내역이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`WebhookNotFoundError`](../00-basics/errors.md#webhooknotfounderror): 웹훅 내역이 존재하지 않는 경우
 
 ## GET /payments/{paymentId}/transactions
 
@@ -665,13 +665,13 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 
 - **200** 성공 응답으로 결제 시도 이력을 반환합니다.: [GetPaymentTransactionsResponse](#getpaymenttransactionsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 
 ## POST /payments/{paymentId}/virtual-account/close
 
@@ -692,17 +692,17 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 
 - **200** 성공 응답: [CloseVirtualAccountResponse](#closevirtualaccountresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 - **409**
-  * [`PaymentNotWaitingForDepositError`](errors.md#paymentnotwaitingfordepositerror): 결제 건이 입금 대기 상태가 아닌 경우
+  * [`PaymentNotWaitingForDepositError`](../00-basics/errors.md#paymentnotwaitingfordepositerror): 결제 건이 입금 대기 상태가 아닌 경우
 - **502**
-  * [`PgProviderError`](errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
+  * [`PgProviderError`](../00-basics/errors.md#pgprovidererror): PG사에서 오류를 전달한 경우
 
 ## GET /payments/{paymentId}
 
@@ -723,13 +723,13 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 
 - **200** 성공 응답으로 결제 건 객체를 반환합니다.: [Payment](#payment)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 - **404**
-  * [`PaymentNotFoundError`](errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
+  * [`PaymentNotFoundError`](../00-basics/errors.md#paymentnotfounderror): 결제 건이 존재하지 않는 경우
 
 ## GET /payments
 
@@ -751,18 +751,18 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number = 0, size = 10 으로 기본값이 적용됩니다. (number + 1) * size가 60,000을 초과할 수 없습니다. |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number = 0, size = 10 으로 기본값이 적용됩니다. (number + 1) * size가 60,000을 초과할 수 없습니다. |
 | `filter` | [PaymentFilterInput](#paymentfilterinput) |  | 조회할 결제 건 조건 필터 — V1 결제 건의 경우 일부 필드에 대해 필터가 적용되지 않을 수 있습니다. |
 
 ### 응답
 
 - **200** 성공 응답으로 조회된 결제 건 리스트와 페이지 정보가 반환됩니다.: [GetPaymentsResponse](#getpaymentsresponse)
 - **400**
-  * [`InvalidRequestError`](errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
+  * [`InvalidRequestError`](../00-basics/errors.md#invalidrequesterror): 요청된 입력 정보가 유효하지 않은 경우
 - **401**
-  * [`UnauthorizedError`](errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
+  * [`UnauthorizedError`](../00-basics/errors.md#unauthorizederror): 인증 정보가 올바르지 않은 경우
 - **403**
-  * [`ForbiddenError`](errors.md#forbiddenerror): 요청이 거절된 경우
+  * [`ForbiddenError`](../00-basics/errors.md#forbiddenerror): 요청이 거절된 경우
 
 ---
 
@@ -796,22 +796,22 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 | `billingKey` | string | Y | 빌링키 결제에 사용할 빌링키 |
 | `channelKey` | string |  | 채널 키 — 다수 채널에 대해 발급된 빌링키에 대해, 결제 채널을 특정하고 싶을 때 명시 |
 | `orderName` | string | Y | 주문명 |
-| `customer` | [CustomerInput](schemas-common.md#customerinput) |  | 고객 정보 |
+| `customer` | [CustomerInput](../00-basics/schemas-common.md#customerinput) |  | 고객 정보 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `amount` | [PaymentAmountInput](schemas-common.md#paymentamountinput) | Y | 결제 금액 세부 입력 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `amount` | [PaymentAmountInput](../00-basics/schemas-common.md#paymentamountinput) | Y | 결제 금액 세부 입력 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `installmentMonth` | integer(int32) |  | 할부 개월 수 |
 | `useFreeInterestFromMerchant` | boolean |  | 무이자 할부 이자를 고객사가 부담할지 여부 |
 | `useCardPoint` | boolean |  | 카드 포인트 사용 여부 |
-| `cashReceipt` | [CashReceiptInput](schemas-common.md#cashreceiptinput) |  | 현금영수증 정보 — 나이스페이먼츠를 통해 네이버페이 포인트 빌링결제 시, 현금영수증 발급을 위해 입력 가능 (신청 필요) |
-| `country` | [Country](schemas-common.md#country) |  | 결제 국가 |
+| `cashReceipt` | [CashReceiptInput](../00-basics/schemas-common.md#cashreceiptinput) |  | 현금영수증 정보 — 나이스페이먼츠를 통해 네이버페이 포인트 빌링결제 시, 현금영수증 발급을 위해 입력 가능 (신청 필요) |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 결제 국가 |
 | `noticeUrls` | string[] |  | 웹훅 주소 — 결제 승인/실패 시 요청을 받을 웹훅 주소입니다.<br>상점에 설정되어 있는 값보다 우선적으로 적용됩니다.<br>빈 배열은 무시됩니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 — 입력된 값이 없을 경우에는 빈 배열로 해석됩니다. |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 — 입력된 값이 없을 경우에는 빈 배열로 해석됩니다. |
 | `productCount` | integer(int32) |  | 상품 개수 |
-| `productType` | [PaymentProductType](schemas-common.md#paymentproducttype) |  | 상품 유형 |
-| `shippingAddress` | [SeparatedAddressInput](schemas-common.md#separatedaddressinput) |  | 배송지 주소 |
+| `productType` | [PaymentProductType](../00-basics/schemas-common.md#paymentproducttype) |  | 상품 유형 |
+| `shippingAddress` | [SeparatedAddressInput](../00-basics/schemas-common.md#separatedaddressinput) |  | 배송지 주소 |
 | `promotionId` | string |  | 해당 결제에 적용할 프로모션 아이디 |
-| `locale` | [Locale](schemas-common.md#locale) |  | 결제 시 사용할 언어 — 엑심베이의 경우 필수 입력입니다. |
+| `locale` | [Locale](../00-basics/schemas-common.md#locale) |  | 결제 시 사용할 언어 — 엑심베이의 경우 필수 입력입니다. |
 | `bypass` | object |  | PG사별 추가 파라미터 ("PG사별 연동 가이드" 참고) |
 | `skipWebhook` | boolean |  | 웹훅 생략 여부 — 결제가 성공했을 때 웹훅을 전송하지 않으려면 true로 설정합니다. 가상계좌 입금 완료 등 외부 이벤트로 결제가 완료되는 경우 발생하는 웹훅은 스킵되지 않습니다. |
 
@@ -848,7 +848,7 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `bank` | [Bank](schemas-common.md#bank) | Y | 은행 |
+| `bank` | [Bank](../00-basics/schemas-common.md#bank) | Y | 은행 |
 | `number` | string | Y | 계좌번호 |
 | `holderName` | string | Y | 예금주 |
 | `holderPhoneNumber` | string |  | 예금주 연락처 - 스마트로 가상계좌 결제인 경우에 필요합니다. |
@@ -880,9 +880,9 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -891,16 +891,16 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `origin` | [PaymentOrigin](#paymentorigin) | Y | 결제 출처 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `paidAt` | string(date-time) |  | 결제 완료 시점 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 | `cashReceipt` | [PaymentCashReceipt](#paymentcashreceipt) |  | 현금영수증 |
@@ -917,12 +917,12 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `status` | string | Y | 결제 건 내 현금영수증 상태 |
-| `type` | [CashReceiptType](schemas-common.md#cashreceipttype) |  | 현금영수증 유형 |
+| `type` | [CashReceiptType](../00-basics/schemas-common.md#cashreceipttype) |  | 현금영수증 유형 |
 | `pgReceiptId` | string |  | PG사 영수증 발급 아이디 |
 | `issueNumber` | string | Y | 승인 번호 |
 | `totalAmount` | integer(int64) | Y | 총 금액 |
 | `taxFreeAmount` | integer(int64) |  | 면세액 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `url` | string |  | 현금영수증 URL |
 | `issuedAt` | string(date-time) | Y | 발급 시점 |
 | `cancelledAt` | string(date-time) | Y | 취소 시점 |
@@ -952,23 +952,23 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
 | `requestedAt` | string(date-time) | Y | 결제 요청 시점 |
 | `createdAt` | string(date-time) | Y | 이벤트 생성 시점 |
 | `orderName` | string | Y | 주문명 |
 | `totalAmount` | [PaymentAmount](#paymentamount) | Y | 총 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 | `cashReceipt` | [PaymentCashReceipt](#paymentcashreceipt) |  | 현금영수증 |
 | `cashReceiptIssuanceStatus` | [CashReceiptIssuanceStatus](#cashreceiptissuancestatus) |  | 현금영수증 발행여부 — 승인 시점에 확인된 발행여부입니다.<br>발행번호 없이 발행여부만 제공 가능한 경우, ISSUED이면서 cashReceipt가 존재하지 않을 수 있습니다. |
@@ -991,9 +991,9 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -1002,15 +1002,15 @@ KG이니시스(이용 전 콘솔 -> 결제연동 탭에서 INIApi Key 등록 필
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `paidAt` | string(date-time) |  | 결제 완료 시점 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 | `cashReceipt` | [PaymentCashReceipt](#paymentcashreceipt) |  | 현금영수증 |
@@ -1075,7 +1075,7 @@ type: object
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
 | `paymentToken` | string | Y | 결제 토큰 — 인증 완료 시 발급된 토큰입니다. |
 | `txId` | string |  | 결제 시도 아이디 — 검증용 파라미터로, 결제 시도 아이디와 일치하지 않을 경우 오류가 반환됩니다. |
-| `currency` | [Currency](schemas-common.md#currency) |  | 통화 — 검증용 파라미터로, 결제 건 화폐와 일치하지 않을 경우 오류가 반환됩니다. 값 전달을 권장합니다. |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) |  | 통화 — 검증용 파라미터로, 결제 건 화폐와 일치하지 않을 경우 오류가 반환됩니다. 값 전달을 권장합니다. |
 | `totalAmount` | integer(int64) |  | 결제 금액 — 검증용 파라미터로, 결제 건 총 금액과 일치하지 않을 경우 오류가 반환됩니다. 값 전달을 권장합니다. |
 | `taxFreeAmount` | integer(int64) |  | 면세 금액 — 검증용 파라미터로, 결제 건 면세 금액과 일치하지 않을 경우 오류가 반환됩니다. |
 | `isTest` | boolean |  | 테스트 결제 여부 — 검증용 파라미터로, 결제 건 테스트 여부와 일치하지 않을 경우 오류가 반환됩니다. 값 전달을 권장합니다. |
@@ -1156,9 +1156,9 @@ type: object
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) |  | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) |  | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -1167,16 +1167,16 @@ type: object
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `origin` | [PaymentOrigin](#paymentorigin) | Y | 결제 출처 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `failedAt` | string(date-time) | Y | 결제 실패 시점 |
 | `failure` | [PaymentFailure](#paymentfailure) | Y | 결제 실패 정보 |
 
@@ -1210,9 +1210,9 @@ type: object
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) |  | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) |  | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -1221,15 +1221,15 @@ type: object
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `failedAt` | string(date-time) | Y | 결제 실패 시점 |
 | `failure` | [PaymentFailure](#paymentfailure) | Y | 결제 실패 정보 |
 
@@ -1287,7 +1287,7 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `page` | [PageInput](schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number = 0, size = 10 으로 기본값이 적용됩니다. (number + 1) * size가 60,000을 초과할 수 없습니다. |
+| `page` | [PageInput](../00-basics/schemas-common.md#pageinput) |  | 요청할 페이지 정보 — 미 입력 시 number = 0, size = 10 으로 기본값이 적용됩니다. (number + 1) * size가 60,000을 초과할 수 없습니다. |
 | `filter` | [PaymentFilterInput](#paymentfilterinput) |  | 조회할 결제 건 조건 필터 — V1 결제 건의 경우 일부 필드에 대해 필터가 적용되지 않을 수 있습니다. |
 
 ### GetPaymentsResponse
@@ -1297,7 +1297,7 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `items` | [Payment](#payment)[] | Y | 조회된 결제 건 리스트 |
-| `page` | [PageInfo](schemas-common.md#pageinfo) | Y | 조회된 페이지 정보 |
+| `page` | [PageInfo](../00-basics/schemas-common.md#pageinfo) | Y | 조회된 페이지 정보 |
 
 ### InstantPaymentInput
 
@@ -1312,16 +1312,16 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `orderName` | string | Y | 주문명 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 — 기본값은 false 입니다. |
 | `isEscrow` | boolean |  | 에스크로 결제 여부 — 기본값은 false 입니다. |
-| `customer` | [CustomerInput](schemas-common.md#customerinput) |  | 고객 정보 |
+| `customer` | [CustomerInput](../00-basics/schemas-common.md#customerinput) |  | 고객 정보 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `amount` | [PaymentAmountInput](schemas-common.md#paymentamountinput) | Y | 결제 금액 세부 입력 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `country` | [Country](schemas-common.md#country) |  | 결제 국가 |
+| `amount` | [PaymentAmountInput](../00-basics/schemas-common.md#paymentamountinput) | Y | 결제 금액 세부 입력 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 결제 국가 |
 | `noticeUrls` | string[] |  | 웹훅 주소 — 결제 웹훅 주소입니다.<br>상점에 설정되어 있는 값보다 우선적으로 적용됩니다.<br>빈 배열은 무시됩니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 — 입력된 값이 없을 경우에는 빈 배열로 해석됩니다. |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 — 입력된 값이 없을 경우에는 빈 배열로 해석됩니다. |
 | `productCount` | integer(int32) |  | 상품 개수 |
-| `productType` | [PaymentProductType](schemas-common.md#paymentproducttype) |  | 상품 유형 |
-| `shippingAddress` | [SeparatedAddressInput](schemas-common.md#separatedaddressinput) |  | 배송지 주소 |
+| `productType` | [PaymentProductType](../00-basics/schemas-common.md#paymentproducttype) |  | 상품 유형 |
+| `shippingAddress` | [SeparatedAddressInput](../00-basics/schemas-common.md#separatedaddressinput) |  | 배송지 주소 |
 | `promotionId` | string |  | 해당 결제에 적용할 프로모션 아이디 |
 | `bypass` | object |  | PG사별 추가 파라미터 ("PG사별 연동 가이드" 참고) |
 | `skipWebhook` | boolean |  | 웹훅 생략 여부 — 결제가 성공했을 때 웹훅을 전송하지 않으려면 true로 설정합니다. 가상계좌 입금 완료 등 외부 이벤트로 결제가 완료되는 경우 발생하는 웹훅은 스킵되지 않습니다. |
@@ -1341,7 +1341,7 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `credential` | [CardCredential](schemas-common.md#cardcredential) | Y | 카드 인증 관련 정보 |
+| `credential` | [CardCredential](../00-basics/schemas-common.md#cardcredential) | Y | 카드 인증 관련 정보 |
 | `installmentMonth` | integer(int32) |  | 카드 할부 개월 수 |
 | `useFreeInstallmentPlan` | boolean |  | 무이자 할부 적용 여부 |
 | `useFreeInterestFromMerchant` | boolean |  | 무이자 할부 이자를 고객사가 부담할지 여부 |
@@ -1353,7 +1353,7 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `bank` | [Bank](schemas-common.md#bank) | Y | 은행 |
+| `bank` | [Bank](../00-basics/schemas-common.md#bank) | Y | 은행 |
 | `expiry` | [InstantPaymentMethodInputVirtualAccountExpiry](#instantpaymentmethodinputvirtualaccountexpiry) | Y | 입금 만료 기한 |
 | `option` | [InstantPaymentMethodInputVirtualAccountOption](#instantpaymentmethodinputvirtualaccountoption) | Y | 가상계좌 유형 |
 | `cashReceipt` | [InstantPaymentMethodInputVirtualAccountCashReceiptInfo](#instantpaymentmethodinputvirtualaccountcashreceiptinfo) |  | 현금영수증 정보 |
@@ -1365,7 +1365,7 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
-| `type` | [CashReceiptInputType](schemas-common.md#cashreceiptinputtype) | Y | 현금영수증 유형 |
+| `type` | [CashReceiptInputType](../00-basics/schemas-common.md#cashreceiptinputtype) | Y | 현금영수증 유형 |
 | `customerIdentityNumber` | string | Y | 사용자 식별 번호 |
 
 ### InstantPaymentMethodInputVirtualAccountExpiry
@@ -1418,12 +1418,12 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `status` | string | Y | 결제 건 내 현금영수증 상태 |
-| `type` | [CashReceiptType](schemas-common.md#cashreceipttype) |  | 현금영수증 유형 |
+| `type` | [CashReceiptType](../00-basics/schemas-common.md#cashreceipttype) |  | 현금영수증 유형 |
 | `pgReceiptId` | string |  | PG사 영수증 발급 아이디 |
 | `issueNumber` | string | Y | 승인 번호 |
 | `totalAmount` | integer(int64) | Y | 총 금액 |
 | `taxFreeAmount` | integer(int64) |  | 면세액 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 | `url` | string |  | 현금영수증 URL |
 | `issuedAt` | string(date-time) | Y | 발급 시점 |
 
@@ -1438,7 +1438,7 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `receiver` | [PaymentEscrowReceiverInput](#paymentescrowreceiverinput) |  | 에스크로 수취인 정보 |
 | `logistics` | [PaymentLogistics](#paymentlogistics) | Y | 에스크로 물류 정보 |
 | `sendEmail` | boolean |  | 이메일 알림 전송 여부 — 에스크로 구매 확정 시 이메일로 알림을 보낼지 여부입니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 
 ### ModifyEscrowLogisticsResponse
 
@@ -1462,9 +1462,9 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -1473,16 +1473,16 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `origin` | [PaymentOrigin](#paymentorigin) | Y | 결제 출처 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `paidAt` | string(date-time) | Y | 결제 완료 시점 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 | `pgResponse` | string |  | PG사 거래 응답 본문 |
@@ -1506,23 +1506,23 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
 | `requestedAt` | string(date-time) | Y | 결제 요청 시점 |
 | `createdAt` | string(date-time) | Y | 이벤트 생성 시점 |
 | `orderName` | string | Y | 주문명 |
 | `totalAmount` | [PaymentAmount](#paymentamount) | Y | 총 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 | `pgResponse` | string |  | PG사 거래 응답 본문 |
 | `cashReceipt` | [PaymentCashReceipt](#paymentcashreceipt) |  | 현금영수증 |
@@ -1546,9 +1546,9 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -1557,15 +1557,15 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `paidAt` | string(date-time) | Y | 결제 완료 시점 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 | `pgResponse` | string |  | PG사 거래 응답 본문 |
@@ -1586,9 +1586,9 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -1597,16 +1597,16 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `origin` | [PaymentOrigin](#paymentorigin) | Y | 결제 출처 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `paidAt` | string(date-time) |  | 결제 완료 시점 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 | `cashReceipt` | [PaymentCashReceipt](#paymentcashreceipt) |  | 현금영수증 |
@@ -1629,23 +1629,23 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
 | `requestedAt` | string(date-time) | Y | 결제 요청 시점 |
 | `createdAt` | string(date-time) | Y | 이벤트 생성 시점 |
 | `orderName` | string | Y | 주문명 |
 | `totalAmount` | [PaymentAmount](#paymentamount) | Y | 총 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 | `cashReceipt` | [PaymentCashReceipt](#paymentcashreceipt) |  | 현금영수증 |
 | `cashReceiptIssuanceStatus` | [CashReceiptIssuanceStatus](#cashreceiptissuancestatus) |  | 현금영수증 발행여부 — 승인 시점에 확인된 발행여부입니다.<br>발행번호 없이 발행여부만 제공 가능한 경우, ISSUED이면서 cashReceipt가 존재하지 않을 수 있습니다. |
@@ -1668,9 +1668,9 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -1679,15 +1679,15 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `paidAt` | string(date-time) |  | 결제 완료 시점 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 | `cashReceipt` | [PaymentCashReceipt](#paymentcashreceipt) |  | 현금영수증 |
@@ -1717,9 +1717,9 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -1728,16 +1728,16 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `origin` | [PaymentOrigin](#paymentorigin) | Y | 결제 출처 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 
 ### PayPendingPaymentTransaction
@@ -1752,9 +1752,9 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -1763,15 +1763,15 @@ GetAllPaymentsByCursorBody — 결제 건 커서 기반 대용량 다건 조회�
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 
 ### PayWithBillingKeyResponse
@@ -1860,7 +1860,7 @@ oneOf, discriminator `status`:
 | `name` | string |  | 이름 |
 | `phoneNumber` | string |  | 전화번호 |
 | `zipcode` | string |  | 우편번호 |
-| `address` | [SeparatedAddressInput](schemas-common.md#separatedaddressinput) |  | 주소 |
+| `address` | [SeparatedAddressInput](../00-basics/schemas-common.md#separatedaddressinput) |  | 주소 |
 
 ### PaymentEscrowSenderInput
 
@@ -1872,7 +1872,7 @@ oneOf, discriminator `status`:
 | `phoneNumber` | string |  | 전화번호 |
 | `zipcode` | string |  | 우편번호 |
 | `relationship` | string |  | 수취인과의 관계 |
-| `address` | [SeparatedAddressInput](schemas-common.md#separatedaddressinput) |  | 주소 |
+| `address` | [SeparatedAddressInput](../00-basics/schemas-common.md#separatedaddressinput) |  | 주소 |
 
 ### PaymentEvent
 
@@ -1915,26 +1915,26 @@ oneOf, discriminator `type`:
 | `from` | string(date-time) |  | 결제 요청/상태 승인 시점 범위의 시작 — 값을 입력하지 않으면 end의 90일 전으로 설정됩니다. |
 | `until` | string(date-time) |  | 결제 요청/상태 승인 시점 범위의 끝 — 값을 입력하지 않으면 현재 시점으로 설정됩니다. |
 | `status` | [PaymentStatus](#paymentstatus)[] |  | 결제 상태 리스트 — 값을 입력하지 않으면 결제상태 필터링이 적용되지 않습니다. |
-| `methods` | [PaymentMethodType](schemas-common.md#paymentmethodtype)[] |  | 결제수단 리스트 — 값을 입력하지 않으면 결제수단 필터링이 적용되지 않습니다. |
-| `pgProvider` | [PgProvider](schemas-common.md#pgprovider)[] |  | PG사 결제 모듈 리스트 — 값을 입력하지 않으면 PG사 결제 모듈 필터링이 적용되지 않습니다. |
+| `methods` | [PaymentMethodType](../00-basics/schemas-common.md#paymentmethodtype)[] |  | 결제수단 리스트 — 값을 입력하지 않으면 결제수단 필터링이 적용되지 않습니다. |
+| `pgProvider` | [PgProvider](../00-basics/schemas-common.md#pgprovider)[] |  | PG사 결제 모듈 리스트 — 값을 입력하지 않으면 PG사 결제 모듈 필터링이 적용되지 않습니다. |
 | `isTest` | boolean |  | 테스트 결제 여부 |
 | `isScheduled` | boolean |  | 결제 예약 건 필터링 |
 | `sortBy` | [PaymentSortBy](#paymentsortby) |  | 결제 건 정렬 기준 |
-| `sortOrder` | [SortOrder](schemas-common.md#sortorder) |  | 결제 건 정렬 방식 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) |  | 포트원 버전 |
+| `sortOrder` | [SortOrder](../00-basics/schemas-common.md#sortorder) |  | 결제 건 정렬 방식 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) |  | 포트원 버전 |
 | `webhookStatus` | [PaymentWebhookStatus](#paymentwebhookstatus) |  | 최종 결제 상태의 웹훅 상태 |
-| `platformType` | [PaymentClientType](schemas-common.md#paymentclienttype) |  | 플랫폼 유형 |
-| `currency` | [Currency](schemas-common.md#currency) |  | 통화 |
+| `platformType` | [PaymentClientType](../00-basics/schemas-common.md#paymentclienttype) |  | 플랫폼 유형 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) |  | 통화 |
 | `isEscrow` | boolean |  | 에스크로 결제 여부 |
 | `escrowStatus` | [PaymentFilterInputEscrowStatus](#paymentfilterinputescrowstatus) |  | 에스크로 결제의 배송 정보 상태 |
-| `cardBrand` | [CardBrand](schemas-common.md#cardbrand) |  | 카드 브랜드 |
-| `cardType` | [CardType](schemas-common.md#cardtype) |  | 카드 유형 |
-| `cardOwnerType` | [CardOwnerType](schemas-common.md#cardownertype) |  | 카드 소유주 유형 |
+| `cardBrand` | [CardBrand](../00-basics/schemas-common.md#cardbrand) |  | 카드 브랜드 |
+| `cardType` | [CardType](../00-basics/schemas-common.md#cardtype) |  | 카드 유형 |
+| `cardOwnerType` | [CardOwnerType](../00-basics/schemas-common.md#cardownertype) |  | 카드 소유주 유형 |
 | `giftCertificateType` | [PaymentMethodGiftCertificateType](#paymentmethodgiftcertificatetype) |  | 상품권 종류 |
-| `cashReceiptType` | [CashReceiptInputType](schemas-common.md#cashreceiptinputtype) |  | 현금영수증 유형 |
+| `cashReceiptType` | [CashReceiptInputType](../00-basics/schemas-common.md#cashreceiptinputtype) |  | 현금영수증 유형 |
 | `cashReceiptStatus` | [PaymentCashReceiptStatus](#paymentcashreceiptstatus) |  | 현금영수증 상태 |
-| `cashReceiptIssuedAtRange` | [DateTimeRange](schemas-common.md#datetimerange) |  | 현금영수증 발급 시간 범위 |
-| `cashReceiptCancelledAtRange` | [DateTimeRange](schemas-common.md#datetimerange) |  | 현금영수증 취소 시간 범위 |
+| `cashReceiptIssuedAtRange` | [DateTimeRange](../00-basics/schemas-common.md#datetimerange) |  | 현금영수증 발급 시간 범위 |
+| `cashReceiptCancelledAtRange` | [DateTimeRange](../00-basics/schemas-common.md#datetimerange) |  | 현금영수증 취소 시간 범위 |
 | `textSearch` | [PaymentTextSearch](#paymenttextsearch)[] |  | 통합 검색 리스트 필터 |
 
 ### PaymentFilterInputEscrowStatus
@@ -1968,7 +1968,7 @@ oneOf, discriminator `type`:
 | `invoiceNumber` | string | Y | 송장번호 |
 | `sentAt` | string(date-time) | Y | 발송시점 |
 | `receivedAt` | string(date-time) |  | 수령시점 |
-| `address` | [SeparatedAddressInput](schemas-common.md#separatedaddressinput) |  | 주소 |
+| `address` | [SeparatedAddressInput](../00-basics/schemas-common.md#separatedaddressinput) |  | 주소 |
 
 ### PaymentLogisticsCompany
 
@@ -2027,7 +2027,7 @@ oneOf, discriminator `type`:
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `type` | string | Y |  |
-| `card` | [Card](schemas-common.md#card) |  | 카드 상세 정보 |
+| `card` | [Card](../00-basics/schemas-common.md#card) |  | 카드 상세 정보 |
 | `approvalNumber` | string |  | 승인 번호 |
 | `installment` | [PaymentInstallment](#paymentinstallment) |  | 할부 정보 |
 | `pointUsed` | boolean |  | 카드 포인트 사용여부 |
@@ -2059,7 +2059,7 @@ oneOf, discriminator `type`:
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `type` | string | Y |  |
-| `provider` | [EasyPayProvider](schemas-common.md#easypayprovider) |  | 간편 결제 PG사 |
+| `provider` | [EasyPayProvider](../00-basics/schemas-common.md#easypayprovider) |  | 간편 결제 PG사 |
 | `easyPayMethod` | [PaymentMethodEasyPayMethod](#paymentmethodeasypaymethod) |  | 간편 결제 수단 |
 
 ### PaymentMethodEasyPayMethod
@@ -2079,7 +2079,7 @@ oneOf, discriminator `type`:
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `type` | string | Y |  |
-| `bank` | [Bank](schemas-common.md#bank) |  | 표준 은행 코드 |
+| `bank` | [Bank](../00-basics/schemas-common.md#bank) |  | 표준 은행 코드 |
 
 ### PaymentMethodGiftCertificate
 
@@ -2117,7 +2117,7 @@ oneOf, discriminator `type`:
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `type` | string | Y |  |
-| `bank` | [Bank](schemas-common.md#bank) |  | 표준 은행 코드 |
+| `bank` | [Bank](../00-basics/schemas-common.md#bank) |  | 표준 은행 코드 |
 | `accountNumber` | string |  | 계좌번호 |
 
 ### PaymentMethodVirtualAccount
@@ -2127,7 +2127,7 @@ oneOf, discriminator `type`:
 | 필드 | 타입 | 필수 | 설명 |
 |---|---|---|---|
 | `type` | string | Y |  |
-| `bank` | [Bank](schemas-common.md#bank) |  | 표준 은행 코드 |
+| `bank` | [Bank](../00-basics/schemas-common.md#bank) |  | 표준 은행 코드 |
 | `accountNumber` | string | Y | 계좌번호 |
 | `accountType` | [PaymentMethodVirtualAccountType](#paymentmethodvirtualaccounttype) |  | 계좌 유형 |
 | `remitteeName` | string |  | 계좌주 |
@@ -2348,7 +2348,7 @@ oneOf, discriminator `status`:
 | `storeId` | string |  | 상점 아이디 — 접근 권한이 있는 상점 아이디만 입력 가능하며, 미입력시 인증 정보의 상점 아이디를 사용합니다. |
 | `totalAmount` | integer(int64) |  | 결제 총 금액 |
 | `taxFreeAmount` | integer(int64) |  | 결제 면세 금액 |
-| `currency` | [Currency](schemas-common.md#currency) |  | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) |  | 통화 |
 
 ### PreRegisterPaymentResponse
 
@@ -2375,9 +2375,9 @@ PromotionDiscountRetainOption
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) |  | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) |  | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -2386,16 +2386,16 @@ PromotionDiscountRetainOption
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `origin` | [PaymentOrigin](#paymentorigin) | Y | 결제 출처 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제의 배송 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 
 ### ReadyPaymentTransaction
 
@@ -2409,9 +2409,9 @@ PromotionDiscountRetainOption
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) |  | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) |  | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -2420,15 +2420,15 @@ PromotionDiscountRetainOption
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제의 배송 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 
 ### RegisterEscrowLogisticsBody
 
@@ -2441,7 +2441,7 @@ PromotionDiscountRetainOption
 | `receiver` | [PaymentEscrowReceiverInput](#paymentescrowreceiverinput) |  | 에스크로 수취인 정보 |
 | `logistics` | [PaymentLogistics](#paymentlogistics) | Y | 에스크로 물류 정보 |
 | `sendEmail` | boolean |  | 이메일 알림 전송 여부 — 에스크로 구매 확정 시 이메일로 알림을 보낼지 여부입니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 
 ### RegisterStoreReceiptBody
 
@@ -2464,7 +2464,7 @@ PromotionDiscountRetainOption
 | `taxFreeAmount` | integer(int64) |  | 면세액 |
 | `vatAmount` | integer(int64) |  | 부가세액 |
 | `supplyAmount` | integer(int64) |  | 공급가액 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
 
 ### RegisterStoreReceiptResponse
 
@@ -2602,9 +2602,9 @@ Trigger
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -2613,16 +2613,16 @@ Trigger
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `origin` | [PaymentOrigin](#paymentorigin) | Y | 결제 출처 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
 
 ### VirtualAccountIssuedPaymentTransaction
@@ -2637,9 +2637,9 @@ Trigger
 | `merchantId` | string | Y | 고객사 아이디 |
 | `storeId` | string | Y | 상점 아이디 |
 | `method` | [PaymentMethod](#paymentmethod) |  | 결제수단 정보 |
-| `channel` | [SelectedChannel](schemas-common.md#selectedchannel) | Y | 결제 채널 |
-| `channelGroup` | [ChannelGroupSummary](schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
-| `version` | [PortOneVersion](schemas-common.md#portoneversion) | Y | 포트원 버전 |
+| `channel` | [SelectedChannel](../00-basics/schemas-common.md#selectedchannel) | Y | 결제 채널 |
+| `channelGroup` | [ChannelGroupSummary](../00-basics/schemas-common.md#channelgroupsummary) |  | 결제 채널 그룹 정보 |
+| `version` | [PortOneVersion](../00-basics/schemas-common.md#portoneversion) | Y | 포트원 버전 |
 | `scheduleId` | string |  | 결제 예약 건 아이디 — 결제 예약을 이용한 경우에만 존재 |
 | `billingKey` | string |  | 결제 시 사용된 빌링키 — 빌링키 결제인 경우에만 존재 |
 | `webhooks` | [PaymentWebhook](#paymentwebhook)[] |  | 웹훅 발송 내역 |
@@ -2648,13 +2648,13 @@ Trigger
 | `statusChangedAt` | string(date-time) | Y | 상태 업데이트 시점 |
 | `orderName` | string | Y | 주문명 |
 | `amount` | [PaymentAmount](#paymentamount) | Y | 결제 금액 관련 세부 정보 |
-| `currency` | [Currency](schemas-common.md#currency) | Y | 통화 |
-| `customer` | [Customer](schemas-common.md#customer) | Y | 구매자 정보 |
+| `currency` | [Currency](../00-basics/schemas-common.md#currency) | Y | 통화 |
+| `customer` | [Customer](../00-basics/schemas-common.md#customer) | Y | 구매자 정보 |
 | `promotionId` | string |  | 프로모션 아이디 |
 | `isCulturalExpense` | boolean |  | 문화비 지출 여부 |
 | `escrow` | [PaymentEscrow](#paymentescrow) |  | 에스크로 결제 정보 — 에스크로 결제인 경우 존재합니다. |
-| `products` | [PaymentProduct](schemas-common.md#paymentproduct)[] |  | 상품 정보 |
+| `products` | [PaymentProduct](../00-basics/schemas-common.md#paymentproduct)[] |  | 상품 정보 |
 | `productCount` | integer(int32) |  | 상품 갯수 |
 | `customData` | string |  | 사용자 지정 데이터 |
-| `country` | [Country](schemas-common.md#country) |  | 국가 코드 |
+| `country` | [Country](../00-basics/schemas-common.md#country) |  | 국가 코드 |
 | `pgTxId` | string |  | PG사 거래 아이디 |
