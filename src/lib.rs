@@ -13,4 +13,5 @@ pub struct PortOneAPI {
 pub struct AuthedPortOneAPI {
     api: PortOneAPI,
     key: String,
+    base_url: String,
 }
