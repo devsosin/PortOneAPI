@@ -4,6 +4,7 @@ pub mod client;
 pub mod errors;
 pub mod features;
 pub mod types;
+pub mod webhook;
 
 pub struct PortOneAPI {
     client: Client,
