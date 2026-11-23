@@ -7,10 +7,10 @@ use crate::{
 };
 
 pub trait PortOnePaymentService: Send + Sync {
-    async fn get_payment_detail(
+    fn get_payment_detail(
         &self,
         payment_id: &str,
-    ) -> ClientResult<PortOneResponse<PaymentDetailData>>; //
+    ) -> impl Future<Output = ClientResult<PortOneResponse<PaymentDetailData>>> + Send;
 }
 
 impl PortOnePaymentService for AuthedPortOneAPI {

@@ -2,7 +2,7 @@ use reqwest::Method;
 use serde::Deserialize;
 use serde_json::Value;
 
-use crate::{AuthedPortOneAPI, features::raw_request::build_url, types::ClientResult};
+use crate::{AuthedPortOneAPI, types::ClientResult};
 
 /// 세금계산서 식별자 유형
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -42,25 +42,60 @@ pub struct TaxInvoiceUrlResponse {
 /// 세금계산서 조회 API (읽기 전용). 발행·취소는 포함하지 않는다.
 pub trait PortOneTaxInvoiceService: Send + Sync {
     /// `GET /b2b/tax-invoices/{taxInvoiceKey}` — 스키마가 커서 원본 JSON 반환
+    fn get_tax_invoice(
+        &self,
+        key: &str,
+        lookup: &TaxInvoiceLookup<'_>,
+    ) -> impl Future<Output = ClientResult<Value>> + Send;
+
+    /// `GET /b2b/tax-invoices/{taxInvoiceKey}/pdf-download-url`
+    fn get_tax_invoice_pdf_url(
+        &self,
+        key: &str,
+        lookup: &TaxInvoiceLookup<'_>,
+    ) -> impl Future<Output = ClientResult<TaxInvoiceUrlResponse>> + Send;
+
+    /// `GET /b2b/tax-invoices/{taxInvoiceKey}/print-url`
+    fn get_tax_invoice_print_url(
+        &self,
+        key: &str,
+        lookup: &TaxInvoiceLookup<'_>,
+    ) -> impl Future<Output = ClientResult<TaxInvoiceUrlResponse>> + Send;
+}
+
+impl PortOneTaxInvoiceService for AuthedPortOneAPI {
     async fn get_tax_invoice(
         &self,
         key: &str,
         lookup: &TaxInvoiceLookup<'_>,
-    ) -> ClientResult<Value>;
+    ) -> ClientResult<Value> {
+        let url = self.build_url(&["b2b", "tax-invoices", key], &lookup_query(lookup))?;
+        self.request::<(), _>(Method::GET, url, None, None).await
+    }
 
-    /// `GET /b2b/tax-invoices/{taxInvoiceKey}/pdf-download-url`
     async fn get_tax_invoice_pdf_url(
         &self,
         key: &str,
         lookup: &TaxInvoiceLookup<'_>,
-    ) -> ClientResult<TaxInvoiceUrlResponse>;
+    ) -> ClientResult<TaxInvoiceUrlResponse> {
+        let url = self.build_url(
+            &["b2b", "tax-invoices", key, "pdf-download-url"],
+            &lookup_query(lookup),
+        )?;
+        self.request::<(), _>(Method::GET, url, None, None).await
+    }
 
-    /// `GET /b2b/tax-invoices/{taxInvoiceKey}/print-url`
     async fn get_tax_invoice_print_url(
         &self,
         key: &str,
         lookup: &TaxInvoiceLookup<'_>,
-    ) -> ClientResult<TaxInvoiceUrlResponse>;
+    ) -> ClientResult<TaxInvoiceUrlResponse> {
+        let url = self.build_url(
+            &["b2b", "tax-invoices", key, "print-url"],
+            &lookup_query(lookup),
+        )?;
+        self.request::<(), _>(Method::GET, url, None, None).await
+    }
 }
 
 fn lookup_query(lookup: &TaxInvoiceLookup<'_>) -> Vec<(&'static str, String)> {
@@ -77,43 +112,12 @@ fn lookup_query(lookup: &TaxInvoiceLookup<'_>) -> Vec<(&'static str, String)> {
     query
 }
 
-impl PortOneTaxInvoiceService for AuthedPortOneAPI {
-    async fn get_tax_invoice(
-        &self,
-        key: &str,
-        lookup: &TaxInvoiceLookup<'_>,
-    ) -> ClientResult<Value> {
-        let url = build_url(&["b2b", "tax-invoices", key], &lookup_query(lookup))?;
-        self.request::<(), _>(Method::GET, url, None).await
-    }
-
-    async fn get_tax_invoice_pdf_url(
-        &self,
-        key: &str,
-        lookup: &TaxInvoiceLookup<'_>,
-    ) -> ClientResult<TaxInvoiceUrlResponse> {
-        let url = build_url(
-            &["b2b", "tax-invoices", key, "pdf-download-url"],
-            &lookup_query(lookup),
-        )?;
-        self.request::<(), _>(Method::GET, url, None).await
-    }
-
-    async fn get_tax_invoice_print_url(
-        &self,
-        key: &str,
-        lookup: &TaxInvoiceLookup<'_>,
-    ) -> ClientResult<TaxInvoiceUrlResponse> {
-        let url = build_url(
-            &["b2b", "tax-invoices", key, "print-url"],
-            &lookup_query(lookup),
-        )?;
-        self.request::<(), _>(Method::GET, url, None).await
-    }
-}
-
 #[cfg(test)]
 mod tests {
+    fn test_api() -> crate::AuthedPortOneAPI {
+        crate::PortOneAPI::new().authed_api("k")
+    }
+
     use super::*;
 
     #[test]
@@ -128,11 +132,12 @@ mod tests {
             key_type: Some(TaxInvoiceKeyType::Supplier),
             test: true,
         };
-        let url = build_url(
-            &["b2b", "tax-invoices", "k1", "print-url"],
-            &lookup_query(&lookup),
-        )
-        .unwrap();
+        let url = test_api()
+            .build_url(
+                &["b2b", "tax-invoices", "k1", "print-url"],
+                &lookup_query(&lookup),
+            )
+            .unwrap();
         assert_eq!(
             url.as_str(),
             "https://api.portone.io/b2b/tax-invoices/k1/print-url?brn=1234567890&taxInvoiceKeyType=SUPPLIER&test=true"

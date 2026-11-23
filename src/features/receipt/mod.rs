@@ -4,12 +4,9 @@ use reqwest::Method;
 
 use crate::{
     AuthedPortOneAPI,
-    features::{
-        raw_request::build_url,
-        receipt::dto::{
-            request::IssueCashReceiptBody,
-            response::{CancelCashReceiptResponse, CashReceipt, IssueCashReceiptResponse},
-        },
+    features::receipt::dto::{
+        request::IssueCashReceiptBody,
+        response::{CancelCashReceiptResponse, CashReceipt, IssueCashReceiptResponse},
     },
     types::ClientResult,
 };
@@ -17,24 +14,58 @@ use crate::{
 /// 현금영수증 API. 발급·취소는 실제 영수증을 만들거나 취소하므로 호출 전 확인이 필요하다.
 pub trait PortOneCashReceiptService: Send + Sync {
     /// `POST /cash-receipts` 수동 발급
+    fn issue_cash_receipt(
+        &self,
+        body: &IssueCashReceiptBody,
+    ) -> impl Future<Output = ClientResult<IssueCashReceiptResponse>> + Send;
+
+    /// `GET /payments/{paymentId}/cash-receipt` 결제 건별 조회
+    fn get_cash_receipt(
+        &self,
+        payment_id: &str,
+        store_id: Option<&str>,
+    ) -> impl Future<Output = ClientResult<CashReceipt>> + Send;
+
+    /// `POST /payments/{paymentId}/cash-receipt/cancel` 취소
+    fn cancel_cash_receipt(
+        &self,
+        payment_id: &str,
+        store_id: Option<&str>,
+    ) -> impl Future<Output = ClientResult<CancelCashReceiptResponse>> + Send;
+}
+
+impl PortOneCashReceiptService for AuthedPortOneAPI {
     async fn issue_cash_receipt(
         &self,
         body: &IssueCashReceiptBody,
-    ) -> ClientResult<IssueCashReceiptResponse>;
+    ) -> ClientResult<IssueCashReceiptResponse> {
+        let url = self.build_url(&["cash-receipts"], &[])?;
+        self.request(Method::POST, url, Some(body), None).await
+    }
 
-    /// `GET /payments/{paymentId}/cash-receipt` 결제 건별 조회
     async fn get_cash_receipt(
         &self,
         payment_id: &str,
         store_id: Option<&str>,
-    ) -> ClientResult<CashReceipt>;
+    ) -> ClientResult<CashReceipt> {
+        let url = self.build_url(
+            &["payments", payment_id, "cash-receipt"],
+            &receipt_query(store_id),
+        )?;
+        self.request::<(), _>(Method::GET, url, None, None).await
+    }
 
-    /// `POST /payments/{paymentId}/cash-receipt/cancel` 취소
     async fn cancel_cash_receipt(
         &self,
         payment_id: &str,
         store_id: Option<&str>,
-    ) -> ClientResult<CancelCashReceiptResponse>;
+    ) -> ClientResult<CancelCashReceiptResponse> {
+        let url = self.build_url(
+            &["payments", payment_id, "cash-receipt", "cancel"],
+            &receipt_query(store_id),
+        )?;
+        self.request::<(), _>(Method::POST, url, None, None).await
+    }
 }
 
 fn receipt_query(store_id: Option<&str>) -> Vec<(&'static str, String)> {
@@ -43,42 +74,12 @@ fn receipt_query(store_id: Option<&str>) -> Vec<(&'static str, String)> {
         .unwrap_or_default()
 }
 
-impl PortOneCashReceiptService for AuthedPortOneAPI {
-    async fn issue_cash_receipt(
-        &self,
-        body: &IssueCashReceiptBody,
-    ) -> ClientResult<IssueCashReceiptResponse> {
-        let url = build_url(&["cash-receipts"], &[])?;
-        self.request(Method::POST, url, Some(body)).await
-    }
-
-    async fn get_cash_receipt(
-        &self,
-        payment_id: &str,
-        store_id: Option<&str>,
-    ) -> ClientResult<CashReceipt> {
-        let url = build_url(
-            &["payments", payment_id, "cash-receipt"],
-            &receipt_query(store_id),
-        )?;
-        self.request::<(), _>(Method::GET, url, None).await
-    }
-
-    async fn cancel_cash_receipt(
-        &self,
-        payment_id: &str,
-        store_id: Option<&str>,
-    ) -> ClientResult<CancelCashReceiptResponse> {
-        let url = build_url(
-            &["payments", payment_id, "cash-receipt", "cancel"],
-            &receipt_query(store_id),
-        )?;
-        self.request::<(), _>(Method::POST, url, None).await
-    }
-}
-
 #[cfg(test)]
 mod tests {
+    fn test_api() -> crate::AuthedPortOneAPI {
+        crate::PortOneAPI::new().authed_api("k")
+    }
+
     use super::*;
     use crate::features::receipt::dto::request::{
         CashReceiptType, IssueCashReceiptCustomerInput, PaymentAmountInput,
@@ -88,11 +89,12 @@ mod tests {
     #[test]
     fn query_only_when_store_id_given() {
         assert!(receipt_query(None).is_empty());
-        let url = build_url(
-            &["payments", "p 1", "cash-receipt"],
-            &receipt_query(Some("s1")),
-        )
-        .unwrap();
+        let url = test_api()
+            .build_url(
+                &["payments", "p 1", "cash-receipt"],
+                &receipt_query(Some("s1")),
+            )
+            .unwrap();
         assert_eq!(
             url.as_str(),
             "https://api.portone.io/payments/p%201/cash-receipt?storeId=s1"
@@ -101,7 +103,9 @@ mod tests {
 
     #[test]
     fn path_segment_cannot_escape() {
-        let url = build_url(&["payments", "a/b", "cash-receipt", "cancel"], &[]).unwrap();
+        let url = test_api()
+            .build_url(&["payments", "a/b", "cash-receipt", "cancel"], &[])
+            .unwrap();
         assert_eq!(
             url.as_str(),
             "https://api.portone.io/payments/a%2Fb/cash-receipt/cancel"

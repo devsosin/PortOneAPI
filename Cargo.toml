@@ -18,3 +18,18 @@ base64 = "0.23.1"
 
 [dev-dependencies]
 dotenv = "0.15.0"
+
+[lints.rust]
+rust_2018_idioms = { level = "warn", priority = -1 }
+# missing_docs = "warn"  # not enabled yet: most public items still lack docs
+
+[lints.clippy]
+unwrap_used = "warn"
+dbg_macro = "warn"
+todo = "warn"
+undocumented_unsafe_blocks = "warn"
+wildcard_imports = "warn"
+needless_for_each = "warn"
+fn_params_excessive_bools = "warn"
+# missing_errors_doc = "warn"
+# missing_panics_doc = "warn"

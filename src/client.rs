@@ -1,11 +1,11 @@
 use std::time::Duration;
 
-use reqwest::{ClientBuilder, StatusCode, header};
-use serde::{Deserialize, Serialize};
+use reqwest::{ClientBuilder, Method, Url, header};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
 use crate::{
     AuthedPortOneAPI, PortOneAPI,
-    errors::{ClientError, PortOneError},
+    errors::{Error, PortOneError},
     types::{ClientResult, PortOneResponse},
 };
 
@@ -38,6 +38,12 @@ impl PortOneAPI {
     }
 }
 
+impl Default for PortOneAPI {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl AuthedPortOneAPI {
     /// API 기본 주소를 바꾼다 (프록시·테스트용 서버). 기본값은 `https://api.portone.io`.
     pub fn with_base_url(mut self, base_url: &str) -> Self {
@@ -45,27 +51,14 @@ impl AuthedPortOneAPI {
         self
     }
 
+    /// GET 요청. `uri` 는 기본 주소 뒤에 그대로 붙는다.
     pub async fn send<U: for<'de> Deserialize<'de>>(
         &self,
         uri: &str,
     ) -> ClientResult<PortOneResponse<U>> {
-        let res = self
-            .api
-            .client
-            .get(format!("{}/{}", self.base_url, uri))
-            .header("Authorization", format!("PortOne {}", &self.key))
-            .send()
-            .await?;
-
-        if res.status().ne(&StatusCode::OK) {
-            let err: PortOneError = res.status().into();
-            return Err(err.into());
-        }
-
-        // let message = res.text().await.unwrap();
-        // println!("{}", message);
-        let response = res.json().await?;
-        Ok(response)
+        let url = Url::parse(&format!("{}/{}", self.base_url, uri))
+            .map_err(|e| Error::InternalError(e.to_string()))?;
+        self.request::<(), _>(Method::GET, url, None, None).await
     }
 
     /// JSON 본문을 POST 한다. `path_segments` 는 각각 퍼센트 인코딩되어 경로가 된다.
@@ -76,33 +69,56 @@ impl AuthedPortOneAPI {
         body: &B,
         idempotency_key: Option<&str>,
     ) -> ClientResult<PortOneResponse<U>> {
-        let mut url = reqwest::Url::parse(&self.base_url)
-            .map_err(|e| ClientError::InternalError(e.to_string()))?;
-        url.path_segments_mut()
-            .map_err(|_| ClientError::InternalError("invalid base url".into()))?
-            .pop_if_empty()
-            .extend(path_segments);
+        let url = self.build_url(path_segments, &[])?;
+        self.request(Method::POST, url, Some(body), idempotency_key)
+            .await
+    }
 
+    /// 경로 조각과 쿼리로 요청 URL을 만든다. 조각은 퍼센트 인코딩된다.
+    pub(crate) fn build_url(
+        &self,
+        segments: &[&str],
+        query: &[(&str, String)],
+    ) -> ClientResult<Url> {
+        let mut url = Url::parse(&self.base_url)
+            .map_err(|e| Error::InternalError(format!("invalid base url: {e}")))?;
+        url.path_segments_mut()
+            .map_err(|_| Error::InternalError("base url cannot have segments".into()))?
+            .pop_if_empty()
+            .extend(segments);
+        if !query.is_empty() {
+            url.query_pairs_mut()
+                .extend_pairs(query.iter().map(|(k, v)| (*k, v.as_str())));
+        }
+        Ok(url)
+    }
+
+    /// 모든 요청의 공통 경로: 인증 헤더, 멱등키, 2xx 외 응답의 오류 변환.
+    pub(crate) async fn request<B: Serialize, U: DeserializeOwned>(
+        &self,
+        method: Method,
+        url: Url,
+        body: Option<&B>,
+        idempotency_key: Option<&str>,
+    ) -> ClientResult<U> {
         let mut req = self
             .api
             .client
-            .post(url)
-            .header("Authorization", format!("PortOne {}", &self.key))
-            .json(body);
+            .request(method, url)
+            .header("Authorization", format!("PortOne {}", self.key));
+        if let Some(body) = body {
+            req = req.json(body);
+        }
         if let Some(key) = idempotency_key {
-            req = req.header("Idempotency-Key", format!("\"{}\"", key));
+            req = req.header("Idempotency-Key", format!("\"{key}\""));
         }
 
         let res = req.send().await?;
-
         let status = res.status();
-        if status.ne(&StatusCode::OK) {
+        if !status.is_success() {
             let text = res.text().await.unwrap_or_default();
-            let err = PortOneError::from_response(status, &text);
-            return Err(err.into());
+            return Err(PortOneError::from_response(status, &text).into());
         }
-
-        let response = res.json().await?;
-        Ok(response)
+        Ok(res.json().await?)
     }
 }

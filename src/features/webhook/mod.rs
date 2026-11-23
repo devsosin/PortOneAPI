@@ -13,13 +13,18 @@
 //!
 //! The body must be the raw request bytes, exactly as received.
 
+mod errors;
+mod types;
+
 use std::time::Duration;
 
 use base64::{Engine, engine::general_purpose::STANDARD};
 use chrono::{DateTime, Utc};
 use hmac::{Hmac, KeyInit, Mac};
 use sha2::Sha256;
-use thiserror::Error;
+
+pub use errors::WebhookError;
+pub use types::{VerifiedWebhook, WebhookHeaders};
 
 pub const HEADER_ID: &str = "webhook-id";
 pub const HEADER_TIMESTAMP: &str = "webhook-timestamp";
@@ -32,66 +37,6 @@ const SECRET_PREFIX: &str = "whsec_";
 const SIGNATURE_VERSION: &str = "v1";
 
 type HmacSha256 = Hmac<Sha256>;
-
-#[derive(Error, Debug, PartialEq, Eq)]
-pub enum WebhookError {
-    #[error("Invalid webhook secret")]
-    InvalidSecret,
-
-    #[error("Missing webhook header: {0}")]
-    MissingHeader(&'static str),
-
-    #[error("Malformed webhook timestamp")]
-    MalformedTimestamp,
-
-    #[error("Malformed webhook signature header")]
-    MalformedSignature,
-
-    #[error("Webhook timestamp is too old")]
-    TimestampTooOld,
-
-    #[error("Webhook timestamp is too far in the future")]
-    TimestampTooNew,
-
-    #[error("Webhook signature mismatch")]
-    SignatureMismatch,
-}
-
-/// The three signature headers of one webhook request.
-#[derive(Debug, Clone, Copy)]
-pub struct WebhookHeaders<'a> {
-    pub id: &'a str,
-    pub timestamp: &'a str,
-    pub signature: &'a str,
-}
-
-impl<'a> WebhookHeaders<'a> {
-    /// Builds the headers through a lookup function (header name in lowercase -> value),
-    /// so any HTTP framework's header map can be used.
-    pub fn from_lookup<F>(get: F) -> Result<Self, WebhookError>
-    where
-        F: Fn(&str) -> Option<&'a str>,
-    {
-        let need = |name: &'static str| {
-            get(name)
-                .filter(|v| !v.is_empty())
-                .ok_or(WebhookError::MissingHeader(name))
-        };
-        Ok(Self {
-            id: need(HEADER_ID)?,
-            timestamp: need(HEADER_TIMESTAMP)?,
-            signature: need(HEADER_SIGNATURE)?,
-        })
-    }
-}
-
-/// Result of a successful verification. `id` is unique per event, so callers can use it
-/// to deduplicate redelivered webhooks.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct VerifiedWebhook {
-    pub id: String,
-    pub timestamp: DateTime<Utc>,
-}
 
 pub struct WebhookVerifier {
     key: Vec<u8>,

@@ -6,6 +6,7 @@ mod tests {
     use portone::{PortOneAPI, features::payment::PortOnePaymentService};
 
     #[tokio::test]
+    #[ignore = "calls the live PortOne API; needs PORTONE_KEY in .env"]
     async fn test() {
         dotenv().ok();
 
