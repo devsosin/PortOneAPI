@@ -2,6 +2,8 @@ use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use serde_json::Value;
 
+use super::request::CashReceiptType;
+
 /// 발급 성공 응답 요약
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -42,7 +44,7 @@ pub struct IssuedCashReceipt {
     pub order_name: String,
     pub is_manual: bool,
     #[serde(rename = "type")]
-    pub receipt_type: Option<String>,
+    pub receipt_type: Option<CashReceiptType>,
     pub pg_receipt_id: Option<String>,
     pub issue_number: String,
     pub url: Option<String>,
@@ -65,7 +67,7 @@ pub struct CancelledCashReceipt {
     pub order_name: String,
     pub is_manual: bool,
     #[serde(rename = "type")]
-    pub receipt_type: Option<String>,
+    pub receipt_type: Option<CashReceiptType>,
     pub pg_receipt_id: Option<String>,
     pub issue_number: String,
     pub url: Option<String>,
@@ -97,4 +99,20 @@ pub enum CashReceipt {
     Cancelled(CancelledCashReceipt),
     #[serde(rename = "ISSUE_FAILED")]
     IssueFailed(IssueFailedCashReceipt),
+}
+
+/// 페이지 정보
+#[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PageInfo {
+    pub number: i32,
+    pub size: i32,
+    pub total_count: i32,
+}
+
+/// `GET /cash-receipts` 응답
+#[derive(Debug, Clone, Deserialize)]
+pub struct GetCashReceiptsResponse {
+    pub items: Vec<CashReceipt>,
+    pub page: PageInfo,
 }
