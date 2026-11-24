@@ -9,6 +9,7 @@ Compared with 0.1.0.
 - `features::webhook` (also at `portone::webhook`): Standard Webhooks signature verification.
 - `features::receipt`: cash receipt issue / get / cancel. `features::tax_invoice`: read-only lookups.
 - `errors::Error` as the crate error (`errors::ClientError` stays as an alias), `errors::Result`.
+- `PaymentDetailData`: optional `receiptUrl` / `receiptUrlWithoutAuthentication` with `get_receipt_url` / `get_receipt_url_without_authentication` (backward compatible; `None` when absent).
 - `PortOneAPI: Default`; CI workflow, clippy settings, `CLAUDE.md`.
 
 ### Breaking
