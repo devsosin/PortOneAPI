@@ -2,7 +2,7 @@
 
 ## 출처
 
-- PortOne REST V2 문서 스냅샷: `docs/rest-v2/cash-receipt-tax-invoice/cashReceipt.md`, `taxInvoice.md`, `counterparty.md`, `docs/rest-v2/payment/payment.md`, `docs/rest-v2/guides/platform-webhook-tax-invoice.md`
+- PortOne REST V2 문서 스냅샷: `docs/rest-v2/cash-receipt-tax-invoice/cashReceipt.md`, `taxInvoice.md`, `counterparty.md`, `docs/rest-v2/payment/payment.md`, `docs/rest-v2/webhook/platform-webhook-tax-invoice.md`
 - 세무 검토: 이슈 #3 소유자 코멘트(아래 "세무 검토 결과")
 
 - 공통 정책: [`docs/rest-v2/policy.md`](../rest-v2/policy.md) (API 작업 전 필독)
@@ -15,7 +15,7 @@
 | `POST /payments/{paymentId}/cash-receipt/cancel` | 취소 (`storeId` 쿼리 선택) | `cancel_cash_receipt` |
 | `GET /payments/{paymentId}/cash-receipt` | 결제 건별 조회 | `get_cash_receipt` |
 | `GET /cash-receipts` | 목록 (`page`/`sort`/`filter`) | `get_cash_receipts` |
-| `/b2b/tax-invoices` 계열, `/b2b/counterparties` | B2B 세금계산서 | 조회만(`features::tax_invoice`), 발급 등은 미지원 |
+| `/b2b/tax-invoices`, `/b2b/counterparties` 계열 | B2B 세금계산서·거래처 | 아래 "B2B 세금계산서·거래처 (PORT-005)" 참고 |
 
 매출전표 URL은 결제 응답 `receiptUrl`로 제공된다(`PaymentDetailData::get_receipt_url`).
 
@@ -37,23 +37,80 @@
 
 - 발급·단건 조회·취소·목록 조회, 유형(`CashReceiptType`)·식별값 유형(`IdentityNumberType`)·상태·정렬 enum, `identityNumberType` 입력.
 - 목록 조회: `GetCashReceiptsBody`(page/sort/filter)를 JSON 으로 직렬화해 URL 인코딩한 `requestBody` 쿼리로 보낸다(공식 정책 "GET 요청 시 body 대신 query", 소유자 확인한 스키마와 일치). 필터에 `pgProviders`/`pgCompanies`/`version` 포함, 모든 필드 선택.
-- 미지원: 세금계산서 발급 계열(#12).
+- 세금계산서 발급 계열은 아래 PORT-005 절.
 - 공식 정책 점검 결과는 `docs/rest-v2/policy.md` 맨 아래 표 참고. 이 PR 에서 경로 인코딩(`get_payment_detail`)과 읽기 타임아웃 60초를 고쳤다.
 - 테스트는 로컬 JSON 직렬화·역직렬화 단위 테스트뿐이며 실제 PortOne 호출은 없다.
 
 ## 구현하지 않은 것·참고
 
 - 수동 발급 시 `paymentMethod`(`TRANSFER`/`VIRTUAL_ACCOUNT`)와 `businessRegistrationNumber` 는 일부 PG(문서 기준 웰컴페이먼츠)에서만 입력한다.
-- 세금계산서 발행 계열(`issue-immediately`, `draft`, `issue`, `request`, `send-to-nts`, 취소·삭제 등)은 요청 스키마가 크고 실제 세금계산서가 만들어지므로, 수집 항목과 발행 대상을 확정한 뒤 #12 에서 진행한다. 팝업 URL, 첨부파일, 일괄 발행, 시트 다운로드도 미구현.
-- 세금계산서 조회는 `get_tax_invoice`(원본 JSON), `get_tax_invoice_pdf_url`, `get_tax_invoice_print_url` 이다.
+- 세금계산서·거래처는 아래 PORT-005 절.
 
 ## 후속 이슈
 
 | 이슈 | 내용 |
 |---|---|
-| #12 | B2B 세금계산서·거래처 API와 웹훅 추가 |
-| #13 | 현금영수증 수동 발급 전 중복 발급 방지 |
+| #12 | B2B 세금계산서·거래처 API와 웹훅 추가 → 구현(PORT-005, 아래 절), 남은 작업은 아래 표 |
+| #13 | 현금영수증 수동 발급 전 중복 발급 방지 (병합됨) |
 | #14 | 현금영수증 응답 `channel` 타입화 → `SelectedChannel`, 알 수 없는 `pgProvider` 는 `Unknown`(성공 취급 안 함) |
 | #15 | 현금영수증 발급·취소에 `Idempotency-Key` 지원 → `idempotency_key: Option<&str>` 인자, 409 outstanding 은 재시도 없이 전달 |
 
 (`GET /cash-receipts` 실연동 확인 이슈는 요청 스키마가 소유자 확인으로 확정돼 만들지 않았다.)
+
+## B2B 세금계산서·거래처 (PORT-005)
+
+### 출처
+
+- `docs/rest-v2/cash-receipt-tax-invoice/taxInvoice.md`, `counterparty.md`
+- 웹훅: https://developers.portone.io/platform/ko/guides/webhook (오프라인 사본 `docs/rest-v2/webhook/platform-webhook-tax-invoice.md`), V2 웹훅 서명: https://developers.portone.io/opi/ko/integration/webhook/readme-v2?v=v2
+
+### 구현 범위 (소유자 결정: 즉시 발행·취소·조회부터)
+
+| 엔드포인트 | 크레이트 |
+|---|---|
+| `POST /b2b/tax-invoices/issue-immediately` | `issue_tax_invoice_immediately(body, test, idempotency_key)` |
+| `POST /b2b/tax-invoices/{key}/cancel-issuance` | `cancel_tax_invoice_issuance(key, lookup, body, idempotency_key)` |
+| `GET /b2b/tax-invoices/{key}` | `get_tax_invoice` (타입 `TaxInvoice`) |
+| `GET /b2b/tax-invoices` | `get_tax_invoices` (`requestBody` 쿼리) |
+| `GET …/{key}/pdf-download-url`, `print-url`, `popup-url` | `get_tax_invoice_pdf_url`, `_print_url`, `_popup_url` |
+| `POST/GET/PATCH/DELETE /b2b/counterparties` 계열 | `create_counterparty`, `get_counterparty`, `get_counterparties`, `update_counterparty`, `delete_counterparty` |
+
+구조: `features/b2b/`(공통: `B2bError`, `test` 쿼리, 페이지 타입), `features/tax_invoice/`, `features/counterparty/` (각각 `mod.rs` + `dto/`).
+
+### 사용 시 주의
+
+- `B2bTaxInvoiceInput.issuanceType` 서버 기본값은 **역발행(`REVERSE`)** 이다. 즉시 정발행에는 `Some(IssuanceType::Normal)` 을 넣는다(어기면 `B2bIssuanceTypeMismatchError`).
+- 응답 enum(상태 등)의 알 수 없는 값은 `Unknown` 이며 성공으로 취급하지 않는다. 발행 성공 여부는 `status` 가 알려진 발행 이후 상태인지로 판단한다.
+- 문서에 나온 `B2b*Error` 타입은 모두 `B2bError` 변종이다(예: 취소 시 `B2bTaxInvoiceNotIssuedStatusError`). 문서에 없는 `type` 은 `PortOneError::Unclassified`.
+- 멱등 키: 발행·취소·거래처 생성·수정·삭제는 `idempotency_key` 를 받는다. 발행은 실제 세금계산서를 만들므로 재시도 때 같은 키를 쓴다.
+- 국세청 전송 전(`ISSUED`)에만 취소할 수 있다(`cancel-issuance` 문서).
+- 세금계산서를 발행한 거래는 현금영수증을 중복 발급하지 않는다(호출 측 책임, 위 "크레이트 사용 지침").
+
+### 웹훅
+
+- 위치: `features::webhook`(`webhook::TaxInvoiceEvent`, `TaxInvoiceEventType`, `TaxInvoiceEventData`). 서명 검증은 기존 `WebhookVerifier` 를 그대로 쓴다(코드 중복 없음).
+- 주 경로: `WebhookVerifier::verify_and_parse_tax_invoice(body, headers)` — 서명 확인 뒤에만 본문을 파싱한다. 서명 없이 파싱만: `TaxInvoiceEvent::parse(body)`.
+- **서명 여부**: 소유자는 세금계산서 웹훅이 V2 웹훅과 같은 Standard Webhooks 서명을 쓴다고 본다. 플랫폼 가이드는 서명을 명시하지 않는다. 수신 요청에 `webhook-*` 서명 헤더가 없으면 `parse` 를 쓰고 포트원 고정 IP `52.78.5.241` 만 허용한다.
+- 본문: `{type, timestamp(RFC 3339), data}`.
+- `type`: `TaxInvoice.Requested`(역발행 요청 완료), `Issued`(공급자 발행 승인), `RequestCancelled`(공급받는자 요청 취소), `IssuanceCancelled`(공급자 취소), `Refused`(발행 거부), `SendingCompleted`(국세청 전송 완료), `Manual`(수동 재발송, 수동 발송 API 는 추후 지원 예정). 모르는 값은 `Unknown(raw)`.
+- `data`: `taxInvoiceId`, `supplierDocumentKey`, `recipientDocumentKey`, `status`, `supplierBrn`, `totalAmount`, `totalSupplyAmount`, `totalTaxAmount`(모두 필수). `status` 는 `TaxInvoiceStatus`(웹훅은 주요 상태 변경에만 발송).
+- 설정: 포트원 기술지원(`tech.support@portone.io`)에 웹훅 URL(운영·테스트 별도)을 전달. 테스트 모드는 콘솔 웹훅 테스트 토글을 켜고 테스트 세금계산서를 발행하면 테스트 URL로 전송된다.
+- 재시도: 실패 응답이면 최초 + 4회, 총 5회. 지수 백오프(기본 5·10·20·40분) + Equal Jitter. 수신 측은 `webhook-id` 또는 `taxInvoiceId`+`type` 으로 중복을 걸러야 한다.
+- 발송 IP: `52.78.5.241` (변경 시 메일 안내).
+
+### 남은 작업 (이번에 구현하지 않음)
+
+| 범위 | 엔드포인트 |
+|---|---|
+| 임시저장 | `POST/PUT /b2b/tax-invoices/draft` |
+| 역발행 | `POST /b2b/tax-invoices/request-reverse-issuance`, `…/{key}/request`, `…/{key}/cancel-request`, `…/{key}/refuse-request` |
+| 발행 승인·전송 | `POST …/{key}/issue`, `…/{key}/send-to-nts` |
+| 삭제 | `DELETE /b2b/tax-invoices/{key}` |
+| 첨부 | `POST …/{key}/attach-file`, `GET/DELETE …/{key}/attachments[/{id}]`, `POST /b2b/file-upload-url` |
+| 일괄·시트 | `GET /b2b/bulk-tax-invoices/{id}`, `GET /b2b/tax-invoices-sheet` |
+| 거래처 인증서 | `GET …/{brn}/certificate/registration-url`, `POST …/{brn}/certificate/validate`, `GET …/{brn}/certificate` |
+| 웹훅 | 수동 재발송 API(문서상 추후 지원 예정) |
+
+### 테스트
+
+로컬 단위 테스트와 모의 서버 테스트(`tests/tax_invoice.rs`, `tests/counterparty.rs`)만 있고 실제 PortOne 호출은 없다.

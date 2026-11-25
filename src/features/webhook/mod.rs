@@ -14,6 +14,7 @@
 //! The body must be the raw request bytes, exactly as received.
 
 mod errors;
+mod event;
 mod types;
 
 use std::time::Duration;
@@ -24,6 +25,7 @@ use hmac::{Hmac, KeyInit, Mac};
 use sha2::Sha256;
 
 pub use errors::WebhookError;
+pub use event::{TaxInvoiceEvent, TaxInvoiceEventData, TaxInvoiceEventType};
 pub use types::{VerifiedWebhook, WebhookHeaders};
 
 pub const HEADER_ID: &str = "webhook-id";
@@ -83,6 +85,33 @@ impl WebhookVerifier {
         tolerance: Duration,
     ) -> Result<VerifiedWebhook, WebhookError> {
         self.verify_at(body, headers, tolerance, Utc::now())
+    }
+
+    /// Verifies the signature (default 5 minute tolerance, current time), then parses the body as a
+    /// tax invoice webhook. The body is only parsed after the signature matched.
+    ///
+    /// The PortOne platform guide does not state that tax invoice webhooks are signed; the owner
+    /// confirmed they use the same Standard Webhooks scheme as V2 webhooks. If your deliveries carry
+    /// no signature headers, use [`TaxInvoiceEvent::parse`] and restrict the endpoint to PortOne's IP
+    /// (`52.78.5.241`).
+    pub fn verify_and_parse_tax_invoice(
+        &self,
+        body: &[u8],
+        headers: &WebhookHeaders<'_>,
+    ) -> Result<(VerifiedWebhook, TaxInvoiceEvent), WebhookError> {
+        self.verify_and_parse_tax_invoice_at(body, headers, DEFAULT_TOLERANCE, Utc::now())
+    }
+
+    /// Like [`Self::verify_and_parse_tax_invoice`] with an explicit tolerance and `now`.
+    pub fn verify_and_parse_tax_invoice_at(
+        &self,
+        body: &[u8],
+        headers: &WebhookHeaders<'_>,
+        tolerance: Duration,
+        now: DateTime<Utc>,
+    ) -> Result<(VerifiedWebhook, TaxInvoiceEvent), WebhookError> {
+        let verified = self.verify_at(body, headers, tolerance, now)?;
+        Ok((verified, TaxInvoiceEvent::parse(body)?))
     }
 
     /// Verifies against an explicit `now`. Timestamps older than `now - tolerance` or
@@ -214,6 +243,43 @@ mod tests {
         assert!(
             v.verify_at(BODY, &headers(&sig), DEFAULT_TOLERANCE, now())
                 .is_ok()
+        );
+    }
+
+    const EVENT: &[u8] = br#"{"type":"TaxInvoice.Issued","timestamp":"2021-02-25T14:22:10Z","data":{"taxInvoiceId":"t","supplierDocumentKey":"s","recipientDocumentKey":"r","status":"ISSUED","supplierBrn":"1234567890","totalAmount":11,"totalSupplyAmount":10,"totalTaxAmount":1}}"#;
+
+    fn verify_event(
+        body: &[u8],
+        sig: &str,
+    ) -> Result<(VerifiedWebhook, TaxInvoiceEvent), WebhookError> {
+        WebhookVerifier::new(SECRET)
+            .unwrap()
+            .verify_and_parse_tax_invoice_at(body, &headers(sig), DEFAULT_TOLERANCE, now())
+    }
+
+    #[test]
+    fn tax_invoice_event_is_parsed_after_verification() {
+        let sig = sign(&STANDARD.decode(&SECRET[6..]).unwrap(), ID, TS, EVENT);
+        let (verified, event) = verify_event(EVENT, &sig).unwrap();
+        assert_eq!(verified.id, ID);
+        assert_eq!(event.event_type, TaxInvoiceEventType::Issued);
+        assert_eq!(event.data.tax_invoice_id, "t");
+    }
+
+    #[test]
+    fn tax_invoice_event_with_bad_signature_is_not_parsed() {
+        assert_eq!(
+            verify_event(EVENT, SIG).unwrap_err(),
+            WebhookError::SignatureMismatch
+        );
+    }
+
+    #[test]
+    fn signed_but_malformed_payload_is_invalid() {
+        let sig = sign(&STANDARD.decode(&SECRET[6..]).unwrap(), ID, TS, BODY);
+        assert_eq!(
+            verify_event(BODY, &sig).unwrap_err(),
+            WebhookError::InvalidPayload
         );
     }
 
