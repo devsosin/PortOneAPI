@@ -90,10 +90,11 @@ impl WebhookVerifier {
     /// Verifies the signature (default 5 minute tolerance, current time), then parses the body as a
     /// tax invoice webhook. The body is only parsed after the signature matched.
     ///
-    /// The PortOne platform guide does not state that tax invoice webhooks are signed; the owner
-    /// confirmed they use the same Standard Webhooks scheme as V2 webhooks. If your deliveries carry
-    /// no signature headers, use [`TaxInvoiceEvent::parse`] and restrict the endpoint to PortOne's IP
-    /// (`52.78.5.241`).
+    /// This is the recommended path. Tax invoice webhooks use the same verification as V2 webhooks:
+    /// Standard Webhooks headers and the console-issued webhook secret
+    /// (<https://developers.portone.io/opi/ko/integration/webhook/readme-v2?v=v2>; confirmed with
+    /// PortOne by the owner, 2026-11-25). Restricting the endpoint to PortOne's IP (`52.78.5.241`)
+    /// is optional extra hardening.
     pub fn verify_and_parse_tax_invoice(
         &self,
         body: &[u8],

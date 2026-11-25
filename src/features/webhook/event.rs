@@ -77,9 +77,8 @@ pub struct TaxInvoiceEvent {
 impl TaxInvoiceEvent {
     /// Parses the raw body without checking any signature.
     ///
-    /// Use it only when the deliveries carry no signature headers, and then protect the endpoint
-    /// otherwise (IP allowlist, see `docs/research/cash-receipt-tax-invoice.md`). Prefer
-    /// `WebhookVerifier::verify_and_parse_tax_invoice`.
+    /// Lower-level helper for bodies that were already verified. For incoming deliveries use
+    /// `WebhookVerifier::verify_and_parse_tax_invoice`, which verifies first and then calls this.
     pub fn parse(body: &[u8]) -> Result<Self, WebhookError> {
         serde_json::from_slice(body).map_err(|_| WebhookError::InvalidPayload)
     }
