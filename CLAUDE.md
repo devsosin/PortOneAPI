@@ -12,7 +12,9 @@ src/
   types.rs          `ClientResult`, `PortOneResponse`
   features/<name>/  mod.rs = service trait + impl; dto/ = request/response types;
                     errors.rs only when a feature needs its own errors
-    payment/ cancel/ receipt/ tax_invoice/ webhook/
+    payment/ cancel/ receipt/ webhook/
+    b2b/            shared B2B parts: B2bError, test flag, paging (no endpoints)
+    tax_invoice/ counterparty/   B2B features (mod.rs + dto/{common,request,response})
 tests/              integration tests against a local mock server (no network)
 docs/rest-v2/       offline copy of the PortOne REST V2 docs
 ```
@@ -24,7 +26,7 @@ docs/rest-v2/       offline copy of the PortOne REST V2 docs
 Rust rules come from the harness docs (`/opt/harness/plugins/harness/docs/rust/`: `CLEAN_ARCHITECTURE.md`, `CODE_STYLE.md`); lints are in `Cargo.toml` `[lints]` and `clippy.toml`.
 
 - **For any PortOne API work, read `docs/rest-v2/README.md` first** (it points to `policy.md`).
-- **Errors**: public calls return `errors::Error`. A feature defines its own error enum only when callers must react differently (`CancelError`, `WebhookError`) and converts it into `Error` with `From`. Endpoint-specific API rejections arrive from `client::request` as `PortOneError::Unclassified { status, kind }`; the feature maps `kind` to its enum (see `cancel/errors.rs`).
+- **Errors**: public calls return `errors::Error`. A feature defines its own error enum only when callers must react differently (`CancelError`, `ReceiptError`, `B2bError`, `WebhookError`) and converts it into `Error` with `From`. Endpoint-specific API rejections arrive from `client::request` as `PortOneError::Unclassified { status, kind }`; the feature maps `kind` to its enum (see `cancel/errors.rs`).
 - All HTTP goes through `AuthedPortOneAPI::request` (auth header, idempotency key, error mapping). Build URLs with `build_url` so path segments are percent-encoded and the configured base URL is honored.
 - New feature = `features/<name>/` with `mod.rs` (trait + impl) and `dto/`; add `pub mod` in `features/mod.rs`. Trait methods are declared `fn … -> impl Future<Output = …> + Send`.
 - Unknown external values must never count as success. State-changing calls (cancel, issue) take an idempotency key where the API supports it.

@@ -1,14 +1,16 @@
 //! Crate-level error type.
 //!
 //! [`Error`] is what every public call returns. Features whose failures need more detail
-//! (`cancel`, `receipt`, `webhook`) define their own error enum next to the feature and convert it
+//! (`cancel`, `receipt`, `b2b`, `webhook`) define their own error enum next to the feature and convert it
 //! into [`Error`] with `From`.
 
 use reqwest::StatusCode;
 use serde::Deserialize;
 use thiserror::Error;
 
-use crate::features::{cancel::CancelError, receipt::ReceiptError, webhook::WebhookError};
+use crate::features::{
+    b2b::B2bError, cancel::CancelError, receipt::ReceiptError, webhook::WebhookError,
+};
 
 /// Result alias used by every request method.
 pub type Result<T> = std::result::Result<T, Error>;
@@ -41,6 +43,9 @@ pub enum Error {
 
     #[error("Webhook error: {0}")]
     Webhook(#[from] WebhookError),
+
+    #[error("B2B error: {0}")]
+    B2b(#[from] B2bError),
 
     #[error("Internal error: {0}")]
     InternalError(String),

@@ -23,4 +23,8 @@ pub enum WebhookError {
 
     #[error("Webhook signature mismatch")]
     SignatureMismatch,
+
+    /// The body is not a valid payload of the expected event kind.
+    #[error("Invalid webhook payload")]
+    InvalidPayload,
 }

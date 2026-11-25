@@ -52,4 +52,5 @@ API 호출시 PG 및 결제 원천사의 응답 지연을 고려하여 최소 60
 | `Authorization: PortOne <secret>` | `client::request` 한 곳에서 부착 |
 | GET 의 `requestBody` | `get_cash_receipts` 가 JSON 직렬화 후 `requestBody` 쿼리로 전달(URL 인코딩, 단위 테스트로 확인) |
 | 읽기 타임아웃 60초 | 수정: 읽기 60초, 연결 10초(이전 전체 10초) |
+| B2B(세금계산서·거래처) | 경로 조각은 `build_url` 로 인코딩, 목록은 `requestBody` 쿼리(거래처 검색은 `test` 와 함께), 즉시 발행·발행 취소·거래처 생성·수정·삭제는 `idempotency_key` 지원. 문서에 나온 `B2b*Error` 는 `B2bError` 변종으로 구분 |
 | `Idempotency-Key` | 결제 취소·현금영수증 발급·취소가 `idempotency_key` 인자로 지원(키 검증은 `client::request` 한 곳, 쌍따옴표 부착). 409 `IDEMPOTENCY_OUTSTANDING_REQUEST` 는 `PortOneError::IdempotencyOutstandingRequestError` 로 알리고 크레이트는 재시도하지 않는다(호출 측이 같은 키로 나중에 재시도) |
