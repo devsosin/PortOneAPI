@@ -40,6 +40,12 @@
 - 공식 정책 점검 결과는 `docs/rest-v2/policy.md` 맨 아래 표 참고. 이 PR 에서 경로 인코딩(`get_payment_detail`)과 읽기 타임아웃 60초를 고쳤다.
 - 테스트는 로컬 JSON 직렬화·역직렬화 단위 테스트뿐이며 실제 PortOne 호출은 없다.
 
+## 구현하지 않은 것·참고
+
+- 수동 발급 시 `paymentMethod`(`TRANSFER`/`VIRTUAL_ACCOUNT`)와 `businessRegistrationNumber` 는 일부 PG(문서 기준 웰컴페이먼츠)에서만 입력한다.
+- 세금계산서 발행 계열(`issue-immediately`, `draft`, `issue`, `request`, `send-to-nts`, 취소·삭제 등)은 요청 스키마가 크고 실제 세금계산서가 만들어지므로, 수집 항목과 발행 대상을 확정한 뒤 #12 에서 진행한다. 팝업 URL, 첨부파일, 일괄 발행, 시트 다운로드도 미구현.
+- 세금계산서 조회는 `get_tax_invoice`(원본 JSON), `get_tax_invoice_pdf_url`, `get_tax_invoice_print_url` 이다.
+
 ## 후속 이슈
 
 | 이슈 | 내용 |

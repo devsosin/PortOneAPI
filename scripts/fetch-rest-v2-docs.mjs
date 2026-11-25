@@ -452,6 +452,16 @@ const catRows = CATS.map((c) => {
 });
 await w('README.md', `# PortOne REST API V2 문서 (오프라인 사본)
 
+## 먼저 읽을 것: 공통 정책
+
+API 를 추가하거나 바꾸기 전에 [policy.md](policy.md) 를 먼저 읽는다(손으로 관리하는 파일이며 재생성 때 보존된다). 요약:
+
+- 인코딩: 경로·query 값은 \`encodeURIComponent\` 규칙으로 이스케이프한다.
+- 인증: \`Authorization: PortOne <API Secret>\` 헤더(인증 API 제외).
+- GET 의 본문: body 대신 JSON 을 URL 인코딩해 \`requestBody\` query 로 보낸다.
+- 멱등 키: 상태를 바꾸는 요청(POST·PUT·PATCH·DELETE)은 \`Idempotency-Key\` 헤더를 쓴다.
+- 읽기 타임아웃: 최소 60초.
+
 - 원본: ${INDEX_URL}
 - 수집일: ${FETCH_DATE}
 - 엔드포인트 수: ${endpointCount}, OpenAPI 소스: ${SPEC_URL}
