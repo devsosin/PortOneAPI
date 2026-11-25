@@ -1,4 +1,5 @@
 pub mod dto;
+mod errors;
 
 use reqwest::Method;
 
@@ -14,7 +15,12 @@ use crate::{
     types::ClientResult,
 };
 
+pub use errors::ReceiptError;
+
 /// 현금영수증 API. 발급·취소는 실제 영수증을 만들거나 취소하므로 호출 전 확인이 필요하다.
+///
+/// 중복 발급 방지는 호출 측 책임이다(`get_cash_receipt` 나 자체 기록으로 확인). 이미 발급된 경우
+/// `issue_cash_receipt` 는 `Error::Receipt(ReceiptError::CashReceiptAlreadyIssuedError)` 를 돌려준다.
 pub trait PortOneCashReceiptService: Send + Sync {
     /// `POST /cash-receipts` 수동 발급
     fn issue_cash_receipt(
@@ -49,7 +55,9 @@ impl PortOneCashReceiptService for AuthedPortOneAPI {
         body: &IssueCashReceiptBody,
     ) -> ClientResult<IssueCashReceiptResponse> {
         let url = self.build_url(&["cash-receipts"], &[])?;
-        self.request(Method::POST, url, Some(body), None).await
+        self.request(Method::POST, url, Some(body), None)
+            .await
+            .map_err(ReceiptError::refine)
     }
 
     async fn get_cash_receipt(
