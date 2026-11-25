@@ -19,7 +19,7 @@
  *   promotion/  identity-verification/  platform/  reconciliation/
  * 새 엔드포인트 카테고리가 OpenAPI 에 생기면 UNIT_FILE·CATS 에 추가해야 한다(없으면 오류로 멈춘다).
  */
-import { mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdir, writeFile, rm, readFile } from 'node:fs/promises';
 import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -385,8 +385,11 @@ const spec = JSON.parse(await get(SPEC_URL));
 const overviewMd = htmlToMd(await get(OVERVIEW_URL));
 const { outFiles, files, fileTitle, endpointCount } = build(spec);
 
+// policy.md 는 손으로 관리하는 파일이라 재생성 때 지우지 않는다.
+const policyMd = await readFile(join(OUT, 'policy.md')).catch(() => null);
 await rm(OUT, { recursive: true, force: true });
 for (const c of CATS) await mkdir(join(OUT, c.dir), { recursive: true });
+if (policyMd) await writeFile(join(OUT, 'policy.md'), policyMd);
 const w = async (name, text) => {
   await mkdir(dirname(join(OUT, name)), { recursive: true });
   await writeFile(join(OUT, name), text.endsWith('\n') ? text : text + '\n');

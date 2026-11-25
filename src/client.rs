@@ -23,7 +23,9 @@ impl PortOneAPI {
             client: ClientBuilder::new()
                 .user_agent("PortOne-Rust/1.0.0")
                 .default_headers(headers)
-                .timeout(Duration::from_secs(10))
+                // 공식 정책: PG 응답 지연을 고려해 읽기 타임아웃은 최소 60초 (docs/rest-v2/policy.md)
+                .connect_timeout(Duration::from_secs(10))
+                .read_timeout(Duration::from_secs(60))
                 .build()
                 .expect("Failed to build HTTP Client"),
         }
@@ -87,8 +89,13 @@ impl AuthedPortOneAPI {
             .pop_if_empty()
             .extend(segments);
         if !query.is_empty() {
-            url.query_pairs_mut()
-                .extend_pairs(query.iter().map(|(k, v)| (*k, v.as_str())));
+            // encodeURIComponent 와 같은 규칙으로 인코딩한다 (공백은 '+' 가 아니라 %20).
+            let encoded = query
+                .iter()
+                .map(|(k, v)| format!("{}={}", encode_component(k), encode_component(v)))
+                .collect::<Vec<_>>()
+                .join("&");
+            url.set_query(Some(&encoded));
         }
         Ok(url)
     }
@@ -121,4 +128,27 @@ impl AuthedPortOneAPI {
         }
         Ok(res.json().await?)
     }
+}
+
+/// `encodeURIComponent` 와 같은 퍼센트 인코딩: `A-Za-z0-9 - _ . ! ~ * ' ( )` 만 그대로 둔다.
+fn encode_component(value: &str) -> String {
+    let mut out = String::with_capacity(value.len());
+    for byte in value.bytes() {
+        match byte {
+            b'A'..=b'Z'
+            | b'a'..=b'z'
+            | b'0'..=b'9'
+            | b'-'
+            | b'_'
+            | b'.'
+            | b'!'
+            | b'~'
+            | b'*'
+            | b'\''
+            | b'('
+            | b')' => out.push(byte as char),
+            _ => out.push_str(&format!("%{byte:02X}")),
+        }
+    }
+    out
 }

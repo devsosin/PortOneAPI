@@ -5,8 +5,11 @@ use reqwest::Method;
 use crate::{
     AuthedPortOneAPI,
     features::receipt::dto::{
-        request::IssueCashReceiptBody,
-        response::{CancelCashReceiptResponse, CashReceipt, IssueCashReceiptResponse},
+        request::{GetCashReceiptsBody, IssueCashReceiptBody},
+        response::{
+            CancelCashReceiptResponse, CashReceipt, GetCashReceiptsResponse,
+            IssueCashReceiptResponse,
+        },
     },
     types::ClientResult,
 };
@@ -25,6 +28,12 @@ pub trait PortOneCashReceiptService: Send + Sync {
         payment_id: &str,
         store_id: Option<&str>,
     ) -> impl Future<Output = ClientResult<CashReceipt>> + Send;
+
+    /// `GET /cash-receipts` 다건 조회 (조건은 `requestBody` 쿼리에 JSON 으로 전달)
+    fn get_cash_receipts(
+        &self,
+        body: &GetCashReceiptsBody,
+    ) -> impl Future<Output = ClientResult<GetCashReceiptsResponse>> + Send;
 
     /// `POST /payments/{paymentId}/cash-receipt/cancel` 취소
     fn cancel_cash_receipt(
@@ -52,6 +61,16 @@ impl PortOneCashReceiptService for AuthedPortOneAPI {
             &["payments", payment_id, "cash-receipt"],
             &receipt_query(store_id),
         )?;
+        self.request::<(), _>(Method::GET, url, None, None).await
+    }
+
+    async fn get_cash_receipts(
+        &self,
+        body: &GetCashReceiptsBody,
+    ) -> ClientResult<GetCashReceiptsResponse> {
+        let json = serde_json::to_string(body)
+            .map_err(|e| crate::errors::Error::InternalError(e.to_string()))?;
+        let url = self.build_url(&["cash-receipts"], &[("requestBody", json)])?;
         self.request::<(), _>(Method::GET, url, None, None).await
     }
 
@@ -129,6 +148,7 @@ mod tests {
             product_type: None,
             customer: IssueCashReceiptCustomerInput {
                 identity_number: "01000000000".into(),
+                identity_number_type: None,
                 name: None,
                 email: None,
                 phone_number: None,
@@ -197,6 +217,115 @@ mod tests {
         assert!(matches!(
             serde_json::from_value::<CashReceipt>(failed).unwrap(),
             CashReceipt::IssueFailed(_)
+        ));
+    }
+
+    #[test]
+    fn list_url_carries_encoded_request_body() {
+        use crate::features::receipt::dto::request::*;
+        let body = GetCashReceiptsBody {
+            filter: Some(CashReceiptFilterInput {
+                order_name: Some("a b&c=d/한".into()),
+                ..Default::default()
+            }),
+            ..Default::default()
+        };
+        let json = serde_json::to_string(&body).unwrap();
+        let url = test_api()
+            .build_url(&["cash-receipts"], &[("requestBody", json.clone())])
+            .unwrap();
+        assert_eq!(url.path(), "/cash-receipts");
+        let raw = url.query().unwrap();
+        assert!(raw.starts_with("requestBody=%7B%22filter%22%3A%7B%22orderName%22%3A%22a%20b%26c%3Dd%2F%ED%95%9C%22%7D%7D"));
+        assert!(!raw.contains(' ') && !raw.contains('+') && !raw.contains('{'));
+        let (_, decoded) = url.query_pairs().next().unwrap();
+        assert_eq!(decoded, json);
+    }
+
+    #[test]
+    fn list_filter_pg_fields_serialize() {
+        use crate::features::receipt::dto::request::*;
+        let f = CashReceiptFilterInput {
+            pg_providers: Some(vec![PgProvider::Html5Inicis, PgProvider::NiceV2]),
+            pg_companies: Some(vec![PgCompany::Tosspayments, PgCompany::TripleA]),
+            version: Some(PortOneVersion::V2),
+            ..Default::default()
+        };
+        assert_eq!(
+            serde_json::to_value(&f).unwrap(),
+            json!({
+                "pgProviders": ["HTML5_INICIS", "NICE_V2"],
+                "pgCompanies": ["TOSSPAYMENTS", "TRIPLE_A"],
+                "version": "V2"
+            })
+        );
+    }
+
+    #[test]
+    fn identity_number_type_serializes() {
+        use crate::features::receipt::dto::request::IdentityNumberType;
+        let c = IssueCashReceiptCustomerInput {
+            identity_number: "1".into(),
+            identity_number_type: Some(IdentityNumberType::Phone),
+            name: None,
+            email: None,
+            phone_number: None,
+        };
+        assert_eq!(
+            serde_json::to_value(&c).unwrap(),
+            json!({"identityNumber": "1", "identityNumberType": "PHONE"})
+        );
+    }
+
+    #[test]
+    fn list_body_serializes_filter_and_defaults() {
+        use crate::features::receipt::dto::request::*;
+        assert_eq!(
+            serde_json::to_value(GetCashReceiptsBody::default()).unwrap(),
+            json!({})
+        );
+        let body = GetCashReceiptsBody {
+            page: Some(PageInput {
+                number: Some(1),
+                size: None,
+            }),
+            sort: Some(CashReceiptSortInput {
+                by: Some(CashReceiptSortBy::CancelledAt),
+                order: Some(SortOrder::Asc),
+            }),
+            filter: Some(CashReceiptFilterInput {
+                statuses: Some(vec![CashReceiptStatus::Failed]),
+                types: Some(vec![CashReceiptType::Corporate]),
+                time_range_field: Some(CashReceiptTimeRangeField::StatusUpdatedAt),
+                ..Default::default()
+            }),
+        };
+        assert_eq!(
+            serde_json::to_value(&body).unwrap(),
+            json!({
+                "page": {"number": 1},
+                "sort": {"by": "CANCELLED_AT", "order": "ASC"},
+                "filter": {"timeRangeField": "STATUS_UPDATED_AT", "statuses": ["FAILED"], "types": ["CORPORATE"]}
+            })
+        );
+    }
+
+    #[test]
+    fn deserializes_list_response() {
+        let r: GetCashReceiptsResponse = serde_json::from_value(json!({
+            "items": [{
+                "status": "ISSUED", "merchantId": "m", "storeId": "s", "paymentId": "p",
+                "channel": {"type": "TEST"}, "amount": 1000, "currency": "KRW",
+                "orderName": "o", "isManual": true, "type": "CORPORATE",
+                "issueNumber": "1", "issuedAt": "2026-01-01T00:00:00Z"
+            }],
+            "page": {"number": 0, "size": 10, "totalCount": 1}
+        }))
+        .unwrap();
+        assert_eq!(r.page.total_count, 1);
+        assert!(matches!(
+            &r.items[0],
+            CashReceipt::Issued(i) if i.receipt_type == Some(CashReceiptType::Corporate)
         ));
     }
 }
