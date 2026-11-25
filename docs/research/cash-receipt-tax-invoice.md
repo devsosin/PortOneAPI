@@ -5,6 +5,8 @@
 - PortOne REST V2 문서 스냅샷: `docs/rest-v2/cash-receipt-tax-invoice/cashReceipt.md`, `taxInvoice.md`, `counterparty.md`, `docs/rest-v2/payment/payment.md`, `docs/rest-v2/guides/platform-webhook-tax-invoice.md`
 - 세무 검토: 이슈 #3 소유자 코멘트(아래 "세무 검토 결과")
 
+- 공통 정책: [`docs/rest-v2/policy.md`](../rest-v2/policy.md) (API 작업 전 필독)
+
 ## 문서로 확인한 엔드포인트
 
 | 엔드포인트 | 용도 | 크레이트 |
@@ -33,29 +35,18 @@
 ## 크레이트 지원 범위
 
 - 발급·단건 조회·취소·목록 조회, 유형(`CashReceiptType`)·식별값 유형(`IdentityNumberType`)·상태·정렬 enum, `identityNumberType` 입력.
-- 목록 조회는 조건을 JSON 으로 직렬화해 `requestBody` 쿼리로 보낸다. 문서 스냅샷은 이 파라미터의 타입·인코딩을 적지 않았고(`requestBody | query`), 요청 본문 스키마만 있다. 전송 방식이 달라도 공개 API(`GetCashReceiptsBody`)는 바뀌지 않으므로, 실제 연동에서 확인이 필요하다(후속 이슈 3).
-- 미지원: 목록 필터의 `pgProviders`/`pgCompanies`/`version`, 세금계산서 발급 계열.
+- 목록 조회: `GetCashReceiptsBody`(page/sort/filter)를 JSON 으로 직렬화해 URL 인코딩한 `requestBody` 쿼리로 보낸다(공식 정책 "GET 요청 시 body 대신 query", 소유자 확인한 스키마와 일치). 필터에 `pgProviders`/`pgCompanies`/`version` 포함, 모든 필드 선택.
+- 미지원: 세금계산서 발급 계열(#12).
+- 공식 정책 점검 결과는 `docs/rest-v2/policy.md` 맨 아래 표 참고. 이 PR 에서 경로 인코딩(`get_payment_detail`)과 읽기 타임아웃 60초를 고쳤다.
 - 테스트는 로컬 JSON 직렬화·역직렬화 단위 테스트뿐이며 실제 PortOne 호출은 없다.
 
-## 후속 이슈 초안 (생성하지 않음)
+## 후속 이슈
 
-### 1. [PORT-0xx] B2B 세금계산서 API 추가
+| 이슈 | 내용 |
+|---|---|
+| #12 | B2B 세금계산서·거래처 API와 웹훅 추가 |
+| #13 | 현금영수증 수동 발급 전 중복 발급 방지 |
+| #14 | 현금영수증 응답 `channel` 타입화 |
+| #15 | 현금영수증 발급·취소에 `Idempotency-Key` 지원 |
 
-- 개요: `/b2b/tax-invoices` 계열(즉시 발행 `issue-immediately`, 임시저장 `draft`, `issue`/`request`/`send-to-nts`/`cancel-issuance`/`cancel-request`/`refuse-request`/`request-reverse-issuance`, 조회, `pdf-download-url`/`print-url`/`popup-url`, 삭제)과 거래처(`/b2b/counterparties`), 상태 변경 웹훅(`platform-webhook-tax-invoice.md`)을 크레이트에 추가한다.
-- 사용자 검토 필요: 지원 범위(발행만 vs 전체), 웹훅 검증을 기존 `features::webhook` 에 합칠지, 수집할 거래처 정보.
-- 작업: 발행·취소 등 상태 변경 호출에 멱등키 적용, DTO·enum, 모의 서버 테스트.
-- 완료 조건: `cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test`.
-- 선행: 없음(이 PR 병합 후 진행 권장).
-
-### 2. [PORT-0xx] 현금영수증 발급 전 중복 방지 헬퍼
-
-- 개요: 수동 발급 전 기존 발급 여부(`get_cash_receipt`) 확인과 `CashReceiptAlreadyIssuedError`(409) 전용 처리를 크레이트에서 제공할지 정한다. `CancelError` 처럼 기능별 오류 enum 이 필요한지 포함.
-- 사용자 검토 필요: 크레이트 책임 범위(호출 측에 맡김 vs 헬퍼 제공).
-
-### 3. [PORT-0xx] 현금영수증 목록 조회 실연동 확인
-
-- 개요: `GET /cash-receipts` 의 `requestBody` 쿼리 인코딩(JSON 문자열)을 테스트 채널로 확인하고, 필터 `pgProviders`/`pgCompanies`/`version` 을 추가한다. 실연동 테스트는 `#[ignore]` 로 두고 사용자 승인 후 실행한다.
-
-### 4. [PORT-0xx] 현금영수증 응답 `channel` 타입화
-
-- 개요: `channel` 이 `serde_json::Value` 이다. 문서의 `SelectedChannel`(`type`, `id`, `key`, `name`, `pgProvider`, `pgMerchantId`)로 타입화하되 PG사 enum 은 알 수 없는 값을 허용해야 한다(공개 타입 변경이라 마이너 버전 항목).
+(`GET /cash-receipts` 실연동 확인 이슈는 요청 스키마가 소유자 확인으로 확정돼 만들지 않았다.)

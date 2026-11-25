@@ -139,7 +139,9 @@ pub struct CashReceiptSortInput {
     pub order: Option<SortOrder>,
 }
 
-/// 목록 필터. PG사 모듈·PG사·버전 필터(`pgProviders`, `pgCompanies`, `version`)는 아직 지원하지 않는다.
+/// 목록 필터. 모든 필드는 선택이며 미지정 시 서버 기본값이 적용된다
+/// (`timeRangeField` 는 `ISSUED_AT`, `until` 은 현재, `from` 은 `until` 의 90일 전).
+/// `storeId` 는 Merchant 만 사용할 수 있고, 지정하지 않으면 고객사 전체를 조회한다.
 #[derive(Debug, Clone, Default, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CashReceiptFilterInput {
@@ -166,6 +168,12 @@ pub struct CashReceiptFilterInput {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub pg_merchant_id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub pg_providers: Option<Vec<PgProvider>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pg_companies: Option<Vec<PgCompany>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub version: Option<PortOneVersion>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub types: Option<Vec<CashReceiptType>>,
 }
 
@@ -178,4 +186,203 @@ pub struct GetCashReceiptsBody {
     pub sort: Option<CashReceiptSortInput>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub filter: Option<CashReceiptFilterInput>,
+}
+
+/// PG사 결제 모듈 (`docs/rest-v2/00-basics/schemas-common.md` `PgProvider`)
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+pub enum PgProvider {
+    #[serde(rename = "HTML5_INICIS")]
+    Html5Inicis,
+    #[serde(rename = "PAYPAL")]
+    Paypal,
+    #[serde(rename = "PAYPAL_V2")]
+    PaypalV2,
+    #[serde(rename = "INICIS")]
+    Inicis,
+    #[serde(rename = "DANAL")]
+    Danal,
+    #[serde(rename = "NICE")]
+    Nice,
+    #[serde(rename = "DANAL_TPAY")]
+    DanalTpay,
+    #[serde(rename = "JTNET")]
+    Jtnet,
+    #[serde(rename = "UPLUS")]
+    Uplus,
+    #[serde(rename = "NAVERPAY")]
+    Naverpay,
+    #[serde(rename = "KAKAO")]
+    Kakao,
+    #[serde(rename = "SETTLE")]
+    Settle,
+    #[serde(rename = "KCP")]
+    Kcp,
+    #[serde(rename = "MOBILIANS")]
+    Mobilians,
+    #[serde(rename = "KAKAOPAY")]
+    Kakaopay,
+    #[serde(rename = "NAVERCO")]
+    Naverco,
+    #[serde(rename = "SYRUP")]
+    Syrup,
+    #[serde(rename = "KICC")]
+    Kicc,
+    #[serde(rename = "EXIMBAY")]
+    Eximbay,
+    #[serde(rename = "SMILEPAY")]
+    Smilepay,
+    #[serde(rename = "PAYCO")]
+    Payco,
+    #[serde(rename = "KCP_BILLING")]
+    KcpBilling,
+    #[serde(rename = "ALIPAY")]
+    Alipay,
+    #[serde(rename = "PAYPLE")]
+    Payple,
+    #[serde(rename = "CHAI")]
+    Chai,
+    #[serde(rename = "BLUEWALNUT")]
+    Bluewalnut,
+    #[serde(rename = "SMARTRO")]
+    Smartro,
+    #[serde(rename = "SMARTRO_V2")]
+    SmartroV2,
+    #[serde(rename = "PAYMENTWALL")]
+    Paymentwall,
+    #[serde(rename = "TOSSPAYMENTS")]
+    Tosspayments,
+    #[serde(rename = "KCP_QUICK")]
+    KcpQuick,
+    #[serde(rename = "DAOU")]
+    Daou,
+    #[serde(rename = "GALAXIA")]
+    Galaxia,
+    #[serde(rename = "TOSSPAY")]
+    Tosspay,
+    #[serde(rename = "KCP_DIRECT")]
+    KcpDirect,
+    #[serde(rename = "SETTLE_ACC")]
+    SettleAcc,
+    #[serde(rename = "SETTLE_FIRM")]
+    SettleFirm,
+    #[serde(rename = "INICIS_UNIFIED")]
+    InicisUnified,
+    #[serde(rename = "KSNET")]
+    Ksnet,
+    #[serde(rename = "PINPAY")]
+    Pinpay,
+    #[serde(rename = "NICE_V2")]
+    NiceV2,
+    #[serde(rename = "TOSS_BRANDPAY")]
+    TossBrandpay,
+    #[serde(rename = "WELCOME")]
+    Welcome,
+    #[serde(rename = "TOSSPAY_V2")]
+    TosspayV2,
+    #[serde(rename = "INICIS_V2")]
+    InicisV2,
+    #[serde(rename = "KPN")]
+    Kpn,
+    #[serde(rename = "KCP_V2")]
+    KcpV2,
+    #[serde(rename = "HYPHEN")]
+    Hyphen,
+    #[serde(rename = "EXIMBAY_V2")]
+    EximbayV2,
+    #[serde(rename = "INICIS_JP")]
+    InicisJp,
+    #[serde(rename = "PAYLETTER_GLOBAL")]
+    PayletterGlobal,
+    #[serde(rename = "MOBILIANS_V2")]
+    MobiliansV2,
+    #[serde(rename = "TRIPLE_A")]
+    TripleA,
+    #[serde(rename = "KICC_V2")]
+    KiccV2,
+    #[serde(rename = "INNOPAY")]
+    Innopay,
+    #[serde(rename = "HECTO_GLOBAL")]
+    HectoGlobal,
+    #[serde(rename = "PAYLETTER")]
+    Payletter,
+}
+
+/// PG사 (`PgCompany`)
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+pub enum PgCompany {
+    #[serde(rename = "INICIS")]
+    Inicis,
+    #[serde(rename = "NICE")]
+    Nice,
+    #[serde(rename = "KCP")]
+    Kcp,
+    #[serde(rename = "DANAL")]
+    Danal,
+    #[serde(rename = "TOSSPAYMENTS")]
+    Tosspayments,
+    #[serde(rename = "MOBILIANS")]
+    Mobilians,
+    #[serde(rename = "KICC")]
+    Kicc,
+    #[serde(rename = "SMARTRO")]
+    Smartro,
+    #[serde(rename = "DAOU")]
+    Daou,
+    #[serde(rename = "BLUEWALNUT")]
+    Bluewalnut,
+    #[serde(rename = "PAYPAL")]
+    Paypal,
+    #[serde(rename = "ALIPAY")]
+    Alipay,
+    #[serde(rename = "EXIMBAY")]
+    Eximbay,
+    #[serde(rename = "PAYMENTWALL")]
+    Paymentwall,
+    #[serde(rename = "SETTLE")]
+    Settle,
+    #[serde(rename = "GALAXIA")]
+    Galaxia,
+    #[serde(rename = "NAVERPAY")]
+    Naverpay,
+    #[serde(rename = "KAKAOPAY")]
+    Kakaopay,
+    #[serde(rename = "SMILEPAY")]
+    Smilepay,
+    #[serde(rename = "KAKAO")]
+    Kakao,
+    #[serde(rename = "TOSSPAY")]
+    Tosspay,
+    #[serde(rename = "CHAI")]
+    Chai,
+    #[serde(rename = "PAYCO")]
+    Payco,
+    #[serde(rename = "PAYPLE")]
+    Payple,
+    #[serde(rename = "SYRUP")]
+    Syrup,
+    #[serde(rename = "KSNET")]
+    Ksnet,
+    #[serde(rename = "WELCOME")]
+    Welcome,
+    #[serde(rename = "JTNET")]
+    Jtnet,
+    #[serde(rename = "KPN")]
+    Kpn,
+    #[serde(rename = "HYPHEN")]
+    Hyphen,
+    #[serde(rename = "PAYLETTER")]
+    Payletter,
+    #[serde(rename = "TRIPLE_A")]
+    TripleA,
+    #[serde(rename = "INNOPAY")]
+    Innopay,
+}
+
+/// 포트원 버전
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+pub enum PortOneVersion {
+    #[serde(rename = "V1")]
+    V1,
+    #[serde(rename = "V2")]
+    V2,
 }

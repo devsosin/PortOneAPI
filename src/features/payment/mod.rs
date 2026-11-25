@@ -18,9 +18,8 @@ impl PortOnePaymentService for AuthedPortOneAPI {
         &self,
         payment_id: &str,
     ) -> ClientResult<PortOneResponse<PaymentDetailData>> {
-        let uri = format!("payments/{}", payment_id);
-        let result = self.send(&uri).await?;
-
-        Ok(result)
+        let url = self.build_url(&["payments", payment_id], &[])?;
+        self.request::<(), _>(reqwest::Method::GET, url, None, None)
+            .await
     }
 }

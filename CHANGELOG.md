@@ -7,8 +7,8 @@ Compared with 0.1.0.
 ### Added
 - `features::cancel`: payment cancel / partial cancel (`PortOneCancelService`).
 - `features::webhook` (also at `portone::webhook`): Standard Webhooks signature verification.
-- `features::receipt`: cash receipt issue / get / cancel / list (`get_cash_receipts`, filter and paging DTOs), `identityNumberType` input. `features::tax_invoice`: read-only lookups.
-- `docs/research/cash-receipt-tax-invoice.md`: research record, tax review result, follow-up issue drafts.
+- `features::receipt`: cash receipt issue / get / cancel / list (`get_cash_receipts`, filter incl. `pgProviders` / `pgCompanies` / `version`, paging DTOs; query is sent as URL-encoded `requestBody`), `identityNumberType` input. `features::tax_invoice`: read-only lookups.
+- `docs/rest-v2/policy.md` (official common API policy, must-read) and `docs/research/cash-receipt-tax-invoice.md`: research record, tax review result, follow-up issues #12–#15.
 - `errors::Error` as the crate error (`errors::ClientError` stays as an alias), `errors::Result`.
 - `PaymentDetailData`: optional `receiptUrl` / `receiptUrlWithoutAuthentication` with `get_receipt_url` / `get_receipt_url_without_authentication` (backward compatible; `None` when absent).
 - `PortOneAPI: Default`; CI workflow, clippy settings, `CLAUDE.md`.
@@ -22,5 +22,7 @@ Compared with 0.1.0.
 - `PaymentAmount` fields are public.
 
 ### Fixed
+- `get_payment_detail` percent-encodes `paymentId`; query values use `encodeURIComponent` rules (`%20`, not `+`).
+- HTTP client uses a 60s read timeout (was 10s total), as the API policy recommends.
 - `with_base_url` is honored by every request (receipt and tax invoice calls used the production URL).
 - `tests/portone.rs` (live call) is `#[ignore]`.

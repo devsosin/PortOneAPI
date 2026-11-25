@@ -221,6 +221,47 @@ mod tests {
     }
 
     #[test]
+    fn list_url_carries_encoded_request_body() {
+        use crate::features::receipt::dto::request::*;
+        let body = GetCashReceiptsBody {
+            filter: Some(CashReceiptFilterInput {
+                order_name: Some("a b&c=d/한".into()),
+                ..Default::default()
+            }),
+            ..Default::default()
+        };
+        let json = serde_json::to_string(&body).unwrap();
+        let url = test_api()
+            .build_url(&["cash-receipts"], &[("requestBody", json.clone())])
+            .unwrap();
+        assert_eq!(url.path(), "/cash-receipts");
+        let raw = url.query().unwrap();
+        assert!(raw.starts_with("requestBody=%7B%22filter%22%3A%7B%22orderName%22%3A%22a%20b%26c%3Dd%2F%ED%95%9C%22%7D%7D"));
+        assert!(!raw.contains(' ') && !raw.contains('+') && !raw.contains('{'));
+        let (_, decoded) = url.query_pairs().next().unwrap();
+        assert_eq!(decoded, json);
+    }
+
+    #[test]
+    fn list_filter_pg_fields_serialize() {
+        use crate::features::receipt::dto::request::*;
+        let f = CashReceiptFilterInput {
+            pg_providers: Some(vec![PgProvider::Html5Inicis, PgProvider::NiceV2]),
+            pg_companies: Some(vec![PgCompany::Tosspayments, PgCompany::TripleA]),
+            version: Some(PortOneVersion::V2),
+            ..Default::default()
+        };
+        assert_eq!(
+            serde_json::to_value(&f).unwrap(),
+            json!({
+                "pgProviders": ["HTML5_INICIS", "NICE_V2"],
+                "pgCompanies": ["TOSSPAYMENTS", "TRIPLE_A"],
+                "version": "V2"
+            })
+        );
+    }
+
+    #[test]
     fn identity_number_type_serializes() {
         use crate::features::receipt::dto::request::IdentityNumberType;
         let c = IssueCashReceiptCustomerInput {
