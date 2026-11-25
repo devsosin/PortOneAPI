@@ -53,7 +53,7 @@
 |---|---|
 | #12 | B2B 세금계산서·거래처 API와 웹훅 추가 |
 | #13 | 현금영수증 수동 발급 전 중복 발급 방지 |
-| #14 | 현금영수증 응답 `channel` 타입화 |
-| #15 | 현금영수증 발급·취소에 `Idempotency-Key` 지원 |
+| #14 | 현금영수증 응답 `channel` 타입화 → `SelectedChannel`, 알 수 없는 `pgProvider` 는 `Unknown`(성공 취급 안 함) |
+| #15 | 현금영수증 발급·취소에 `Idempotency-Key` 지원 → `idempotency_key: Option<&str>` 인자, 409 outstanding 은 재시도 없이 전달 |
 
 (`GET /cash-receipts` 실연동 확인 이슈는 요청 스키마가 소유자 확인으로 확정돼 만들지 않았다.)

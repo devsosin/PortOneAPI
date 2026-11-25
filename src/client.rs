@@ -64,7 +64,8 @@ impl AuthedPortOneAPI {
     }
 
     /// JSON 본문을 POST 한다. `path_segments` 는 각각 퍼센트 인코딩되어 경로가 된다.
-    /// `idempotency_key` 는 RFC 8941 규칙에 따라 쌍따옴표로 감싸 `Idempotency-Key` 헤더로 보낸다.
+    /// `idempotency_key` 가 16~256자 ASCII 규칙에 맞지 않으면 요청 없이 `InvalidRequestError`.
+    /// RFC 8941 규칙에 따라 쌍따옴표로 감싸 `Idempotency-Key` 헤더로 보낸다.
     pub async fn send_post<B: Serialize, U: for<'de> Deserialize<'de>>(
         &self,
         path_segments: &[&str],
@@ -108,6 +109,12 @@ impl AuthedPortOneAPI {
         body: Option<&B>,
         idempotency_key: Option<&str>,
     ) -> ClientResult<U> {
+        if let Some(key) = idempotency_key
+            && !is_valid_idempotency_key(key)
+        {
+            return Err(PortOneError::InvalidRequestError.into());
+        }
+
         let mut req = self
             .api
             .client
@@ -128,6 +135,11 @@ impl AuthedPortOneAPI {
         }
         Ok(res.json().await?)
     }
+}
+
+/// 멱등 키 규칙: 16~256자의 ASCII 문자열(공백·제어 문자·쌍따옴표 제외). `docs/rest-v2/policy.md` 참고.
+pub(crate) fn is_valid_idempotency_key(key: &str) -> bool {
+    (16..=256).contains(&key.len()) && key.chars().all(|c| c.is_ascii_graphic() && c != '"')
 }
 
 /// `encodeURIComponent` 와 같은 퍼센트 인코딩: `A-Za-z0-9 - _ . ! ~ * ' ( )` 만 그대로 둔다.
@@ -151,4 +163,20 @@ fn encode_component(value: &str) -> String {
         }
     }
     out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn idempotency_key_rules() {
+        assert!(is_valid_idempotency_key("0123456789abcdef"));
+        assert!(is_valid_idempotency_key(&"a".repeat(256)));
+        assert!(!is_valid_idempotency_key("short"));
+        assert!(!is_valid_idempotency_key(&"a".repeat(257)));
+        assert!(!is_valid_idempotency_key("0123456789abcde\""));
+        assert!(!is_valid_idempotency_key("0123456789abcde f"));
+        assert!(!is_valid_idempotency_key("0123456789abcdé!"));
+    }
 }

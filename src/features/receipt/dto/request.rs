@@ -189,7 +189,7 @@ pub struct GetCashReceiptsBody {
 }
 
 /// PG사 결제 모듈 (`docs/rest-v2/00-basics/schemas-common.md` `PgProvider`)
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum PgProvider {
     #[serde(rename = "HTML5_INICIS")]
     Html5Inicis,

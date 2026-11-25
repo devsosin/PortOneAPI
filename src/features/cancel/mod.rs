@@ -3,7 +3,6 @@ mod errors;
 
 use crate::{
     AuthedPortOneAPI,
-    errors::PortOneError,
     features::cancel::dto::{CancelPaymentBody, CancelPaymentResponse},
     types::{ClientResult, PortOneResponse},
 };
@@ -30,33 +29,8 @@ impl PortOneCancelService for AuthedPortOneAPI {
         body: &CancelPaymentBody,
         idempotency_key: Option<&str>,
     ) -> ClientResult<PortOneResponse<CancelPaymentResponse>> {
-        if let Some(key) = idempotency_key
-            && !is_valid_idempotency_key(key)
-        {
-            return Err(PortOneError::InvalidRequestError.into());
-        }
-
         self.send_post(&["payments", payment_id, "cancel"], body, idempotency_key)
             .await
             .map_err(CancelError::refine)
-    }
-}
-
-fn is_valid_idempotency_key(key: &str) -> bool {
-    (16..=256).contains(&key.len()) && key.chars().all(|c| c.is_ascii_graphic() && c != '"')
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn idempotency_key_rules() {
-        assert!(is_valid_idempotency_key("0123456789abcdef"));
-        assert!(!is_valid_idempotency_key("short"));
-        assert!(!is_valid_idempotency_key(&"a".repeat(257)));
-        assert!(!is_valid_idempotency_key("0123456789abcde\""));
-        assert!(!is_valid_idempotency_key("0123456789abcde f"));
-        assert!(!is_valid_idempotency_key("0123456789abcdé!"));
     }
 }

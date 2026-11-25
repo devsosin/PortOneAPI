@@ -23,9 +23,15 @@ pub use errors::ReceiptError;
 /// `issue_cash_receipt` 는 `Error::Receipt(ReceiptError::CashReceiptAlreadyIssuedError)` 를 돌려준다.
 pub trait PortOneCashReceiptService: Send + Sync {
     /// `POST /cash-receipts` 수동 발급
+    ///
+    /// `idempotency_key`(선택)는 `Idempotency-Key` 헤더로 보내 재시도 시 중복 처리를 막는다.
+    /// 16~256자 ASCII 문자열이어야 하며(어기면 요청 없이 `InvalidRequestError`), 같은 키로 다른 요청을 보내서는 안 된다.
+    /// 처리 중인 요청을 같은 키로 다시 보내면 `PortOneError::IdempotencyOutstandingRequestError`(409)가 온다.
+    /// 크레이트는 재시도하지 않으므로 호출 측이 잠시 뒤 **같은 키로** 다시 호출한다.
     fn issue_cash_receipt(
         &self,
         body: &IssueCashReceiptBody,
+        idempotency_key: Option<&str>,
     ) -> impl Future<Output = ClientResult<IssueCashReceiptResponse>> + Send;
 
     /// `GET /payments/{paymentId}/cash-receipt` 결제 건별 조회
@@ -41,11 +47,12 @@ pub trait PortOneCashReceiptService: Send + Sync {
         body: &GetCashReceiptsBody,
     ) -> impl Future<Output = ClientResult<GetCashReceiptsResponse>> + Send;
 
-    /// `POST /payments/{paymentId}/cash-receipt/cancel` 취소
+    /// `POST /payments/{paymentId}/cash-receipt/cancel` 취소. `idempotency_key` 는 `issue_cash_receipt` 와 같다.
     fn cancel_cash_receipt(
         &self,
         payment_id: &str,
         store_id: Option<&str>,
+        idempotency_key: Option<&str>,
     ) -> impl Future<Output = ClientResult<CancelCashReceiptResponse>> + Send;
 }
 
@@ -53,9 +60,10 @@ impl PortOneCashReceiptService for AuthedPortOneAPI {
     async fn issue_cash_receipt(
         &self,
         body: &IssueCashReceiptBody,
+        idempotency_key: Option<&str>,
     ) -> ClientResult<IssueCashReceiptResponse> {
         let url = self.build_url(&["cash-receipts"], &[])?;
-        self.request(Method::POST, url, Some(body), None)
+        self.request(Method::POST, url, Some(body), idempotency_key)
             .await
             .map_err(ReceiptError::refine)
     }
@@ -86,12 +94,14 @@ impl PortOneCashReceiptService for AuthedPortOneAPI {
         &self,
         payment_id: &str,
         store_id: Option<&str>,
+        idempotency_key: Option<&str>,
     ) -> ClientResult<CancelCashReceiptResponse> {
         let url = self.build_url(
             &["payments", payment_id, "cash-receipt", "cancel"],
             &receipt_query(store_id),
         )?;
-        self.request::<(), _>(Method::POST, url, None, None).await
+        self.request::<(), _>(Method::POST, url, None, idempotency_key)
+            .await
     }
 }
 
@@ -195,10 +205,37 @@ mod tests {
     }
 
     #[test]
+    fn channel_deserializes_known_and_unknown_values() {
+        use crate::features::receipt::dto::request::PgProvider;
+        use crate::features::receipt::dto::response::{
+            SelectedChannel, SelectedChannelType, SelectedPgProvider,
+        };
+        let c: SelectedChannel = serde_json::from_value(json!({
+            "type": "LIVE", "id": "c1", "key": "k", "name": "n",
+            "pgProvider": "NICE_V2", "pgMerchantId": "mid"
+        }))
+        .unwrap();
+        assert!(c.is_live());
+        assert_eq!(c.pg_provider, SelectedPgProvider::Known(PgProvider::NiceV2));
+        assert_eq!(c.id.as_deref(), Some("c1"));
+
+        let c: SelectedChannel = serde_json::from_value(json!({
+            "type": "SOMETHING_NEW", "pgProvider": "BRAND_NEW_PG", "pgMerchantId": "mid"
+        }))
+        .unwrap();
+        assert_eq!(c.channel_type, SelectedChannelType::Unknown);
+        assert!(!c.is_live());
+        assert_eq!(
+            c.pg_provider,
+            SelectedPgProvider::Unknown("BRAND_NEW_PG".into())
+        );
+        assert!(c.id.is_none());
+    }
+    #[test]
     fn deserializes_cash_receipt_by_status() {
         let base = json!({
             "merchantId": "m", "storeId": "s", "paymentId": "p",
-            "channel": {"type": "LIVE"}, "amount": 1000, "currency": "KRW",
+            "channel": {"type": "LIVE", "pgProvider": "NICE_V2", "pgMerchantId": "m"}, "amount": 1000, "currency": "KRW",
             "orderName": "o", "isManual": false, "issueNumber": "1",
             "issuedAt": "2026-01-01T00:00:00Z"
         });
@@ -323,7 +360,7 @@ mod tests {
         let r: GetCashReceiptsResponse = serde_json::from_value(json!({
             "items": [{
                 "status": "ISSUED", "merchantId": "m", "storeId": "s", "paymentId": "p",
-                "channel": {"type": "TEST"}, "amount": 1000, "currency": "KRW",
+                "channel": {"type": "TEST", "pgProvider": "NICE_V2", "pgMerchantId": "m"}, "amount": 1000, "currency": "KRW",
                 "orderName": "o", "isManual": true, "type": "CORPORATE",
                 "issueNumber": "1", "issuedAt": "2026-01-01T00:00:00Z"
             }],
