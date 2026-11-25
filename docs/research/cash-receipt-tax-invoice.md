@@ -89,8 +89,8 @@
 ### 웹훅
 
 - 위치: `features::webhook`(`webhook::TaxInvoiceEvent`, `TaxInvoiceEventType`, `TaxInvoiceEventData`). 서명 검증은 기존 `WebhookVerifier` 를 그대로 쓴다(코드 중복 없음).
-- 주 경로: `WebhookVerifier::verify_and_parse_tax_invoice(body, headers)` — 서명 확인 뒤에만 본문을 파싱한다. 서명 없이 파싱만: `TaxInvoiceEvent::parse(body)`.
-- **서명 여부**: 소유자는 세금계산서 웹훅이 V2 웹훅과 같은 Standard Webhooks 서명을 쓴다고 본다. 플랫폼 가이드는 서명을 명시하지 않는다. 수신 요청에 `webhook-*` 서명 헤더가 없으면 `parse` 를 쓰고 포트원 고정 IP `52.78.5.241` 만 허용한다.
+- 주 경로: `WebhookVerifier::verify_and_parse_tax_invoice(body, headers)` — 서명 확인 뒤에만 본문을 파싱한다. `TaxInvoiceEvent::parse(body)` 는 이미 검증한 본문용 하위 수준 도우미다.
+- **서명**: 세금계산서 웹훅은 V2 웹훅과 같은 검증을 쓴다(Standard Webhooks 헤더, 콘솔에서 발급한 웹훅 시크릿). 소유자가 포트원에 확인했다(2026-11-25). 별도 서명 방식·시크릿은 없다. 근거: https://developers.portone.io/opi/ko/integration/webhook/readme-v2?v=v2. 고정 IP `52.78.5.241` 허용은 선택적 추가 방어다.
 - 본문: `{type, timestamp(RFC 3339), data}`.
 - `type`: `TaxInvoice.Requested`(역발행 요청 완료), `Issued`(공급자 발행 승인), `RequestCancelled`(공급받는자 요청 취소), `IssuanceCancelled`(공급자 취소), `Refused`(발행 거부), `SendingCompleted`(국세청 전송 완료), `Manual`(수동 재발송, 수동 발송 API 는 추후 지원 예정). 모르는 값은 `Unknown(raw)`.
 - `data`: `taxInvoiceId`, `supplierDocumentKey`, `recipientDocumentKey`, `status`, `supplierBrn`, `totalAmount`, `totalSupplyAmount`, `totalTaxAmount`(모두 필수). `status` 는 `TaxInvoiceStatus`(웹훅은 주요 상태 변경에만 발송).

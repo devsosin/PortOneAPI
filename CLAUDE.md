@@ -1,6 +1,6 @@
 # PortOneAPI (`portone` crate)
 
-Rust client for the PortOne V2 REST API (payment lookup, cancel, webhook signature verification, cash receipt, tax invoice read). **Public repository (devsosin/PortOneAPI): keep issues, PRs, docs and tests free of business or customer details** — generic examples only. Issue prefix `PORT-nnn`.
+Rust client for the PortOne V2 REST API (payment lookup, cancel, webhook signature verification, cash receipt, tax invoice read, tax invoice webhooks verified like V2 webhooks). **Public repository (devsosin/PortOneAPI): keep issues, PRs, docs and tests free of business or customer details** — generic examples only. Issue prefix `PORT-nnn`.
 
 ## Layout
 
