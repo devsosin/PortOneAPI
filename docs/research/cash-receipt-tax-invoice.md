@@ -28,7 +28,8 @@
 
 ## 크레이트 사용 지침
 
-- PG 자동 발급이 켜져 있으면 `issue_cash_receipt`(수동 발급)를 호출하기 전에 `get_cash_receipt` 로 이미 발급됐는지 확인한다. 이미 발급된 경우 서버가 409 `CashReceiptAlreadyIssuedError` 로 거절한다.
+- PG 자동 발급이 켜져 있으면 `issue_cash_receipt`(수동 발급)를 호출하기 전에 `get_cash_receipt` 로 이미 발급됐는지 확인한다. 이미 발급된 경우 서버가 409 `CashReceiptAlreadyIssuedError` 로 거절하며, 크레이트는 이를 `Error::Receipt(ReceiptError::CashReceiptAlreadyIssuedError)` 로 돌려준다.
+- 중복 발급 방지는 호출 측 책임이다(소유자 결정, #13). 크레이트는 중복 확인 헬퍼를 제공하지 않는다. 호출 전에 `get_cash_receipt`(`GET /payments/{id}/cash-receipt`)나 자체 기록으로 확인하고, 세금계산서를 발행했다면 건너뛴다.
 - 세금계산서를 이미 발행한 거래는 호출 측에서 현금영수증 발급을 건너뛰어야 한다. 크레이트는 이를 판단하지 못한다.
 - 수동 발급 대상은 위 대상 결제수단이며, 10만 원 이상 의무 여부 판단은 호출 측 책임이다.
 

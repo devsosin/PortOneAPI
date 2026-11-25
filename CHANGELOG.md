@@ -11,11 +11,12 @@ Compared with 0.1.0.
 - `docs/rest-v2/policy.md` (official common API policy, must-read) and `docs/research/cash-receipt-tax-invoice.md`: research record, tax review result, follow-up issues #12–#15.
 - `errors::Error` as the crate error (`errors::ClientError` stays as an alias), `errors::Result`.
 - `PaymentDetailData`: optional `receiptUrl` / `receiptUrlWithoutAuthentication` with `get_receipt_url` / `get_receipt_url_without_authentication` (backward compatible; `None` when absent).
+- `features::receipt::ReceiptError::CashReceiptAlreadyIssuedError` (409 of `issue_cash_receipt`) and `Error::Receipt`. The crate does not check for duplicates; that is the caller's job (see `docs/research/cash-receipt-tax-invoice.md`).
 - `PortOneAPI: Default`; CI workflow, clippy settings, `CLAUDE.md`.
 
 ### Breaking
 - `features::receipt` response `type` fields are `Option<CashReceiptType>` (was `Option<String>`); `CashReceiptType` also deserializes. `IssueCashReceiptCustomerInput` has a new field `identity_number_type`.
-- `errors::Error` (`ClientError`) and `PortOneError` are `#[non_exhaustive]`; `Error` gained `Cancel` and `Webhook` variants. Add a `_` arm when matching.
+- `errors::Error` (`ClientError`) and `PortOneError` are `#[non_exhaustive]`; `Error` gained `Cancel`, `Receipt` and `Webhook` variants. Add a `_` arm when matching.
 - Cancel-specific rejections (`PaymentAlreadyCancelledError`, …) are in `features::cancel::CancelError`, not `PortOneError`. Response `type`s that are not shared by all endpoints are `PortOneError::Unclassified { status, kind }` (before: mapped by status code).
 - `PaymentDetailData::get_customer_name` / `get_customer_email` return `Option<&str>` (they panicked when the field was absent).
 - Service traits declare `fn … -> impl Future<Output = …> + Send` instead of `async fn` (callers unaffected; custom implementors keep using `async fn`).
